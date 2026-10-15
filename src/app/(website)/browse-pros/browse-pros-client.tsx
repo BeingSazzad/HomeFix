@@ -90,9 +90,11 @@ export function BrowseProsClient() {
             />
           </div>
         ) : (
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4 md:gap-4">
             {results.map((pro) => (
-              <ProCard key={pro.id} pro={pro} />
+              <div key={pro.id} className="min-w-0">
+                <ProCard pro={pro} />
+              </div>
             ))}
           </div>
         )}

@@ -41,7 +41,7 @@ export function ProCard({
     <Link
       href={href}
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-[14px] border border-line bg-white",
+        "group flex h-full min-w-0 w-full flex-col overflow-hidden rounded-[14px] border border-line bg-white",
         className,
       )}
     >
