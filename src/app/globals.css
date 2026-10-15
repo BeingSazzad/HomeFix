@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #0d56d6;
+  --primary-hover: #00a1de;
+  --primary-foreground: #ffffff;
+  --secondary: #00a1de;
+  --secondary-foreground: #ffffff;
+  --accent: #fa951f;
+  --accent-foreground: #00151d;
+  --title: #00151d;
+  --text: #5b5b5b;
+  --muted: #7a848c;
+  --background: #ffffff;
+  --surface: #ecf1f5;
+  --smoke: #f1f6ff;
+  --border: #00a3de3d;
+  --line: #d7e2ea;
+  --black: #0a0708;
+  --success: #28a745;
+  --error: #dc3545;
+  --warning: #fec624;
+  --ink: #01133c;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --container: 1320px;
+  --section: 88px;
+  --section-sm: 56px;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-title: var(--title);
+  --color-copy: var(--text);
+  --color-muted: var(--muted);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-smoke: var(--smoke);
+  --color-border: var(--border);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-rubik);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-archivo), Archivo, sans-serif;
+  font-size: 16px;
+  line-height: 26px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-rubik), Rubik, sans-serif;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h1:not(.text-white),
+h2:not(.text-white),
+h3:not(.text-white),
+h4:not(.text-white),
+h5:not(.text-white),
+h6:not(.text-white) {
+  color: var(--title);
+}
+
+a.bg-primary,
+a.bg-secondary,
+button.bg-primary,
+button.bg-secondary {
+  color: var(--primary-foreground) !important;
+}
+
+a.bg-white,
+button.bg-white {
+  color: var(--title) !important;
+}
+
+a.border-white:not(.bg-white),
+button.border-white:not(.bg-white) {
+  color: #fff !important;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 18%, white);
+  color: var(--title);
+}
+
+.container-site {
+  width: min(calc(100% - 40px), var(--container));
+  margin-inline: auto;
+}
+
+.bg-dots {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--primary) 55%, white) 1.15px, transparent 1.2px);
+  background-size: 16px 16px;
+}
+
+.hero-wash {
+  background: linear-gradient(100deg, color-mix(in srgb, var(--title) 91%, black) 20%, transparent 61%);
+}
+
+.banner-wash {
+  background: linear-gradient(100deg, color-mix(in srgb, var(--title) 88%, black) 18%, color-mix(in srgb, var(--primary) 28%, transparent) 100%);
+}
+
+.auth-wash {
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--ink) 18%, transparent) 0%,
+      color-mix(in srgb, var(--ink) 42%, transparent) 48%,
+      color-mix(in srgb, var(--ink) 74%, #01133c) 100%
+    );
+}
+
+.auth-panel :is(h1, h2, h3, p, li) {
+  color: #fff !important;
+}
+
+.soft-shadow {
+  box-shadow: 0 22px 50px color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 14px;
+    line-height: 24px;
+  }
+}
