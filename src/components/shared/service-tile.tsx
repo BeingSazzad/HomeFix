@@ -41,19 +41,21 @@ export function ServiceTile({
     <button
       type="button"
       onClick={() => onSelect?.(category.slug)}
-      className="group overflow-hidden rounded-[14px] border border-line bg-white text-left"
+      className="group overflow-hidden rounded-[18px] border border-line bg-white text-left soft-shadow"
     >
-      <span className="relative block h-44 overflow-hidden">
+      <span className="relative block h-44 overflow-hidden md:h-48">
         <span
           className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
           style={{ backgroundImage: `url(${image})` }}
         />
-        <span className="absolute bottom-3 left-3 grid h-11 w-11 place-items-center rounded-[10px] bg-primary text-white">
-          <Icon className="h-5 w-5" />
-        </span>
       </span>
-      <span className="flex items-center justify-between gap-3 px-4 py-4">
-        <span className="font-display text-[18px] font-bold text-title">{category.name}</span>
+      <span className="relative flex items-center gap-3 px-4 pb-4 pt-5">
+        <span className="absolute -top-5 left-4 grid h-10 w-10 place-items-center rounded-full bg-primary text-white shadow-md">
+          <Icon className="h-4 w-4" />
+        </span>
+        <span className="min-w-0 flex-1 pl-12 font-display text-[17px] font-bold text-title">
+          {category.name}
+        </span>
         <ArrowUpRight className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </span>
     </button>

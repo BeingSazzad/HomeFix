@@ -17,7 +17,7 @@ export function HomeServices() {
     .filter((item): item is Category => Boolean(item));
 
   return (
-    <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
+    <section className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeading
@@ -26,11 +26,11 @@ export function HomeServices() {
             description="Common trades first — see all nine on Services."
           />
           <Button href="/services" variant="ghost" className="hidden shrink-0 sm:inline-flex">
-            View all
+            View all →
           </Button>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((category) => (
             <ServiceTile
               key={category.id}
@@ -42,7 +42,7 @@ export function HomeServices() {
 
         <div className="mt-6 text-center sm:hidden">
           <Button href="/services" variant="ghost">
-            View all
+            View all →
           </Button>
         </div>
       </div>
