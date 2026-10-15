@@ -25,11 +25,11 @@ export function SectionHeading({
           {eyebrow}
         </p>
       ) : null}
-      <h2 className={cn("text-[32px] leading-[1.2] md:text-[40px]", light && "text-white")}>{title}</h2>
+      <h2 className={cn("text-[28px] leading-[1.2] md:text-[36px]", light && "text-white")}>{title}</h2>
       {description ? (
         <p
           className={cn(
-            "mt-3 max-w-lg text-[16px] leading-7",
+            "mt-2 max-w-md text-[15px] leading-6",
             light ? "text-white/75" : "text-copy",
             align === "center" && "mx-auto",
           )}

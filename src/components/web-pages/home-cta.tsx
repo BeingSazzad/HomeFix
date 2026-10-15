@@ -6,17 +6,16 @@ export function HomeCta() {
     <section className="relative overflow-hidden bg-title">
       <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${photos.cta})` }} />
       <div className="absolute inset-0 bg-title/78" />
-      <div className="container-site relative flex flex-col items-start justify-between gap-8 py-16 md:flex-row md:items-center md:py-20">
+      <div className="container-site relative flex flex-col items-center gap-6 py-14 text-center md:py-16">
         <div>
-          <h2 className="max-w-xl text-[32px] leading-tight text-white md:text-[40px]">
-            Ready to post a job or join as a pro?
+          <h2 className="mx-auto max-w-lg text-[28px] leading-tight text-white md:text-[36px]">
+            Ready to get started?
           </h2>
-          <p className="mt-4 max-w-lg text-[16px] leading-7 text-white/75">
-            Homeowners get a free account to post and compare quotes. Professionals apply, get reviewed, then start a
-            $19.99 monthly membership after three free months.
+          <p className="mx-auto mt-3 max-w-md text-[15px] leading-6 text-white/75">
+            Homeowners free. Pros $19.99/mo after 3 free months.
           </p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap justify-center gap-3">
           <Button href="/signup?next=%2Faccount%2Fpost-job" variant="white" size="lg">
             Create free account
           </Button>

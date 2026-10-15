@@ -24,8 +24,8 @@
   --radius: 10px;
   --radius-lg: 14px;
   --container: 1320px;
-  --section: 88px;
-  --section-sm: 56px;
+  --section: 72px;
+  --section-sm: 48px;
 }
 
 @theme inline {

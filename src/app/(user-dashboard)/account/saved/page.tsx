@@ -12,10 +12,10 @@ export default function SavedProsPage() {
 
   return (
     <div>
-      <h1 className="text-[28px]">Saved professionals</h1>
-      <p className="mt-1 text-sm text-copy">Shortlist cleared pros to invite on a request later.</p>
+      <h1 className="text-[24px] md:text-[28px]">Saved professionals</h1>
+      <p className="mt-0.5 text-sm text-copy">Shortlist to invite on a request later.</p>
       {list.length === 0 ? (
-        <div className="mt-6">
+        <div className="mt-5">
           <EmptyState
             title="No saved pros yet"
             description="Open a profile and tap Save."
@@ -24,13 +24,13 @@ export default function SavedProsPage() {
           />
         </div>
       ) : (
-        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {list.map((pro) => (
             <ProCard key={pro.id} pro={pro} />
           ))}
         </div>
       )}
-      <p className="mt-6 text-sm text-copy">
+      <p className="mt-5 text-sm text-copy">
         Prefer browsing?{" "}
         <Link href="/browse-pros" className="font-semibold text-primary">
           Find a Pro

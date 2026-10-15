@@ -37,17 +37,16 @@ export default function ContactPage() {
     <>
       <PageBanner
         eyebrow="Contact"
-        title="Questions, feedback, or help."
-        description="No account needed. Write us and we will get back to you."
+        title="Contact us"
+        description="No account needed. We reply by email."
         image={photos.banners.contact}
       />
       <section className="bg-white py-16 md:py-20">
         <div className="container-site grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-[32px] leading-tight md:text-[40px]">Contact information</h2>
+            <h2 className="text-[32px] leading-tight md:text-[40px]">Get in touch</h2>
             <p className="mt-3 max-w-md text-[16px] leading-7 text-copy">
-              Questions about requests, applications, clearance, or membership. LocalHomeFix does not take
-              project payments.
+              Help with requests, applications, or membership. We never take project payments.
             </p>
             <div className="mt-8 flex flex-col gap-4">
               {details.map((item) => (

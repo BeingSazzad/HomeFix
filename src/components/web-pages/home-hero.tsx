@@ -48,48 +48,48 @@ export function HomeHero() {
       setError("Describe the problem in at least 10 characters.");
       return;
     }
-    if (!/^\d{5}$/.test(zip)) {
-      setError("Enter a valid 5-digit U.S. ZIP code.");
+    if (zip.trim().length < 2) {
+      setError("Enter a ZIP or city.");
       return;
     }
     setError("");
-    const draft = buildDraft(problem.trim(), categorySlug, zip);
+    const draft = buildDraft(problem.trim(), categorySlug, zip.trim());
     setPreview(draft);
     dispatch(saveDraft(draft));
   }
 
   return (
-    <section className="relative min-h-[620px] overflow-hidden bg-title text-white md:min-h-[740px]">
+    <section className="relative min-h-[560px] overflow-hidden bg-title text-white md:min-h-[640px]">
       <div
         className="absolute inset-0 bg-cover bg-[center_20%]"
         style={{ backgroundImage: `url(${photos.hero})` }}
       />
       <div className="hero-wash absolute inset-0" />
 
-      <div className="container-site relative grid min-h-[620px] items-center gap-10 py-20 md:min-h-[740px] lg:grid-cols-[1.1fr_0.9fr] lg:py-[140px]">
+      <div className="container-site relative grid min-h-[560px] items-center gap-8 py-16 md:min-h-[640px] lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
         <div className="max-w-xl">
-          <p className="mb-4 font-display text-[12px] font-bold uppercase tracking-[0.18em] text-white/70">
+          <p className="mb-3 font-display text-[12px] font-bold uppercase tracking-[0.18em] text-white/70">
             Local home repair
           </p>
-          <h1 className="text-[40px] leading-[1.1] text-white md:text-[56px]">
+          <h1 className="text-[36px] leading-[1.1] text-white md:text-[52px]">
             Start with what needs fixing.
           </h1>
-          <p className="mt-5 max-w-md text-[16px] leading-7 text-white/78">
-            Browse reviewed local pros for free. Post a request when you are ready — quotes and chat stay on one job,
-            and you pay the pro directly.
+          <p className="mt-4 max-w-sm text-[15px] leading-6 text-white/78">
+            Browse free. Post when ready. Pay the pro directly.
           </p>
-          <div className="mt-8">
+          <div className="mt-6">
             <Button href="/browse-pros" variant="white" size="lg">
               Find a pro
             </Button>
           </div>
         </div>
 
-        <div className="rounded-[20px] bg-white p-6 text-title soft-shadow md:p-8">
+        <div className="rounded-[20px] bg-white p-5 text-title soft-shadow md:p-7">
           <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
             Start a request
           </p>
-          <h2 className="mt-2 text-[24px] leading-tight">Draft here first. Nothing goes live until you sign up.</h2>
+          <h2 className="mt-2 text-[22px] leading-tight">Draft your request</h2>
+          <p className="mt-1 text-sm text-copy">Nothing posts until you sign up.</p>
           <div className="mt-5 space-y-3">
             <Field label="What is going on?">
               <TextArea
@@ -111,12 +111,11 @@ export function HomeHero() {
                   ))}
                 </NativeSelect>
               </Field>
-              <Field label="ZIP code">
+              <Field label="Location">
                 <TextField
                   value={zip}
                   onChange={(event) => setZip(event.target.value)}
-                  placeholder="78701"
-                  inputMode="numeric"
+                  placeholder="ZIP or city"
                 />
               </Field>
             </div>
@@ -133,12 +132,12 @@ export function HomeHero() {
                 <p className="mt-1 text-sm leading-6 text-copy">{preview.summary}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Button size="sm" href="/signup?next=%2Faccount%2Fpost-job">
-                    Create free account to post
+                    Sign up to post
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
-                    href={`/browse-pros?category=${preview.categorySlug}&zip=${preview.zip}`}
+                    href={`/browse-pros?category=${preview.categorySlug}&location=${encodeURIComponent(preview.zip)}`}
                   >
                     Browse matching pros
                   </Button>

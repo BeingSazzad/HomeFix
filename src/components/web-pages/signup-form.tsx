@@ -2,15 +2,19 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field, TextField } from "@/components/ui/field";
 import { PasswordField } from "@/components/ui/password-field";
 import { AuthLinks } from "@/components/web-pages/auth-links";
-import { homeownerSignupFields } from "@/lib/product-model";
 import { loginAs } from "@/redux/slices/authSlice";
+import { setEmailVerified, setPhoneVerified } from "@/redux/slices/featuresSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { cn } from "@/lib/cn";
+
+const DEMO_OTP = "123456";
+const OTP_LEN = 6;
 
 export function SignupForm() {
   const dispatch = useAppDispatch();
@@ -18,15 +22,47 @@ export function SignupForm() {
   const search = useSearchParams();
   const nextPath = search.get("next");
   const draft = useAppSelector((state) => state.intake.draft);
+
+  const [step, setStep] = useState<"details" | "otp">("details");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [zip, setZip] = useState(draft.zip || "");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [otp, setOtp] = useState<string[]>(Array(OTP_LEN).fill(""));
   const [error, setError] = useState("");
+  const [resent, setResent] = useState(false);
+  const inputs = useRef<Array<HTMLInputElement | null>>([]);
 
-  function submit(event: React.FormEvent) {
+  useEffect(() => {
+    if (step === "otp") inputs.current[0]?.focus();
+  }, [step]);
+
+  function finishSignup() {
+    dispatch(
+      loginAs({
+        role: "homeowner",
+        profile: {
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          zip: zip.trim(),
+          city: "Austin",
+          state: "TX",
+        },
+      }),
+    );
+    dispatch(setEmailVerified(true));
+    dispatch(setPhoneVerified(true));
+    if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {
+      router.push(nextPath);
+      return;
+    }
+    router.push(draft.summary ? "/account/post-job" : "/account");
+  }
+
+  function submitDetails(event: React.FormEvent) {
     event.preventDefault();
     if (name.trim().length < 2) {
       setError("Enter your full name.");
@@ -53,36 +89,131 @@ export function SignupForm() {
       return;
     }
     setError("");
-    dispatch(
-      loginAs({
-        role: "homeowner",
-        profile: {
-          name: name.trim(),
-          email: email.trim(),
-          phone: phone.trim(),
-          zip: zip.trim(),
-          city: "Austin",
-          state: "TX",
-        },
-      }),
-    );
-    if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {
-      router.push(nextPath);
+    setResent(false);
+    setOtp(Array(OTP_LEN).fill(""));
+    setStep("otp");
+  }
+
+  function submitOtp(event: React.FormEvent) {
+    event.preventDefault();
+    const code = otp.join("");
+    if (code.length !== OTP_LEN) {
+      setError("Enter the 6-digit code.");
       return;
     }
-    router.push(draft.summary ? "/account/post-job" : "/account");
+    if (code !== DEMO_OTP) {
+      setError("Invalid code. Demo OTP is 123456.");
+      return;
+    }
+    setError("");
+    finishSignup();
+  }
+
+  function onOtpChange(index: number, value: string) {
+    const digit = value.replace(/\D/g, "").slice(-1);
+    const next = [...otp];
+    next[index] = digit;
+    setOtp(next);
+    setError("");
+    if (digit && index < OTP_LEN - 1) inputs.current[index + 1]?.focus();
+  }
+
+  function onOtpKeyDown(index: number, event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Backspace" && !otp[index] && index > 0) {
+      inputs.current[index - 1]?.focus();
+    }
+  }
+
+  function onOtpPaste(event: React.ClipboardEvent<HTMLInputElement>) {
+    event.preventDefault();
+    const pasted = event.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LEN);
+    if (!pasted) return;
+    const next = Array(OTP_LEN).fill("");
+    pasted.split("").forEach((char, i) => {
+      next[i] = char;
+    });
+    setOtp(next);
+    inputs.current[Math.min(pasted.length, OTP_LEN) - 1]?.focus();
+  }
+
+  const maskedPhone = phone.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+
+  if (step === "otp") {
+    return (
+      <Card className="p-6 md:p-8">
+        <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
+          Step 2 of 2
+        </p>
+        <h1 className="mt-2 text-[28px] md:text-[32px]">Verify your phone</h1>
+        <p className="mt-2 text-sm text-copy">
+          Enter the 6-digit code sent to <span className="font-semibold text-title">{maskedPhone || phone}</span>.
+        </p>
+        <p className="mt-1 text-[12px] text-muted">Demo code: {DEMO_OTP}</p>
+
+        <form className="mt-6 space-y-4" onSubmit={submitOtp}>
+          <div className="flex justify-between gap-2">
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                ref={(el) => {
+                  inputs.current[index] = el;
+                }}
+                type="text"
+                inputMode="numeric"
+                autoComplete={index === 0 ? "one-time-code" : "off"}
+                maxLength={1}
+                value={digit}
+                onChange={(event) => onOtpChange(index, event.target.value)}
+                onKeyDown={(event) => onOtpKeyDown(index, event)}
+                onPaste={onOtpPaste}
+                className={cn(
+                  "h-12 w-10 rounded-[10px] border border-line bg-white text-center font-display text-lg font-bold text-title outline-none focus:border-primary sm:h-14 sm:w-12",
+                )}
+                aria-label={`Digit ${index + 1}`}
+              />
+            ))}
+          </div>
+          {error ? <p className="text-sm text-error">{error}</p> : null}
+          <Button type="submit" className="w-full">
+            Verify and create account
+          </Button>
+          <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+            <button
+              type="button"
+              className="font-semibold text-muted hover:text-title"
+              onClick={() => {
+                setStep("details");
+                setError("");
+              }}
+            >
+              ← Edit details
+            </button>
+            <button
+              type="button"
+              className="font-semibold text-primary"
+              onClick={() => {
+                setResent(true);
+                setError("");
+              }}
+            >
+              {resent ? "Code resent" : "Resend code"}
+            </button>
+          </div>
+        </form>
+      </Card>
+    );
   }
 
   return (
     <Card className="p-6 md:p-8">
-      <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">Homeowners</p>
-      <h1 className="mt-2 text-[32px]">Create a free account</h1>
-      <p className="mt-2 text-sm leading-6 text-copy">
-        Free account. Then post a request — nothing is public until you submit.
+      <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
+        Step 1 of 2
       </p>
+      <h1 className="mt-2 text-[28px] md:text-[32px]">Create a free account</h1>
+      <p className="mt-2 text-sm text-copy">Homeowner accounts are free. Phone OTP next.</p>
 
-      <form className="mt-6 space-y-4" onSubmit={submit}>
-        <Field label="Full name" hint={homeownerSignupFields[0].why}>
+      <form className="mt-6 space-y-3.5" onSubmit={submitDetails}>
+        <Field label="Full name">
           <TextField
             required
             value={name}
@@ -91,7 +222,7 @@ export function SignupForm() {
             autoComplete="name"
           />
         </Field>
-        <Field label="Email" hint={homeownerSignupFields[1].why}>
+        <Field label="Email">
           <TextField
             required
             type="email"
@@ -101,7 +232,7 @@ export function SignupForm() {
             autoComplete="email"
           />
         </Field>
-        <Field label="Mobile phone" hint={homeownerSignupFields[2].why}>
+        <Field label="Mobile phone">
           <TextField
             required
             type="tel"
@@ -111,7 +242,7 @@ export function SignupForm() {
             autoComplete="tel"
           />
         </Field>
-        <Field label="Home ZIP" hint={homeownerSignupFields[3].why}>
+        <Field label="Home ZIP">
           <TextField
             required
             value={zip}
@@ -121,7 +252,7 @@ export function SignupForm() {
             autoComplete="postal-code"
           />
         </Field>
-        <Field label="Password" hint={homeownerSignupFields[4].why}>
+        <Field label="Password">
           <PasswordField
             required
             value={password}
@@ -155,7 +286,7 @@ export function SignupForm() {
         </label>
         {error ? <p className="text-sm text-error">{error}</p> : null}
         <Button type="submit" className="w-full">
-          Create homeowner account
+          Continue to OTP
         </Button>
       </form>
 

@@ -10,7 +10,7 @@ import { useRoleAccess } from "@/hooks/use-role-access";
 export function PricingPlans({
   eyebrow = "Pricing",
   title = "Who pays, and for what",
-  description = "Marketplace access only — not repair packages.",
+  description = "Access fees only — not repair packages.",
 }: {
   eyebrow?: string;
   title?: string;
@@ -22,7 +22,7 @@ export function PricingPlans({
     <section className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
         <SectionHeading align="center" eyebrow={eyebrow} title={title} description={description} />
-        <div className="mx-auto mt-10 grid max-w-5xl gap-6 md:grid-cols-2">
+        <div className="mx-auto mt-8 grid max-w-5xl gap-5 md:grid-cols-2">
           {plans.map((plan) => {
             const isHome = plan.id === "homeowner";
             const isPro = plan.id === "pro";

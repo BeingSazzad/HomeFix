@@ -42,7 +42,7 @@ export function ProCard({ pro }: { pro: Professional }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
-  const { access, user } = useRoleAccess();
+  const { access } = useRoleAccess();
   const saved = useAppSelector((state) => state.features.favorites.includes(pro.id));
   const image = photos.services[pro.categorySlug];
   const Icon = icons[pro.categorySlug] ?? Wrench;
@@ -75,9 +75,12 @@ export function ProCard({ pro }: { pro: Professional }) {
         <Link href={href} className="absolute inset-0 block">
           <span className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${image})` }} />
         </Link>
-        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-[10px] bg-white px-3 py-1.5 font-display text-[12px] font-bold text-primary">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          Cleared
+        <span
+          title="Verified"
+          aria-label="Verified"
+          className="absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-white text-primary"
+        >
+          <ShieldCheck className="h-4 w-4" />
         </span>
         <button
           type="button"
@@ -125,12 +128,7 @@ export function ProCard({ pro }: { pro: Professional }) {
           </span>
         </p>
         {facts.length ? <p className="mt-3 text-[12px] text-muted">{facts.join(" · ")}</p> : null}
-        {!user ? (
-          <p className="mt-3 text-[12px] text-muted">Guest: view only. Sign in to save or request.</p>
-        ) : access.audience === "pro" ? (
-          <p className="mt-3 text-[12px] text-muted">Pro session: request CTAs route to your job board.</p>
-        ) : null}
-        <div className="mt-auto flex flex-col gap-2 pt-6">
+        <div className="mt-auto flex flex-col gap-2 pt-5">
           <Button href={href} variant="ghost" className="w-full">
             View profile
           </Button>

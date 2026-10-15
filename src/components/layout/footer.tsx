@@ -7,7 +7,7 @@ const groups = [
       { href: "/browse-pros", label: "Find a Pro" },
       { href: "/services", label: "Services" },
       { href: "/how-it-works", label: "How it works" },
-      { href: "/how-it-works#faq", label: "FAQ" },
+      { href: "/#faq", label: "FAQ" },
       { href: "/signup?next=%2Faccount%2Fpost-job", label: "Create an account" },
     ],
   },
@@ -86,9 +86,8 @@ export function Footer() {
             </span>
             <p className="font-display text-2xl font-bold">LocalHomeFix</p>
           </div>
-          <p className="mt-5 max-w-xs text-sm leading-7 text-white/68">
-            Post a home repair, compare quotes from reviewed locals, and keep messages on one job. You pay the pro
-            directly.
+          <p className="mt-4 max-w-xs text-sm leading-6 text-white/68">
+            Post a repair, compare quotes, pay the pro directly.
           </p>
           <div className="mt-6 flex gap-2">
             {socials.map((item) => (

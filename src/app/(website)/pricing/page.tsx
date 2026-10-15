@@ -7,8 +7,8 @@ export default function PublicPricingPage() {
     <>
       <PageBanner
         eyebrow="Pricing"
-        title="Homeowner free · Pro $19.99/mo"
-        description="Marketplace access only. We never take the repair payment."
+        title="Simple pricing"
+        description="Homeowners free. Pros $19.99/mo after 3 free months."
         image={photos.banners.pricing}
       />
       <PricingPlans eyebrow="Plans" title="Choose your path" />

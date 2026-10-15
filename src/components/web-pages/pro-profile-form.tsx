@@ -33,17 +33,14 @@ export function ProProfileForm() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-3">
       <div>
-        <h1 className="text-[28px]">Business profile</h1>
-        <p className="mt-1 text-sm text-copy">Shown after clearance. Contact stays gated by membership.</p>
+        <h1 className="text-[24px] md:text-[28px]">Business profile</h1>
+        <p className="mt-0.5 text-sm text-copy">Shown after clearance. Contact stays membership-gated.</p>
       </div>
-      <Card className="p-6 md:p-8">
-        <form className="space-y-8" onSubmit={submit}>
-          <div className="space-y-4">
-            <p className="font-display text-[12px] font-bold uppercase tracking-[0.14em] text-primary">
-              Business
-            </p>
+      <Card className="p-4 md:p-5">
+        <form className="space-y-3" onSubmit={submit}>
+          <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Contact name">
               <TextField name="name" defaultValue={current.name} required />
             </Field>
@@ -59,39 +56,19 @@ export function ProProfileForm() {
                 ))}
               </NativeSelect>
             </Field>
-            <Field label="Bio">
-              <TextArea
-                name="bio"
-                defaultValue="Licensed plumber focused on residential leak repair and fixture installs across central Austin."
-              />
+            <Field label="Phone">
+              <TextField name="phone" type="tel" defaultValue={current.phone} />
             </Field>
-          </div>
-
-          <div className="space-y-4">
-            <p className="font-display text-[12px] font-bold uppercase tracking-[0.14em] text-primary">
-              Contact
-            </p>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Email" hint="Contact support to change email.">
-                <TextField type="email" defaultValue={current.email} disabled />
-              </Field>
-              <Field label="Phone">
-                <TextField name="phone" type="tel" defaultValue={current.phone} />
-              </Field>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <p className="font-display text-[12px] font-bold uppercase tracking-[0.14em] text-primary">
-              Service area
-            </p>
-            <Field label="Street address">
+            <Field label="Email">
+              <TextField type="email" defaultValue={current.email} disabled />
+            </Field>
+            <Field label="Street">
               <TextField name="street" defaultValue={current.street} />
             </Field>
-            <div className="grid gap-4 sm:grid-cols-[1.4fr_0.7fr_0.9fr]">
-              <Field label="City">
-                <TextField name="city" defaultValue={current.city} />
-              </Field>
+            <Field label="City">
+              <TextField name="city" defaultValue={current.city} />
+            </Field>
+            <div className="grid grid-cols-2 gap-3">
               <Field label="State">
                 <TextField name="state" defaultValue={current.state} maxLength={2} />
               </Field>
@@ -99,10 +76,20 @@ export function ProProfileForm() {
                 <TextField name="zip" defaultValue={current.zip} />
               </Field>
             </div>
+            <Field label="Bio" className="sm:col-span-2">
+              <TextArea
+                name="bio"
+                defaultValue="Licensed plumber focused on residential leak repair and fixture installs across central Austin."
+                className="min-h-[88px]"
+                rows={3}
+              />
+            </Field>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 border-t border-line pt-6">
-            <Button type="submit">Save changes</Button>
+          <div className="flex flex-wrap items-center gap-3 border-t border-line pt-3">
+            <Button type="submit" size="sm">
+              Save changes
+            </Button>
             {saved ? <p className="text-sm text-success">Saved.</p> : null}
           </div>
         </form>

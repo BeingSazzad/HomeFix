@@ -75,9 +75,12 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           <div className="space-y-8">
             <article className="rounded-[20px] bg-white p-6 soft-shadow md:p-8">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-[10px] bg-smoke px-3 py-1.5 font-display text-[12px] font-bold text-primary">
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                  Reviewed
+                <span
+                  title="Verified"
+                  aria-label="Verified"
+                  className="grid h-8 w-8 place-items-center rounded-full bg-smoke text-primary"
+                >
+                  <ShieldCheck className="h-4 w-4" />
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-sm text-copy">
                   <Star className="h-4 w-4 text-accent" />

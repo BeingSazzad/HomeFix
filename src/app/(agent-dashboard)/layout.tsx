@@ -40,9 +40,9 @@ export default function AgentDashboardLayout({
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       <Navbar />
-      <div className="container-site flex flex-1 flex-col items-stretch gap-4 py-4 pb-10 md:flex-row md:items-start md:gap-6 md:py-6">
+      <div className="container-site flex flex-1 flex-col items-stretch gap-4 py-4 pb-6 md:flex-row md:items-start md:gap-6 md:py-5">
         <DashboardSidebar items={items} />
-        <div className="min-w-0 w-full flex-1">{children}</div>
+        <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col">{children}</div>
       </div>
     </div>
   );

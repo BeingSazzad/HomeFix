@@ -15,22 +15,27 @@ export function BrowseProsClient() {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filters);
   const category = filters.category || params.get("category") || "";
-  const zip = filters.zip || params.get("zip") || "";
+  const location = filters.zip || params.get("zip") || params.get("location") || "";
 
   const results = useMemo(() => {
+    const locationQ = location.trim().toLowerCase();
     const list = professionals.filter((pro) => {
       const matchesCategory = !category || pro.categorySlug === category;
-      const matchesZip = !zip || pro.zip.startsWith(zip.slice(0, 3));
+      const locationHaystack = `${pro.zip} ${pro.city} ${pro.state}`.toLowerCase();
+      const matchesLocation =
+        !locationQ ||
+        locationHaystack.includes(locationQ) ||
+        ( /^\d+$/.test(locationQ) && pro.zip.startsWith(locationQ.slice(0, 3)) );
       const haystack = `${pro.businessName} ${pro.trade} ${pro.bio}`.toLowerCase();
       const matchesQuery = !filters.query || haystack.includes(filters.query.toLowerCase());
-      return matchesCategory && matchesZip && matchesQuery && pro.clearance === "cleared";
+      return matchesCategory && matchesLocation && matchesQuery && pro.clearance === "cleared";
     });
     return [...list].sort((a, b) => {
       if (filters.sort === "reviews") return b.reviewCount - a.reviewCount;
       if (filters.sort === "jobs") return b.jobsCompleted - a.jobsCompleted;
       return b.rating - a.rating;
     });
-  }, [category, filters.query, filters.sort, zip]);
+  }, [category, filters.query, filters.sort, location]);
 
   return (
     <section className="bg-surface py-12">
@@ -56,11 +61,11 @@ export function BrowseProsClient() {
               ))}
             </NativeSelect>
           </Field>
-          <Field label="ZIP">
+          <Field label="Location">
             <TextField
-              value={zip}
+              value={location}
               onChange={(event) => dispatch(setZip(event.target.value))}
-              placeholder="78701"
+              placeholder="ZIP or city"
             />
           </Field>
           <Field label="Sort">
@@ -79,7 +84,7 @@ export function BrowseProsClient() {
           <div className="mt-6">
             <EmptyState
               title="No reviewed professionals match this view"
-              description="Try another service or ZIP. If you already have a draft, you can post the request and wait for quotes."
+              description="Try another service or location, or post a request."
               actionLabel="Post a request"
               href="/signup?next=%2Faccount%2Fpost-job"
             />

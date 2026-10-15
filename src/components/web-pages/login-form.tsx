@@ -48,11 +48,8 @@ export function LoginForm() {
 
   return (
     <Card className="p-6 md:p-8">
-      <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">Sign in</p>
-      <h1 className="mt-2 text-[32px]">Welcome back</h1>
-      <p className="mt-2 text-sm text-copy">
-        {role === "pro" ? "Opens the pro dashboard." : "Opens your requests."}
-      </p>
+      <h1 className="text-[28px] md:text-[32px]">Welcome back</h1>
+      <p className="mt-2 text-sm text-copy">Sign in to continue.</p>
 
       <div className="mt-6 grid grid-cols-2 overflow-hidden rounded-[10px] border border-line">
         {(
@@ -106,12 +103,7 @@ export function LoginForm() {
         </Button>
       </form>
 
-      <AuthLinks
-        prompt="New homeowner?"
-        href="/signup"
-        label="Create an account"
-        extras={[{ href: "/pro-register", label: "Apply as a pro" }]}
-      />
+      <AuthLinks prompt="New here?" href="/signup" label="Create an account" />
     </Card>
   );
 }

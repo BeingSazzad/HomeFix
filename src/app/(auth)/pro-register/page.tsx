@@ -9,7 +9,6 @@ import { Field, NativeSelect, TextArea, TextField } from "@/components/ui/field"
 import { AuthLinks } from "@/components/web-pages/auth-links";
 import { PasswordField } from "@/components/ui/password-field";
 import { categories } from "@/Mockdata";
-import { proSignupFields } from "@/lib/product-model";
 import { loginAs } from "@/redux/slices/authSlice";
 import { saveApplicationDraft, submitApplication } from "@/redux/slices/featuresSlice";
 import { useAppDispatch } from "@/redux/hooks";
@@ -49,7 +48,6 @@ const empty: FormState = {
 export default function ProRegisterPage() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(empty);
-  const [draftSaved, setDraftSaved] = useState(false);
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -116,13 +114,8 @@ export default function ProRegisterPage() {
 
   return (
     <Card className="max-w-none">
-      <p className="font-display text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-        Provider application
-      </p>
-      <h1 className="mt-2 text-[28px]">Join as a professional</h1>
-      <p className="mt-2 text-sm text-copy">
-        After review: free trial, then $19.99/mo. Path: Application → Membership → Jobs.
-      </p>
+      <h1 className="text-[28px]">Join as a professional</h1>
+      <p className="mt-2 text-sm text-copy">Apply for review. Membership is $19.99/mo after 3 free months.</p>
 
       <div className="mt-5">
         <Steps current={step} items={steps.map((title) => ({ title }))} size="small" />
@@ -130,10 +123,10 @@ export default function ProRegisterPage() {
       <div className="mt-6 space-y-3">
         {step === 0 ? (
           <>
-            <Field label="Full name *" hint={proSignupFields[0].why}>
+            <Field label="Full name *">
               <TextField value={form.name} onChange={(e) => patch({ name: e.target.value })} placeholder="Joe Smith" />
             </Field>
-            <Field label="Work email *" hint={proSignupFields[1].why}>
+            <Field label="Work email *">
               <TextField
                 type="email"
                 value={form.email}
@@ -141,14 +134,14 @@ export default function ProRegisterPage() {
                 placeholder="joe@business.com"
               />
             </Field>
-            <Field label="Business phone *" hint={proSignupFields[2].why}>
+            <Field label="Business phone *">
               <TextField
                 value={form.phone}
                 onChange={(e) => patch({ phone: e.target.value })}
                 placeholder="(555) 000-0000"
               />
             </Field>
-            <Field label="Password *" hint={proSignupFields[3].why}>
+            <Field label="Password *">
               <PasswordField
                 value={form.password}
                 onChange={(e) => patch({ password: e.target.value })}
@@ -160,14 +153,14 @@ export default function ProRegisterPage() {
         ) : null}
         {step === 1 ? (
           <>
-            <Field label="Business name *" hint={proSignupFields[4].why}>
+            <Field label="Business name *">
               <TextField
                 value={form.businessName}
                 onChange={(e) => patch({ businessName: e.target.value })}
                 placeholder="Joe's Plumbing LLC"
               />
             </Field>
-            <Field label="Primary trade *" hint={proSignupFields[5].why}>
+            <Field label="Primary trade *">
               <NativeSelect value={form.trade} onChange={(e) => patch({ trade: e.target.value })}>
                 <option value="" disabled>
                   Select your primary trade
@@ -179,7 +172,7 @@ export default function ProRegisterPage() {
                 ))}
               </NativeSelect>
             </Field>
-            <Field label="Short bio *" hint={proSignupFields[6].why}>
+            <Field label="Short bio *">
               <TextArea
                 value={form.bio}
                 onChange={(e) => patch({ bio: e.target.value })}
@@ -190,14 +183,14 @@ export default function ProRegisterPage() {
         ) : null}
         {step === 2 ? (
           <>
-            <Field label="Service ZIP *" hint={proSignupFields[7].why}>
+            <Field label="Service ZIP *">
               <TextField
                 value={form.serviceZip}
                 onChange={(e) => patch({ serviceZip: e.target.value })}
                 placeholder="78704"
               />
             </Field>
-            <Field label="Travel radius *" hint={proSignupFields[8].why}>
+            <Field label="Travel radius *">
               <NativeSelect value={form.radius} onChange={(e) => patch({ radius: e.target.value })}>
                 <option value="10">Within 10 miles</option>
                 <option value="25">Within 25 miles</option>
@@ -243,38 +236,11 @@ export default function ProRegisterPage() {
             Back
           </Button>
         ) : null}
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => {
-            dispatch(
-              saveApplicationDraft({
-                ...Object.fromEntries(
-                  Object.entries(form).map(([key, value]) => [key, String(value)]),
-                ),
-                step: String(step),
-                savedAt: new Date().toISOString(),
-              }),
-            );
-            setDraftSaved(true);
-          }}
-        >
-          Save and resume later
-        </Button>
         <Button type="button" onClick={next}>
           {step < 2 ? "Next" : "Submit application"}
         </Button>
       </div>
-      {draftSaved ? <p className="mt-3 text-sm text-success">Draft saved. Continue anytime from Application.</p> : null}
-      <AuthLinks
-        prompt="Already have an account?"
-        href="/login?role=pro"
-        label="Sign in as pro"
-        extras={[
-          { href: "/signup", label: "I'm a homeowner" },
-          { href: "/browse-pros", label: "Continue as guest" },
-        ]}
-      />
+      <AuthLinks prompt="Already have an account?" href="/login?role=pro" label="Sign in" />
     </Card>
   );
 }

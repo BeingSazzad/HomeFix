@@ -58,12 +58,7 @@ export default function ResetPasswordPage() {
           </form>
         </>
       )}
-      <AuthLinks
-        prompt="Remembered it?"
-        href="/login"
-        label="Sign in"
-        extras={[{ href: "/browse-pros", label: "Continue as guest" }]}
-      />
+      <AuthLinks prompt="Remembered it?" href="/login" label="Sign in" />
     </Card>
   );
 }

@@ -12,11 +12,11 @@ export function EmptyState({
   href?: string;
 }) {
   return (
-    <div className="rounded-[14px] border border-dashed border-line bg-smoke px-6 py-12 text-center">
-      <h3 className="text-xl">{title}</h3>
-      <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-copy">{description}</p>
+    <div className="rounded-[14px] border border-dashed border-line bg-smoke px-5 py-8 text-center">
+      <h3 className="text-lg">{title}</h3>
+      <p className="mx-auto mt-1.5 max-w-md text-sm leading-5 text-copy">{description}</p>
       {actionLabel && href ? (
-        <div className="mt-5">
+        <div className="mt-4">
           <Button href={href} size="sm">
             {actionLabel}
           </Button>

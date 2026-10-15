@@ -1,12 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field, NativeSelect, TextArea, TextField } from "@/components/ui/field";
 import { categories } from "@/Mockdata";
-import { postRequiredHints } from "@/lib/product-model";
 import { clearDraft } from "@/redux/slices/intakeSlice";
 import { addJob } from "@/redux/slices/marketplaceSlice";
 import { addNotification, setJobPhotos } from "@/redux/slices/featuresSlice";
@@ -19,11 +19,12 @@ export default function PostJobPage() {
   const addresses = useAppSelector((state) => state.features.addresses);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const fileRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
 
   function onPhotos(event: React.ChangeEvent<HTMLInputElement>) {
-    const files = [...(event.target.files ?? [])].slice(0, 4);
+    const files = [...(event.target.files ?? [])].slice(0, 4 - photoUrls.length);
     files.forEach((file) => {
       if (!file.type.startsWith("image/")) return;
       const reader = new FileReader();
@@ -34,6 +35,11 @@ export default function PostJobPage() {
       };
       reader.readAsDataURL(file);
     });
+    event.target.value = "";
+  }
+
+  function removePhoto(index: number) {
+    setPhotoUrls((prev) => prev.filter((_, i) => i !== index));
   }
 
   function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -77,7 +83,7 @@ export default function PostJobPage() {
     dispatch(
       addNotification({
         title: "New open request",
-        body: `${title} near ${zip} is on the job board for matching reviewed pros.`,
+        body: `${title} near ${zip} is on the job board.`,
         href: `/pro/jobs/${jobId}`,
         createdAt: "Just now",
         role: "pro",
@@ -86,7 +92,7 @@ export default function PostJobPage() {
     dispatch(
       addNotification({
         title: "Request posted",
-        body: "Your job is live in Your requests. Matching pros can quote after membership.",
+        body: "Live in Your requests. Matching pros can quote.",
         href: `/account/jobs/${jobId}`,
         createdAt: "Just now",
         role: "homeowner",
@@ -97,69 +103,96 @@ export default function PostJobPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-[28px]">Post a request</h1>
-        <p className="mt-1 text-sm text-copy">
-          Free. Opens in Your requests and on matching pros’ job board — not the public site.
-        </p>
-      </div>
-
+    <div className="space-y-3">
       {draft.summary ? (
-        <Card className="bg-smoke">
-          <p className="text-[12px] font-semibold uppercase tracking-wide text-primary">Saved draft from homepage</p>
-          <p className="mt-1 font-display font-bold">{draft.title}</p>
-          <p className="mt-1 text-sm text-copy">{draft.summary}</p>
+        <Card className="bg-smoke p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-primary">Homepage draft</p>
+          <p className="mt-1 font-display text-sm font-bold">{draft.title}</p>
+          <p className="mt-0.5 line-clamp-2 text-sm text-copy">{draft.summary}</p>
         </Card>
       ) : null}
 
-      <Card>
-        <form className="space-y-4" onSubmit={submit}>
-          <Field label="Title *" hint={postRequiredHints.title}>
-            <TextField name="title" defaultValue={draft.title} placeholder="Kitchen sink leak" required />
-          </Field>
-          <Field label="Category *" hint={postRequiredHints.category}>
-            <NativeSelect name="category" defaultValue={draft.categorySlug || "plumbing"}>
-              {categories.map((item) => (
-                <option key={item.id} value={item.slug}>
-                  {item.name}
-                </option>
-              ))}
-            </NativeSelect>
-          </Field>
-          <Field label="Description *" hint={postRequiredHints.description}>
+      <Card className="p-4 md:p-5">
+        <div className="mb-4 border-b border-line pb-3">
+          <h1 className="text-[22px] md:text-[24px]">Post a request</h1>
+          <p className="mt-0.5 text-sm text-copy">Free · private · not on the public site</p>
+        </div>
+        <form className="space-y-3" onSubmit={submit}>
+          <div className="grid gap-3 sm:grid-cols-[1.4fr_1fr]">
+            <Field label="Title *">
+              <TextField name="title" defaultValue={draft.title} placeholder="Kitchen sink leak" required />
+            </Field>
+            <Field label="Category *">
+              <NativeSelect name="category" defaultValue={draft.categorySlug || "plumbing"}>
+                {categories.map((item) => (
+                  <option key={item.id} value={item.slug}>
+                    {item.name}
+                  </option>
+                ))}
+              </NativeSelect>
+            </Field>
+          </div>
+
+          <Field label="Description *">
             <TextArea
               name="description"
               defaultValue={draft.problem}
-              placeholder="What needs fixing, where it is, and anything a pro should know."
+              placeholder="What’s broken, where it is, access notes…"
               required
+              className="min-h-[88px]"
+              rows={3}
             />
           </Field>
-          <Field label="Photos (optional)" hint={postRequiredHints.photos}>
+
+          <div>
+            <p className="mb-1.5 font-display text-sm font-semibold text-title">Photos (optional)</p>
             <input
+              ref={fileRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
               multiple
               onChange={onPhotos}
-              className="block w-full text-sm text-copy"
+              className="sr-only"
             />
-            <p className="mt-1 text-[12px] text-muted">Up to 4 images.</p>
-            {photoUrls.length ? (
-              <div className="mt-3 grid grid-cols-4 gap-2">
-                {photoUrls.map((src) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={src.slice(0, 40)} src={src} alt="" className="h-20 w-full rounded-[10px] object-cover" />
-                ))}
-              </div>
-            ) : null}
-          </Field>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="ZIP *" hint={postRequiredHints.zip}>
+            <div className="flex flex-wrap gap-2">
+              {photoUrls.map((src, index) => (
+                <div
+                  key={src.slice(0, 48)}
+                  className="relative h-20 w-20 overflow-hidden rounded-[10px] border border-line"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                  <button
+                    type="button"
+                    aria-label="Remove photo"
+                    onClick={() => removePhoto(index)}
+                    className="absolute right-1 top-1 grid h-5 w-5 place-items-center rounded-full bg-title/80 text-white"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              {photoUrls.length < 4 ? (
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  className="flex h-20 w-20 flex-col items-center justify-center gap-0.5 rounded-[10px] border border-dashed border-line bg-smoke text-muted transition-colors hover:border-primary hover:text-primary"
+                >
+                  <ImagePlus className="h-5 w-5" />
+                  <span className="text-[11px] font-medium">Add</span>
+                </button>
+              ) : null}
+            </div>
+            <p className="mt-1.5 text-[12px] text-muted">Up to 4 photos · JPG, PNG, WebP</p>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <Field label="ZIP *">
               <TextField name="zip" defaultValue={draft.zip || user?.zip || addresses[0]?.zip} required />
             </Field>
-            <Field label="Saved address (optional)">
+            <Field label="Address (optional)">
               <NativeSelect name="addressId" defaultValue="">
-                <option value="">ZIP only — street stays private until contact unlock</option>
+                <option value="">ZIP only</option>
                 {addresses.map((addr) => (
                   <option key={addr.id} value={addr.id}>
                     {addr.label} — {addr.street}
@@ -167,7 +200,7 @@ export default function PostJobPage() {
                 ))}
               </NativeSelect>
             </Field>
-            <Field label="Timing *" hint={postRequiredHints.urgency}>
+            <Field label="Timing *">
               <NativeSelect name="urgency" defaultValue="flexible">
                 <option value="asap">Urgent</option>
                 <option value="this_week">This week</option>
@@ -175,7 +208,7 @@ export default function PostJobPage() {
                 <option value="flexible">Flexible</option>
               </NativeSelect>
             </Field>
-            <Field label="Budget (optional)" hint={postRequiredHints.budget}>
+            <Field label="Budget">
               <NativeSelect name="budget" defaultValue="">
                 <option value="">Not specified</option>
                 <option>Under $500</option>
@@ -184,10 +217,10 @@ export default function PostJobPage() {
                 <option>$5,000+</option>
               </NativeSelect>
             </Field>
-            <Field label="Property type (optional)" hint={postRequiredHints.propertyType}>
+            <Field label="Property type">
               <NativeSelect name="propertyType" defaultValue="">
                 <option value="">Not specified</option>
-                <option value="single_family">Single-family home</option>
+                <option value="single_family">Single-family</option>
                 <option value="condo">Condo</option>
                 <option value="townhome">Townhome</option>
                 <option value="apartment">Apartment</option>
@@ -195,6 +228,7 @@ export default function PostJobPage() {
               </NativeSelect>
             </Field>
           </div>
+
           {error ? <p className="text-sm text-error">{error}</p> : null}
           <Button type="submit">Post request</Button>
         </form>

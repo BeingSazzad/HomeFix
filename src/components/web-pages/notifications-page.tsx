@@ -15,10 +15,10 @@ export function NotificationsPage({ role }: { role: "homeowner" | "pro" }) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-[28px]">Notifications</h1>
-          <p className="mt-1 text-sm text-copy">{unread ? `${unread} unread` : "All caught up"}</p>
+          <h1 className="text-[24px] md:text-[28px]">Notifications</h1>
+          <p className="mt-0.5 text-sm text-copy">{unread ? `${unread} unread` : "All caught up"}</p>
         </div>
         {unread ? (
           <button
@@ -32,39 +32,49 @@ export function NotificationsPage({ role }: { role: "homeowner" | "pro" }) {
       </div>
 
       {notes.length === 0 ? (
-        <div className="mt-8">
-          <EmptyState title="No notifications" description="Quotes, messages, and membership updates show up here." />
+        <div className="mt-5">
+          <EmptyState title="No notifications" description="Quotes and messages show up here." />
         </div>
       ) : (
-        <ul className="mt-6 divide-y divide-line border-y border-line">
-          {notes.map((note) => (
+        <ul className="mt-4 overflow-hidden rounded-[14px] border border-line bg-white">
+          {notes.map((note, index) => (
             <li
               key={note.id}
-              className={cn("flex gap-3 py-4", note.read ? "opacity-70" : "bg-white")}
+              className={cn(
+                "flex gap-2.5 px-3.5 py-3 md:px-4",
+                index > 0 && "border-t border-line",
+                !note.read && "bg-smoke/50",
+              )}
             >
               <span
                 className={cn(
-                  "mt-2 h-2 w-2 shrink-0 rounded-full",
+                  "mt-1.5 h-2 w-2 shrink-0 rounded-full",
                   note.read ? "bg-transparent" : "bg-primary",
                 )}
                 aria-hidden
               />
               <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <div className="flex items-start justify-between gap-3">
                   <Link
                     href={note.href}
                     onClick={() => {
                       if (!note.read) dispatch(markNotificationRead(note.id));
                     }}
-                    className="font-display text-sm font-bold text-title hover:text-primary"
+                    className="font-display text-sm font-bold leading-5 text-title hover:text-primary"
                   >
                     {note.title}
                   </Link>
-                  <time className="text-[12px] text-muted">{note.createdAt}</time>
+                  <time className="shrink-0 text-[11px] leading-5 text-muted">{note.createdAt}</time>
                 </div>
-                <p className="mt-1 text-sm leading-6 text-copy">{note.body}</p>
-                <div className="mt-2 flex flex-wrap gap-4 text-sm">
-                  <Link href={note.href} className="font-semibold text-primary">
+                <p className="mt-0.5 text-sm leading-5 text-copy">{note.body}</p>
+                <div className="mt-1.5 flex flex-wrap gap-3 text-[13px]">
+                  <Link
+                    href={note.href}
+                    onClick={() => {
+                      if (!note.read) dispatch(markNotificationRead(note.id));
+                    }}
+                    className="font-semibold text-primary"
+                  >
                     Open
                   </Link>
                   {!note.read ? (

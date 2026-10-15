@@ -102,7 +102,7 @@ const seedNotifications: AppNotification[] = [
 ];
 
 const initialState: FeaturesState = {
-  favorites: [],
+  favorites: ["pro-1", "pro-2", "pro-3"],
   notifications: seedNotifications,
   addresses: [
     {
@@ -195,6 +195,10 @@ const featuresSlice = createSlice({
     addAddress(state, action: PayloadAction<Omit<SavedAddress, "id">>) {
       state.addresses.push({ ...action.payload, id: `addr-${Date.now()}` });
     },
+    updateAddress(state, action: PayloadAction<SavedAddress>) {
+      const index = state.addresses.findIndex((item) => item.id === action.payload.id);
+      if (index >= 0) state.addresses[index] = action.payload;
+    },
     removeAddress(state, action: PayloadAction<string>) {
       state.addresses = state.addresses.filter((item) => item.id !== action.payload);
     },
@@ -281,6 +285,7 @@ export const {
   markAllNotificationsRead,
   addNotification,
   addAddress,
+  updateAddress,
   removeAddress,
   setLeadAction,
   setJobPhotos,

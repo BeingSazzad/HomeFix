@@ -1,35 +1,35 @@
 export const faqs = [
   {
     q: "Do I need an account to browse?",
-    a: "No. Anyone can open public pro profiles. Create a free homeowner account to post a job, or apply separately if you are a professional.",
+    a: "No. Anyone can browse reviewed pros. Create a free homeowner account only when you want to post a request.",
   },
   {
     q: "Who pays LocalHomeFix?",
-    a: "Homeowners pay LocalHomeFix nothing for the repair. After administrator approval, professionals pay $19.99 a month. The first three months are free.",
+    a: "Homeowners pay $0 to LocalHomeFix. Pros pay $19.99/mo after three free months following clearance.",
   },
   {
     q: "When can a pro see my phone or email?",
-    a: "Only after that pro is approved and has an active free trial or paid membership. Finishing a background check alone is not enough.",
+    a: "Only after that pro is cleared and has an active free trial or paid membership.",
   },
   {
     q: "Does LocalHomeFix take the repair payment?",
-    a: "No. You agree on price, schedule, and payment directly with the professional. There is no job checkout on this site.",
+    a: "No. You agree on price and pay the professional directly. There is no job checkout on this site.",
   },
   {
-    q: "What does “reviewed” or “cleared” mean?",
-    a: "An administrator finished a marketplace review so the pro can appear in public search. It is not a guarantee of the work, and it is separate from identity or background screening.",
+    q: "What does the verified badge mean?",
+    a: "An administrator approved the pro for public search. It is not a guarantee of the work quality.",
   },
   {
     q: "How do I post a request?",
-    a: "Create a free homeowner account, describe the job, and submit. Quotes, messages, and your review after the work all stay on that same request.",
+    a: "Sign up free, describe the job, and submit. Quotes, messages, and your review stay on that request.",
   },
   {
     q: "What happens after I apply as a pro?",
-    a: "Complete screening, wait for administrator approval, then start the free trial. Job-board access and homeowner contact unlock with clearance plus an active membership.",
+    a: "Complete screening, wait for admin clearance, then start the free trial to quote and unlock contact.",
   },
   {
     q: "Which trades are listed?",
-    a: "Nine services: appliance repair, electrical, HVAC, handyman, landscaping, painting, pest control, plumbing, and roofing.",
+    a: "Nine: appliance repair, electrical, HVAC, handyman, landscaping, painting, pest control, plumbing, and roofing.",
   },
 ];
 
@@ -39,21 +39,17 @@ export const plans = [
     name: "Homeowner",
     price: "Free",
     period: "",
-    tagline: "No project fee · no membership",
+    tagline: "No project fee",
     href: "/signup?next=%2Faccount%2Fpost-job",
     cta: "Create a request",
     featured: false,
     features: [
-      "Browse listings without an account",
-      "Post a request after you sign up",
+      "Browse without an account",
+      "Post after you sign up",
       "Compare quotes on one job",
-      "Keep messages and the review together",
-      "Pay the professional directly",
+      "Pay the pro directly",
     ],
-    limits: [
-      "No paid homeowner tiers or repair packages",
-      "Cannot quote jobs or unlock pro contact tools",
-    ],
+    limits: ["No repair packages or paid tiers"],
   },
   {
     id: "pro" as const,
@@ -65,14 +61,11 @@ export const plans = [
     cta: "Apply as a pro",
     featured: true,
     features: [
-      "Apply, finish screening, then wait for clearance",
+      "Apply, screen, then clearance",
       "See matching jobs after approval",
-      "Contact details unlock with an active trial or membership",
-      "No project commission through LocalHomeFix",
+      "Contact unlocks with membership",
+      "No project commission",
     ],
-    limits: [
-      "Not a Bronze/Silver/Gold repair package ladder",
-      "Paused or cancelled membership locks contact again",
-    ],
+    limits: ["Paused membership locks contact"],
   },
 ];

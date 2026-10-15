@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PageBanner } from "@/components/layout/page-banner";
 import { FaqSection } from "@/components/web-pages/faq-section";
-import { roleFeatures } from "@/lib/product-model";
 import { photos } from "@/lib/media";
 import { cn } from "@/lib/cn";
 
@@ -29,49 +28,25 @@ const journeys: Record<
   homeowner: {
     eyebrow: "Free account",
     title: "From problem to hire",
-    summary: "Browse free. Sign up only to post. You pay the pro directly — never LocalHomeFix for the repair.",
+    summary: "Browse free. Sign up to post. Pay the pro directly.",
     steps: [
-      {
-        title: "Post the request",
-        text: "Describe the work, add photos if you have them, and set timing and budget.",
-      },
-      {
-        title: "Get quotes from reviewed pros",
-        text: "Pros who serve your ZIP and finished admin review can send quotes on your request.",
-      },
-      {
-        title: "Compare on one thread",
-        text: "Quotes and messages stay on the same job. Cleared members can unlock contact to discuss details.",
-      },
-      {
-        title: "Hire, pay the pro, leave a review",
-        text: "Agree scope and payment with the pro. After the work, review them on that same request.",
-      },
+      { title: "Post the request", text: "Describe the work, ZIP, and timing." },
+      { title: "Get quotes", text: "Reviewed pros in your area can reply." },
+      { title: "Compare quotes", text: "Quotes and chat stay on the same job." },
+      { title: "Hire and review", text: "Pay the pro directly, then leave a review." },
     ],
     cta: { href: "/signup?next=%2Faccount%2Fpost-job", label: "Create free account" },
     secondary: { href: "/browse-pros", label: "Browse pros first" },
   },
   pro: {
-    eyebrow: "$19.99 / month after 3 free months",
-    title: "Apply, get reviewed, then quote",
-    summary: "One membership for marketplace access — not repair packages. Contact unlocks only with clearance plus an active trial.",
+    eyebrow: "3 months free, then $19.99/mo",
+    title: "Apply, then quote",
+    summary: "Membership for job access — not repair packages.",
     steps: [
-      {
-        title: "Apply",
-        text: "Business details, service area, insurance confirmation, and Checkr screening consent.",
-      },
-      {
-        title: "Get reviewed",
-        text: "An administrator reviews credentials before you appear in public search or see the job board.",
-      },
-      {
-        title: "Start membership",
-        text: "Three free months after approval, then $19.99 a month. Pause or cancel anytime.",
-      },
-      {
-        title: "Quote and work",
-        text: "Open matched jobs, send a quote, unlock homeowner contact, and settle payment with the homeowner.",
-      },
+      { title: "Apply", text: "Business details, area, and screening consent." },
+      { title: "Get reviewed", text: "Admin clearance before public search." },
+      { title: "Start membership", text: "Three free months, then $19.99/mo." },
+      { title: "Quote and work", text: "Quote leads, unlock contact, settle directly." },
     ],
     cta: { href: "/pro-register", label: "Apply as a pro" },
     secondary: { href: "/pricing", label: "See membership" },
@@ -81,82 +56,79 @@ const journeys: Record<
 export function HowItWorksContent() {
   const [tab, setTab] = useState<TabKey>("homeowner");
   const journey = journeys[tab];
-  const limits = roleFeatures[tab];
 
   return (
     <div>
       <PageBanner
         eyebrow="How it works"
-        title="One clear path for each role"
-        description="Pick Homeowner or Professional. LocalHomeFix organizes the request — it never takes the repair payment."
+        title="How it works"
+        description="Pick your role. We never take the repair payment."
         image={photos.banners.how}
       />
 
       <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
-        <div className="container-site max-w-3xl">
-          <div
-            role="tablist"
-            aria-label="Choose your role"
-            className="grid grid-cols-2 overflow-hidden rounded-[10px] border border-line bg-white"
-          >
-            {tabs.map((item) => {
-              const active = tab === item.key;
-              return (
-                <button
-                  key={item.key}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => setTab(item.key)}
-                  className={cn(
-                    "min-h-[52px] font-display text-sm font-bold transition-colors",
-                    active ? "bg-primary text-white" : "bg-white text-title hover:text-primary",
-                  )}
-                >
-                  {item.label}
-                </button>
-              );
-            })}
+        <div className="container-site">
+          <div className="mx-auto max-w-xl">
+            <div
+              role="tablist"
+              aria-label="Choose your role"
+              className="grid grid-cols-2 overflow-hidden rounded-full border border-line bg-white p-1"
+            >
+              {tabs.map((item) => {
+                const active = tab === item.key;
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => setTab(item.key)}
+                    className={cn(
+                      "min-h-[44px] rounded-full font-display text-sm font-bold transition-colors",
+                      active ? "bg-primary text-white" : "bg-transparent text-title hover:text-primary",
+                    )}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div role="tabpanel" className="mt-10">
+          <div role="tabpanel" className="mx-auto mt-10 max-w-3xl text-center">
             <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
               {journey.eyebrow}
             </p>
-            <h2 className="mt-3 text-[32px] leading-tight md:text-[40px]">{journey.title}</h2>
-            <p className="mt-3 text-[16px] leading-7 text-copy">{journey.summary}</p>
+            <h2 className="mt-2 text-[28px] leading-tight md:text-[36px]">{journey.title}</h2>
+            <p className="mx-auto mt-2 max-w-md text-[15px] leading-6 text-copy">{journey.summary}</p>
+          </div>
 
-            <ol className="mt-10 space-y-5">
-              {journey.steps.map((step, index) => (
-                <li key={step.title} className="flex gap-4">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary font-display text-sm font-bold text-white">
-                    {index + 1}
-                  </span>
-                  <div className="min-w-0 pt-1">
-                    <h3 className="text-[18px]">{step.title}</h3>
-                    <p className="mt-1 text-sm leading-6 text-copy">{step.text}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+          <ol className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {journey.steps.map((step, index) => (
+              <li
+                key={step.title}
+                className="rounded-[16px] border border-line bg-white px-5 py-6 text-center"
+              >
+                <span className="mx-auto grid h-10 w-10 place-items-center rounded-full bg-primary font-display text-sm font-bold text-white">
+                  {index + 1}
+                </span>
+                <h3 className="mt-4 text-[17px] leading-snug">{step.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-copy">{step.text}</p>
+              </li>
+            ))}
+          </ol>
 
-            <p className="mt-8 text-sm text-copy">
-              <span className="font-semibold text-title">Lands on: </span>
-              {limits.landsOn}
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Button href={journey.cta.href}>{journey.cta.label}</Button>
-              {journey.secondary ? (
-                <Button href={journey.secondary.href} variant="ghost">
-                  {journey.secondary.label}
-                </Button>
-              ) : null}
-            </div>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <Button href={journey.cta.href}>{journey.cta.label}</Button>
+            {journey.secondary ? (
+              <Button href={journey.secondary.href} variant="ghost">
+                {journey.secondary.label}
+              </Button>
+            ) : null}
           </div>
         </div>
       </section>
-      <FaqSection />
+      <FaqSection className="bg-surface" />
     </div>
   );
 }

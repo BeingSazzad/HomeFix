@@ -7,10 +7,7 @@ export function AuthLinks({
   prompt,
   href,
   label,
-  extras = [
-    { href: "/pro-register", label: "Apply as a pro" },
-    { href: "/browse-pros", label: "Continue as guest" },
-  ],
+  extras = [],
 }: {
   prompt: string;
   href: string;

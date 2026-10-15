@@ -8,9 +8,7 @@ import { photos } from "@/lib/media";
 import { loginHref } from "@/lib/role-access";
 import { useAppSelector } from "@/redux/hooks";
 
-/**
- * Public marketing gate only — job details stay private on /pro/jobs after clearance + membership.
- */
+/** Public gate only — private jobs live on /pro/jobs after clearance + membership. */
 export default function BrowseJobsPage() {
   const user = useAppSelector((state) => state.auth.user);
   const router = useRouter();
@@ -23,31 +21,25 @@ export default function BrowseJobsPage() {
     <>
       <PageBanner
         eyebrow="For professionals"
-        title="Matched jobs live on your board"
-        description="Open requests are not public. After clearance and an active membership, you quote from Available jobs inside your account."
+        title="Job board"
+        description="Private requests. Quote after clearance and membership."
         image={photos.banners.jobs}
       />
-      <section className="bg-surface py-12 md:py-16">
-        <div className="container-site max-w-2xl space-y-4">
-          <p className="text-[16px] leading-7 text-copy">
-            Homeowners post privately. Guests never see request details. Pros open the job board only after
-            administrator review and membership.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {user?.role === "pro" ? (
-              <Button href="/pro/jobs">Open available jobs</Button>
-            ) : (
-              <>
-                <Button href={loginHref({ role: "pro", next: "/pro/jobs" })}>Pro sign in</Button>
-                <Button href="/pro-register" variant="ghost">
-                  Apply as a pro
-                </Button>
-              </>
-            )}
-            <Button href="/browse-pros" variant="ghost">
-              Browse pros instead
-            </Button>
-          </div>
+      <section className="bg-surface py-10 md:py-12">
+        <div className="container-site flex flex-wrap gap-3">
+          {user?.role === "pro" ? (
+            <Button href="/pro/jobs">Open available jobs</Button>
+          ) : (
+            <>
+              <Button href={loginHref({ role: "pro", next: "/pro/jobs" })}>Pro sign in</Button>
+              <Button href="/pro-register" variant="ghost">
+                Apply as a pro
+              </Button>
+            </>
+          )}
+          <Button href="/browse-pros" variant="ghost">
+            Browse pros
+          </Button>
         </div>
       </section>
     </>
