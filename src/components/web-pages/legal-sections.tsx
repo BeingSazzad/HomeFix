@@ -3,7 +3,7 @@ import Link from "next/link";
 export function LegalSections({
   sections,
   related = [
-    { href: "/terms", label: "Terms of Service" },
+    { href: "/terms", label: "Terms & Conditions" },
     { href: "/privacy", label: "Privacy Policy" },
     { href: "/contact", label: "Contact" },
   ],

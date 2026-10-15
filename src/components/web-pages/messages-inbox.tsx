@@ -154,7 +154,7 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
   }
 
   return (
-    <div className="flex h-[calc(100dvh-11.5rem)] flex-col md:h-[calc(100dvh-12.5rem)]">
+    <div className="flex h-[calc(100dvh-11.5rem)] w-full min-w-0 flex-col md:h-[calc(100dvh-12.5rem)]">
       <div className="mb-3 shrink-0">
         <h1 className="text-[24px] md:text-[28px]">Messages</h1>
         <p className="mt-0.5 text-sm text-copy">
@@ -164,11 +164,11 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
         </p>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-hidden rounded-[14px] border border-line bg-white">
-        <div className="grid h-full lg:grid-cols-[300px_1fr]">
+      <div className="min-h-0 w-full min-w-0 flex-1 overflow-hidden rounded-[14px] border border-line bg-white">
+        <div className="flex h-full w-full min-w-0">
           <aside
             className={cn(
-              "flex min-h-0 flex-col border-line lg:border-r",
+              "flex min-h-0 w-full min-w-0 flex-col border-line lg:w-[340px] lg:shrink-0 lg:border-r",
               mobileChat ? "hidden lg:flex" : "flex",
             )}
           >
@@ -192,18 +192,20 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary font-display text-xs font-bold text-white">
                         {initials(thread.otherParty)}
                       </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="flex items-center justify-between gap-2">
-                          <span className="truncate font-display text-sm font-bold text-title">
+                      <span className="min-w-0 flex-1 overflow-hidden">
+                        <span className="flex items-baseline justify-between gap-2">
+                          <span className="min-w-0 truncate font-display text-sm font-bold text-title">
                             {thread.otherParty}
                           </span>
-                          <span className="max-w-[72px] shrink-0 truncate text-[11px] text-muted">
+                          <span className="shrink-0 whitespace-nowrap text-[11px] text-muted">
                             {thread.updatedAt}
                           </span>
                         </span>
                         <span className="mt-0.5 block truncate text-[12px] text-primary">{thread.jobTitle}</span>
-                        <span className="mt-0.5 flex items-center gap-2">
-                          <span className="truncate text-[13px] text-copy">{previewLine(thread, role)}</span>
+                        <span className="mt-0.5 flex min-w-0 items-center gap-2">
+                          <span className="min-w-0 flex-1 truncate text-[13px] text-copy">
+                            {previewLine(thread, role)}
+                          </span>
                           {thread.unread > 0 ? (
                             <span className="grid h-5 min-w-5 shrink-0 place-items-center rounded-full bg-primary px-1 font-display text-[11px] font-bold text-white">
                               {thread.unread}
@@ -219,7 +221,10 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
           </aside>
 
           <section
-            className={cn("flex min-h-0 flex-col", mobileChat ? "flex" : "hidden lg:flex")}
+            className={cn(
+              "min-h-0 min-w-0 flex-1 flex-col overflow-hidden",
+              mobileChat ? "flex" : "hidden lg:flex",
+            )}
           >
             {active ? (
               <>
@@ -249,11 +254,14 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                   </div>
                 </div>
 
-                <div className="min-h-0 flex-1 space-y-2 overflow-y-auto bg-surface/50 px-3 py-4 md:px-4">
+                <div className="min-h-0 w-full min-w-0 flex-1 space-y-2 overflow-y-auto bg-surface/50 px-3 py-4 md:px-4">
                   {active.messages.map((message) => {
                     const mine = message.sender === mySender;
                     return (
-                      <div key={message.id} className={cn("flex", mine ? "justify-end" : "justify-start")}>
+                      <div
+                        key={message.id}
+                        className={cn("flex w-full min-w-0", mine ? "justify-end" : "justify-start")}
+                      >
                         <div
                           className={cn(
                             BUBBLE,

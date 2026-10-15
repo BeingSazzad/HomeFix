@@ -32,7 +32,7 @@ const sections = [
 export default function TermsPage() {
   return (
     <>
-      <PageBanner eyebrow="Legal" title="Terms of Service" image={photos.banners.legal} />
+      <PageBanner eyebrow="Legal" title="Terms & Conditions" image={photos.banners.legal} />
       <LegalSections sections={sections} />
     </>
   );

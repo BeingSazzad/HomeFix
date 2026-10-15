@@ -25,8 +25,8 @@ const groups = [
     links: [
       { href: "/about", label: "About" },
       { href: "/contact", label: "Contact" },
-      { href: "/terms", label: "Terms" },
-      { href: "/privacy", label: "Privacy" },
+      { href: "/terms", label: "Terms & Conditions" },
+      { href: "/privacy", label: "Privacy Policy" },
     ],
   },
 ];

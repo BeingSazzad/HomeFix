@@ -317,7 +317,7 @@ export function SignupForm() {
           <span>
             I agree to the{" "}
             <Link href="/terms" className="font-semibold text-primary">
-              Terms
+              Terms & Conditions
             </Link>{" "}
             and{" "}
             <Link href="/privacy" className="font-semibold text-primary">

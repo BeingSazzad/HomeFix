@@ -20,10 +20,10 @@ const trustFaces = [
 
 export function HomeAbout() {
   return (
-    <section className="relative overflow-hidden bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
+    <section className="relative overflow-x-clip bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="pointer-events-none absolute inset-0 opacity-[0.3] [background-image:radial-gradient(circle_at_1px_1px,color-mix(in_srgb,var(--primary)_28%,transparent)_1px,transparent_0)] [background-size:28px_28px]" />
 
-      <div className="container-site relative grid items-center gap-10 pb-6 lg:grid-cols-2 lg:gap-12 lg:pb-8">
+      <div className="container-site relative z-[1] grid items-center gap-10 pb-8 lg:grid-cols-2 lg:gap-12 lg:pb-10">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-smoke px-3 py-1.5 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
             About us
@@ -73,20 +73,20 @@ export function HomeAbout() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[480px] lg:max-w-none">
+        <div className="relative z-[1] mx-auto w-full max-w-[480px] lg:max-w-none">
           <div
             className="h-[360px] overflow-hidden rounded-[24px] bg-cover bg-center md:h-[420px]"
             style={{ backgroundImage: `url(${photos.trust})` }}
           />
-          <div className="absolute right-4 top-4 rounded-[14px] bg-primary px-4 py-3 text-white shadow-md">
+          <div className="absolute right-4 top-4 z-10 rounded-[14px] bg-primary px-4 py-3 text-white shadow-[0_16px_36px_color-mix(in_srgb,var(--ink)_28%,transparent)]">
             <p className="font-display text-[24px] font-bold leading-none text-white">$0</p>
             <p className="mt-1 text-xs font-semibold text-white/85">Service fee</p>
           </div>
           <div
-            className="absolute -bottom-4 left-4 h-24 w-32 overflow-hidden rounded-[14px] border-[3px] border-white bg-cover bg-center shadow-md sm:h-28 sm:w-40"
+            className="absolute -bottom-4 left-4 z-10 h-24 w-32 overflow-hidden rounded-[14px] border-[3px] border-white bg-cover bg-center shadow-[0_18px_40px_color-mix(in_srgb,var(--ink)_26%,transparent)] sm:h-28 sm:w-40"
             style={{ backgroundImage: `url(${photos.trustAlt})` }}
           />
-          <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full bg-white px-3.5 py-2 soft-shadow">
+          <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2 rounded-full border border-black/5 bg-white px-3.5 py-2 shadow-[0_14px_32px_color-mix(in_srgb,var(--ink)_20%,transparent)]">
             <span className="grid h-7 w-7 place-items-center rounded-full bg-primary text-white">
               <Zap className="h-3.5 w-3.5" />
             </span>

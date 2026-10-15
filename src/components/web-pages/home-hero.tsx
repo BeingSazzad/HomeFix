@@ -72,10 +72,10 @@ export function HomeHero() {
         className="absolute inset-0 bg-cover bg-[center_20%]"
         style={{ backgroundImage: `url(${photos.hero})` }}
       />
-      <div className="hero-wash absolute inset-0" />
+      <div className="hero-wash absolute inset-0 z-[1]" />
 
-      <div className="container-site relative grid min-h-[620px] items-center gap-8 py-14 md:min-h-[680px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-20">
-        <div className="max-w-xl">
+      <div className="container-site relative z-[2] grid min-h-[620px] items-center gap-8 py-14 md:min-h-[680px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-20">
+        <div className="relative z-[1] max-w-xl">
           <span className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1.5 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-white">
             Local services
           </span>
@@ -83,7 +83,7 @@ export function HomeHero() {
             Find trusted local pros for{" "}
             <span className="text-primary-hover">home repairs</span>
           </h1>
-          <p className="mt-4 max-w-md text-[15px] leading-7 text-white/80">
+          <p className="mt-4 max-w-md text-[15px] leading-7 text-white/90">
             Browse free. Post a request when you are ready. Pay the professional directly —
             LocalHomeFix never takes the repair payment.
           </p>
@@ -122,7 +122,7 @@ export function HomeHero() {
           </div>
         </div>
 
-        <div className="rounded-[20px] bg-white p-5 text-title soft-shadow md:p-6">
+        <div className="relative z-10 rounded-[20px] border border-white/70 bg-white/95 p-5 text-title shadow-[0_28px_64px_color-mix(in_srgb,var(--ink)_32%,transparent),0_8px_24px_color-mix(in_srgb,var(--ink)_14%,transparent)] backdrop-blur-md md:p-6">
           <div className="flex items-center gap-2.5">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-smoke text-primary">
               <ClipboardList className="h-4 w-4" />
