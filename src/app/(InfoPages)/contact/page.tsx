@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Clock, Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field, TextArea, TextField } from "@/components/ui/field";
 import { PageBanner } from "@/components/layout/page-banner";
@@ -14,14 +14,14 @@ const details = [
     text: "admin@localhomefix.com",
   },
   {
+    icon: Phone,
+    title: "Phone",
+    text: "(512) 555-0140",
+  },
+  {
     icon: MapPin,
     title: "Service area",
     text: "Austin, TX and nearby ZIP codes",
-  },
-  {
-    icon: Clock,
-    title: "Hours",
-    text: "Mon–Fri, 9:00 AM – 6:00 PM CT",
   },
 ];
 

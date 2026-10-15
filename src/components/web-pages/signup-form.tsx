@@ -24,6 +24,7 @@ export function SignupForm() {
   const needsAccountForRequest = Boolean(nextPath?.includes("/account/post-job"));
   const draft = useAppSelector((state) => state.intake.draft);
 
+  const [role, setRole] = useState<"homeowner" | "pro">("homeowner");
   const [step, setStep] = useState<"details" | "otp">("details");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -39,6 +40,10 @@ export function SignupForm() {
   useEffect(() => {
     if (step === "otp") inputs.current[0]?.focus();
   }, [step]);
+
+  useEffect(() => {
+    if (role === "pro") router.push("/pro-register");
+  }, [role, router]);
 
   function finishSignup() {
     dispatch(
@@ -213,9 +218,41 @@ export function SignupForm() {
       <h1 className="mt-2 text-[28px] md:text-[32px]">Create a free account</h1>
       <p className="mt-2 text-sm text-copy">
         {needsAccountForRequest
-          ? "You need an account to create a request. Homeowner signup is free."
-          : "Homeowner accounts are free. Phone OTP next."}
+          ? "You need a homeowner account to create a request. Signup is free."
+          : "Choose your role. Homeowners are free. Pros apply for review."}
       </p>
+
+      <div
+        role="tablist"
+        aria-label="Account type"
+        className="mt-6 grid grid-cols-2 rounded-full border border-line bg-smoke p-1"
+      >
+        {(
+          [
+            ["homeowner", "Homeowner"],
+            ["pro", "Professional"],
+          ] as const
+        ).map(([value, label]) => {
+          const active = role === value;
+          return (
+            <button
+              key={value}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => setRole(value)}
+              className={cn(
+                "min-h-[44px] rounded-full font-display text-sm font-bold transition-colors",
+                active
+                  ? "bg-primary text-white shadow-sm"
+                  : "bg-transparent text-title hover:text-primary",
+              )}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
 
       <form className="mt-6 space-y-3.5" onSubmit={submitDetails}>
         <Field label="Full name">
