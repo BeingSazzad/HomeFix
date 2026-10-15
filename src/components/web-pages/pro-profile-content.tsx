@@ -1,8 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Bug,
+  CheckCircle2,
+  Clock,
   Droplets,
   Hammer,
   Heart,
@@ -20,7 +23,7 @@ import { PageBanner } from "@/components/layout/page-banner";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
 import { portfolios } from "@/lib/pro-extras";
-import { loginHref, signupHref } from "@/lib/role-access";
+import { signupHref } from "@/lib/role-access";
 import { toggleFavorite } from "@/redux/slices/featuresSlice";
 import { useRoleAccess } from "@/hooks/use-role-access";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -49,18 +52,36 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
   const image = photos.services[pro.categorySlug];
   const Icon = icons[pro.categorySlug] ?? Wrench;
   const gallery = portfolios[pro.id] ?? [];
-  const badges = [
+  const profilePath = `/browse-pros/${pro.id}`;
+
+  const credentials = [
+    pro.clearance === "cleared" ? "Verified" : null,
     pro.licensed ? "License on file" : null,
     pro.insured ? "Insured" : null,
-    pro.emergency ? "Accepts urgent jobs" : null,
-  ].filter(Boolean);
-  const profilePath = `/browse-pros/${pro.id}`;
+    pro.emergency ? "Urgent jobs" : null,
+  ].filter(Boolean) as string[];
+
+  const stats = [
+    { label: "Jobs done", value: String(pro.jobsCompleted) },
+    { label: "In business", value: pro.yearsInBusiness },
+    { label: "Typical reply", value: pro.responseTime },
+  ];
+
   const primaryCta =
     access.audience === "pro"
       ? { href: "/pro/jobs", label: "Go to job board" }
       : access.audience === "homeowner"
-        ? { href: "/account/post-job", label: "Create a request" }
-        : { href: signupHref(profilePath), label: "Sign up to request" };
+        ? { href: "/account/post-job", label: "Request a quote" }
+        : { href: signupHref("/account/post-job"), label: "Create account to request" };
+
+  function onSave() {
+    if (access.audience === "guest") {
+      router.push(signupHref(pathname || profilePath));
+      return;
+    }
+    if (!access.canSavePro) return;
+    dispatch(toggleFavorite(pro.id));
+  }
 
   return (
     <>
@@ -70,125 +91,175 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
         description={`${pro.city}, ${pro.state} · Serves about ${pro.radiusMiles} miles`}
         image={image}
       />
-      <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
-        <div className="container-site grid gap-8 lg:grid-cols-[1.4fr_0.8fr]">
-          <div className="space-y-8">
-            <article className="rounded-[20px] bg-white p-6 soft-shadow md:p-8">
+
+      <section className="bg-surface py-8 md:py-12">
+        <div className="container-site grid items-start gap-6 lg:grid-cols-[1.45fr_0.75fr] lg:gap-8">
+          <div className="space-y-5">
+            <article className="rounded-[20px] bg-white p-5 soft-shadow md:p-7">
               <div className="flex flex-wrap items-center gap-3">
-                <span
-                  title="Verified"
-                  aria-label="Verified"
-                  className="grid h-8 w-8 place-items-center rounded-full bg-smoke text-primary"
-                >
-                  <ShieldCheck className="h-4 w-4" />
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-smoke px-3 py-1.5 text-sm font-semibold text-title">
+                  <ShieldCheck className="h-4 w-4 text-primary" />
+                  Verified pro
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-title">
+                  <Star className="h-4 w-4 fill-accent text-accent" />
+                  {pro.rating.toFixed(1)}
+                  <span className="font-normal text-muted">· {pro.reviewCount} reviews</span>
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-sm text-copy">
-                  <Star className="h-4 w-4 text-accent" />
-                  {pro.rating.toFixed(1)} · {pro.reviewCount} reviews
+                  <MapPin className="h-4 w-4 text-muted" />
+                  {pro.city}, {pro.state}
                 </span>
               </div>
 
-              <div className="mt-6 flex gap-4">
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[10px] bg-primary text-white">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div className="min-w-0">
-                  <h2 className="text-[24px]">About</h2>
-                  <p className="mt-2 text-[16px] leading-7 text-copy">{pro.bio}</p>
-                  {badges.length ? <p className="mt-3 text-sm text-muted">{badges.join(" · ")}</p> : null}
+              {credentials.length ? (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {credentials.map((item) => (
+                    <span
+                      key={item}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-xs font-semibold text-copy"
+                    >
+                      <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+                      {item}
+                    </span>
+                  ))}
                 </div>
-              </div>
+              ) : null}
 
-              <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 border-t border-line pt-5 text-sm text-copy">
-                <p>
-                  <span className="font-semibold text-title">{pro.jobsCompleted}</span> jobs done
-                </p>
-                <p>
-                  <span className="font-semibold text-title">{pro.yearsInBusiness}</span> years in business
-                </p>
-                <p>
-                  Typical reply: <span className="font-semibold text-title">{pro.responseTime}</span>
-                </p>
+              <div className="mt-6 grid gap-3 border-t border-line pt-5 sm:grid-cols-3">
+                {stats.map((item) => (
+                  <div key={item.label} className="rounded-[14px] bg-surface px-4 py-3">
+                    <p className="font-display text-lg font-bold text-title">{item.value}</p>
+                    <p className="mt-0.5 text-xs text-muted">{item.label}</p>
+                  </div>
+                ))}
               </div>
             </article>
 
+            <article className="rounded-[20px] bg-white p-5 soft-shadow md:p-7">
+              <div className="flex items-start gap-3">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-[12px] bg-primary text-white">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <h2 className="text-[20px] md:text-[22px]">About {pro.businessName}</h2>
+                  <p className="mt-1 text-sm font-semibold text-primary">{pro.trade}</p>
+                </div>
+              </div>
+              <p className="mt-4 text-[15px] leading-7 text-copy">{pro.bio}</p>
+              <p className="mt-4 flex items-center gap-2 text-sm text-copy">
+                <Clock className="h-4 w-4 text-muted" />
+                Typical reply: <span className="font-semibold text-title">{pro.responseTime}</span>
+              </p>
+            </article>
+
             {gallery.length ? (
-              <div>
-                <h2 className="text-[24px]">Portfolio</h2>
-                <div className="mt-5 grid gap-4 sm:grid-cols-3">
+              <article className="rounded-[20px] bg-white p-5 soft-shadow md:p-7">
+                <div className="flex items-end justify-between gap-3">
+                  <h2 className="text-[20px] md:text-[22px]">Portfolio</h2>
+                  <p className="text-sm text-muted">{gallery.length} projects</p>
+                </div>
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
                   {gallery.map((item) => (
-                    <div key={item.title} className="overflow-hidden rounded-[14px] bg-white">
-                      <div className="h-36 bg-cover bg-center" style={{ backgroundImage: `url(${item.image})` }} />
-                      <p className="px-3 py-2 text-sm font-semibold text-title">{item.title}</p>
+                    <div key={item.title} className="overflow-hidden rounded-[14px] border border-line">
+                      <div
+                        className="aspect-[4/3] bg-cover bg-center"
+                        style={{ backgroundImage: `url(${item.image})` }}
+                      />
+                      <p className="px-3 py-2.5 text-sm font-semibold text-title">{item.title}</p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </article>
             ) : null}
 
-            <div>
-              <h2 className="text-[24px]">Reviews</h2>
+            <article className="rounded-[20px] bg-white p-5 soft-shadow md:p-7">
+              <div className="flex flex-wrap items-end justify-between gap-2">
+                <h2 className="text-[20px] md:text-[22px]">Customer reviews</h2>
+                <p className="inline-flex items-center gap-1.5 text-sm font-semibold text-title">
+                  <Star className="h-4 w-4 fill-accent text-accent" />
+                  {pro.rating.toFixed(1)} average
+                </p>
+              </div>
+
               {reviews.length === 0 ? (
-                <p className="mt-3 text-sm text-copy">No written reviews yet.</p>
+                <p className="mt-4 text-sm text-copy">No written reviews yet.</p>
               ) : (
-                <div className="mt-5 space-y-5">
+                <ul className="mt-5 space-y-4">
                   {reviews.map((review) => (
-                    <div key={review.id} className="border-t border-line pt-5 first:border-0 first:pt-0">
+                    <li key={review.id} className="rounded-[14px] border border-line bg-surface p-4">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <p className="font-display text-sm font-bold text-title">{review.author}</p>
-                        <p className="text-sm font-semibold text-primary">{review.rating.toFixed(1)} / 5</p>
+                        <span className="inline-flex items-center gap-1 text-sm font-semibold text-title">
+                          <Star className="h-3.5 w-3.5 fill-accent text-accent" />
+                          {review.rating.toFixed(1)}
+                        </span>
                       </div>
-                      <p className="mt-2 text-sm leading-7 text-copy">{review.body}</p>
+                      <p className="mt-2 text-sm leading-6 text-copy">{review.body}</p>
                       {review.reply ? (
-                        <p className="mt-2 text-sm text-copy">
+                        <p className="mt-3 rounded-[10px] bg-white px-3 py-2 text-sm text-copy">
                           <span className="font-semibold text-title">Pro reply: </span>
                           {review.reply}
                         </p>
                       ) : null}
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               )}
-            </div>
+            </article>
           </div>
 
-          <aside className="h-fit rounded-[20px] bg-white p-6 soft-shadow md:p-8">
-            <h2 className="text-[24px]">
-              {access.audience === "pro" ? "You’re signed in as a pro" : "Request a quote"}
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-copy">
-              {access.audience === "pro"
-                ? "Use the job board for leads. Homeowner request and save stay on a homeowner account."
-                : "Post a job for this trade. You pay the pro directly — not LocalHomeFix."}
-            </p>
-            <p className="mt-4 flex items-center gap-2 text-sm text-copy">
-              <MapPin className="h-4 w-4 text-muted" />
-              {pro.city}, {pro.state} {pro.zip}
-            </p>
-            <div className="mt-6 space-y-3">
-              <Button href={primaryCta.href} className="w-full">
-                {primaryCta.label}
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                className="w-full"
-                disabled={access.audience === "pro"}
-                onClick={() => {
-                  if (access.audience === "guest") {
-                    router.push(loginHref({ role: "homeowner", next: pathname || profilePath }));
-                    return;
-                  }
-                  if (!access.canSavePro) return;
-                  dispatch(toggleFavorite(pro.id));
-                }}
-              >
-                <Heart className={cn("h-4 w-4", saved && access.canSavePro && "fill-current text-error")} />
-                {access.audience === "pro" ? "Save (homeowner only)" : saved ? "Saved" : "Save pro"}
-              </Button>
-              <Button href="/browse-pros" variant="ghost" className="w-full">
-                Back to listings
-              </Button>
+          <aside className="lg:sticky lg:top-28">
+            <div className="rounded-[20px] bg-white p-5 soft-shadow md:p-6">
+              <h2 className="text-[20px]">
+                {access.audience === "pro" ? "Pro account" : "Request a quote"}
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-copy">
+                {access.audience === "pro"
+                  ? "Use the job board for leads. Request and save stay on a homeowner account."
+                  : "Create a request for this trade. You pay the pro directly — not LocalHomeFix."}
+              </p>
+
+              <div className="mt-4 space-y-2.5 rounded-[14px] bg-surface p-3.5 text-sm text-copy">
+                <p className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 shrink-0 text-primary" />
+                  {pro.city}, {pro.state} {pro.zip}
+                </p>
+                <p className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 shrink-0 text-primary" />
+                  Replies {pro.responseTime.toLowerCase()}
+                </p>
+                <p className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 shrink-0 text-primary" />
+                  Reviewed for public listing
+                </p>
+              </div>
+
+              <div className="mt-5 space-y-2.5">
+                <Button href={primaryCta.href} className="w-full">
+                  {primaryCta.label}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full"
+                  disabled={access.audience === "pro"}
+                  onClick={onSave}
+                >
+                  <Heart className={cn("h-4 w-4", saved && access.canSavePro && "fill-current text-error")} />
+                  {access.audience === "pro" ? "Save (homeowner only)" : saved ? "Saved" : "Save pro"}
+                </Button>
+                <Button href="/browse-pros" variant="ghost" className="w-full">
+                  Back to listings
+                </Button>
+              </div>
+
+              <p className="mt-4 text-center text-xs leading-5 text-muted">
+                No repair payment on LocalHomeFix.{" "}
+                <Link href="/how-it-works" className="font-semibold text-primary hover:underline">
+                  How it works
+                </Link>
+              </p>
             </div>
           </aside>
         </div>

@@ -32,13 +32,7 @@ const sections = [
 export default function TermsPage() {
   return (
     <>
-      <PageBanner
-        align="center"
-        eyebrow="Legal"
-        title="Terms of Service"
-        description="Effective September 10, 2026. The marketplace organizes requests, quotes, and reviews. It does not employ either party or process project payments."
-        image={photos.banners.legal}
-      />
+      <PageBanner eyebrow="Legal" title="Terms of Service" image={photos.banners.legal} />
       <LegalSections sections={sections} />
     </>
   );

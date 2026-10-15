@@ -1,8 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import {
+  ClipboardList,
+  FileCheck2,
+  MessagesSquare,
+  Search,
+  ShieldCheck,
+  UserPlus,
+  Wallet,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageBanner } from "@/components/layout/page-banner";
+import { ProcessGrid } from "@/components/ui/process-grid";
 import { FaqSection } from "@/components/web-pages/faq-section";
 import { photos } from "@/lib/media";
 import { cn } from "@/lib/cn";
@@ -20,7 +32,7 @@ const journeys: Record<
     eyebrow: string;
     title: string;
     summary: string;
-    steps: { title: string; text: string }[];
+    steps: { n: string; title: string; text: string; icon: LucideIcon }[];
     cta: { href: string; label: string };
     secondary?: { href: string; label: string };
   }
@@ -30,10 +42,30 @@ const journeys: Record<
     title: "From problem to hire",
     summary: "Browse free. Sign up to post. Pay the pro directly.",
     steps: [
-      { title: "Post the request", text: "Describe the work, ZIP, and timing." },
-      { title: "Get quotes", text: "Reviewed pros in your area can reply." },
-      { title: "Compare quotes", text: "Quotes and chat stay on the same job." },
-      { title: "Hire and review", text: "Pay the pro directly, then leave a review." },
+      {
+        n: "01",
+        title: "Post the request",
+        text: "Describe the work, location, and timing.",
+        icon: ClipboardList,
+      },
+      {
+        n: "02",
+        title: "Get quotes",
+        text: "Reviewed pros in your area can reply.",
+        icon: Search,
+      },
+      {
+        n: "03",
+        title: "Compare quotes",
+        text: "Quotes and chat stay on the same job.",
+        icon: MessagesSquare,
+      },
+      {
+        n: "04",
+        title: "Hire and review",
+        text: "Pay the pro directly, then leave a review.",
+        icon: Wallet,
+      },
     ],
     cta: { href: "/signup?next=%2Faccount%2Fpost-job", label: "Create free account" },
     secondary: { href: "/browse-pros", label: "Browse pros first" },
@@ -43,10 +75,30 @@ const journeys: Record<
     title: "Apply, then quote",
     summary: "Membership for job access — not repair packages.",
     steps: [
-      { title: "Apply", text: "Business details, area, and screening consent." },
-      { title: "Get reviewed", text: "Admin clearance before public search." },
-      { title: "Start membership", text: "Three free months, then $19.99/mo." },
-      { title: "Quote and work", text: "Quote leads, unlock contact, settle directly." },
+      {
+        n: "01",
+        title: "Apply",
+        text: "Business details, area, and screening consent.",
+        icon: UserPlus,
+      },
+      {
+        n: "02",
+        title: "Get reviewed",
+        text: "Admin clearance before public search.",
+        icon: ShieldCheck,
+      },
+      {
+        n: "03",
+        title: "Start membership",
+        text: "Three free months, then $19.99/mo.",
+        icon: FileCheck2,
+      },
+      {
+        n: "04",
+        title: "Quote and work",
+        text: "Quote leads, unlock contact, settle directly.",
+        icon: Wrench,
+      },
     ],
     cta: { href: "/pro-register", label: "Apply as a pro" },
     secondary: { href: "/pricing", label: "See membership" },
@@ -66,7 +118,7 @@ export function HowItWorksContent() {
         image={photos.banners.how}
       />
 
-      <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
+      <section className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
         <div className="container-site">
           <div className="mx-auto max-w-xl">
             <div
@@ -95,30 +147,24 @@ export function HowItWorksContent() {
             </div>
           </div>
 
-          <div role="tabpanel" className="mx-auto mt-10 max-w-3xl text-center">
-            <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
-              {journey.eyebrow}
-            </p>
-            <h2 className="mt-2 text-[28px] leading-tight md:text-[36px]">{journey.title}</h2>
-            <p className="mx-auto mt-2 max-w-md text-[15px] leading-6 text-copy">{journey.summary}</p>
+          <div role="tabpanel" className="mt-8">
+            <ProcessGrid
+              badge={journey.eyebrow}
+              title={journey.title}
+              description={journey.summary}
+              items={journey.steps}
+              cta={{
+                href: journey.cta.href,
+                title: journey.cta.label,
+                text: journey.secondary?.label
+                  ? `Or ${journey.secondary.label.toLowerCase()}.`
+                  : "Continue when you are ready.",
+                linkLabel: `${journey.cta.label} →`,
+              }}
+            />
           </div>
 
-          <ol className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {journey.steps.map((step, index) => (
-              <li
-                key={step.title}
-                className="rounded-[16px] border border-line bg-white px-5 py-6 text-center"
-              >
-                <span className="mx-auto grid h-10 w-10 place-items-center rounded-full bg-primary font-display text-sm font-bold text-white">
-                  {index + 1}
-                </span>
-                <h3 className="mt-4 text-[17px] leading-snug">{step.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-copy">{step.text}</p>
-              </li>
-            ))}
-          </ol>
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button href={journey.cta.href}>{journey.cta.label}</Button>
             {journey.secondary ? (
               <Button href={journey.secondary.href} variant="ghost">

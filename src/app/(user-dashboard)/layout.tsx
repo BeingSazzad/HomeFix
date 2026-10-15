@@ -1,9 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
+import { signupHref } from "@/lib/role-access";
 import { useAppSelector } from "@/redux/hooks";
 
 const items = [
@@ -25,12 +26,17 @@ export default function UserDashboardLayout({
   const user = useAppSelector((state) => state.auth.user);
   const hydrated = useAppSelector((state) => state.auth.hydrated);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!hydrated) return;
-    if (!user) router.replace("/login");
-    if (user?.role === "pro") router.replace("/pro");
-  }, [hydrated, router, user]);
+    if (!user) {
+      const next = pathname?.startsWith("/account") ? pathname : "/account/post-job";
+      router.replace(signupHref(next));
+      return;
+    }
+    if (user.role === "pro") router.replace("/pro");
+  }, [hydrated, pathname, router, user]);
 
   if (!hydrated || !user || user.role !== "homeowner") return null;
 

@@ -1,18 +1,22 @@
 import Link from "next/link";
-import { Check, MessageSquare, ShieldCheck, Users } from "lucide-react";
+import { Check, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
-
-const features = [
-  { icon: ShieldCheck, title: "Reviewed pros only" },
-  { icon: MessageSquare, title: "Quotes in one place" },
-];
+import { cn } from "@/lib/cn";
 
 const points = [
+  "Reviewed pros only",
+  "Quotes in one place",
   "Browse free — no account needed",
   "Post a request when you are ready",
   "Pay the pro directly",
   "Pros join after clearance",
+];
+
+const trustFaces = [
+  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80",
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80",
+  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&h=80&q=80",
 ];
 
 export function HomeAbout() {
@@ -20,7 +24,7 @@ export function HomeAbout() {
     <section className="relative overflow-hidden bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:radial-gradient(circle_at_1px_1px,color-mix(in_srgb,var(--primary)_28%,transparent)_1px,transparent_0)] [background-size:28px_28px]" />
 
-      <div className="container-site relative grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+      <div className="container-site relative grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-white">
             <span className="h-1.5 w-1.5 rounded-full bg-white/80" />
@@ -28,28 +32,17 @@ export function HomeAbout() {
             <span className="h-1.5 w-1.5 rounded-full bg-white/80" />
           </span>
 
-          <h2 className="mt-4 max-w-lg text-[28px] leading-tight text-title md:text-[36px]">
+          <h2 className="mt-3 max-w-lg text-[26px] leading-tight text-title md:text-[32px]">
             Local help, without the middleman on the bill
           </h2>
-          <p className="mt-3 max-w-md text-[15px] leading-7 text-copy">
+          <p className="mt-2 max-w-md text-[14px] leading-6 text-copy">
             LocalHomeFix connects homeowners with reviewed local pros. We organize the request —
             payment stays between you and the professional.
           </p>
 
-          <div className="mt-6 grid gap-3 rounded-[16px] border border-primary/25 bg-white p-4 sm:grid-cols-2">
-            {features.map((item) => (
-              <div key={item.title} className="flex items-center gap-3">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-smoke text-primary">
-                  <item.icon className="h-5 w-5" />
-                </span>
-                <p className="font-display text-sm font-bold text-title">{item.title}</p>
-              </div>
-            ))}
-          </div>
-
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+          <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
             {points.map((point) => (
-              <li key={point} className="flex items-start gap-2.5 text-sm leading-6 text-copy">
+              <li key={point} className="flex items-start gap-2 text-sm leading-6 text-copy">
                 <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-white">
                   <Check className="h-3 w-3" />
                 </span>
@@ -58,18 +51,21 @@ export function HomeAbout() {
             ))}
           </ul>
 
-          <div className="mt-8 flex flex-wrap items-center gap-5">
+          <div className="mt-6 flex flex-wrap items-center gap-4">
             <Button href="/about">More information</Button>
-            <div className="flex items-center gap-3">
-              <div className="flex">
-                {["MC", "JH", "ER"].map((initials, index) => (
-                  <span
-                    key={initials}
-                    className="grid h-9 w-9 place-items-center rounded-full border-2 border-surface bg-primary font-display text-[10px] font-bold text-white"
-                    style={{ marginLeft: index === 0 ? 0 : -8 }}
-                  >
-                    {initials}
-                  </span>
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center">
+                {trustFaces.map((src, index) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={src}
+                    src={src}
+                    alt=""
+                    className={cn(
+                      "h-8 w-8 rounded-full border-2 border-surface object-cover",
+                      index > 0 && "-ml-2",
+                    )}
+                  />
                 ))}
               </div>
               <p className="flex items-center gap-1.5 text-sm font-semibold text-title">
@@ -80,26 +76,22 @@ export function HomeAbout() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+        <div className="relative mx-auto w-full max-w-[480px] lg:max-w-[440px] lg:justify-self-end">
           <div
-            className="aspect-[4/5] overflow-hidden rounded-[24px] bg-cover bg-center md:aspect-[5/6]"
+            className="h-[340px] overflow-hidden rounded-[20px] bg-cover bg-center sm:h-[380px] md:h-[400px]"
             style={{ backgroundImage: `url(${photos.trust})` }}
           />
-          <div className="absolute -right-2 top-6 rounded-[16px] bg-primary px-4 py-3 text-white shadow-lg md:right-4 md:px-5 md:py-4">
-            <p className="font-display text-[28px] font-bold leading-none text-white md:text-[32px]">$0</p>
-            <p className="mt-1 text-xs font-semibold leading-snug text-white/85">
-              Homeowner
-              <br />
-              fee
-            </p>
+          <div className="absolute right-4 top-4 rounded-[14px] bg-primary px-3.5 py-3 text-white shadow-md">
+            <p className="font-display text-[26px] font-bold leading-none text-white">$0</p>
+            <p className="mt-1 text-xs font-semibold leading-snug text-white/85">Homeowner fee</p>
           </div>
           <div
-            className="absolute -bottom-4 right-4 h-28 w-40 overflow-hidden rounded-[16px] border-4 border-primary bg-cover bg-center md:-bottom-6 md:right-8 md:h-32 md:w-48"
+            className="absolute -bottom-4 right-4 h-24 w-32 overflow-hidden rounded-[14px] border-[3px] border-primary bg-cover bg-center sm:h-28 sm:w-40"
             style={{ backgroundImage: `url(${photos.trustAlt})` }}
           />
           <Link
             href="/how-it-works"
-            className="absolute bottom-6 left-4 rounded-full bg-white px-4 py-2 font-display text-xs font-bold text-primary soft-shadow md:left-6"
+            className="absolute bottom-4 left-4 rounded-full bg-white px-3.5 py-2 font-display text-xs font-bold text-primary soft-shadow"
           >
             How it works →
           </Link>

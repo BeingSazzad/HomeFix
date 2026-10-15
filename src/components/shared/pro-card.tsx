@@ -58,7 +58,7 @@ export function ProCard({ pro }: { pro: Professional }) {
       ? { href: "/pro/jobs", label: "Browse jobs" }
       : access.audience === "homeowner"
         ? { href: "/account/post-job", label: "Request a quote" }
-        : { href: signupHref(href), label: "Sign up to request" };
+        : { href: signupHref("/account/post-job"), label: "Create account to request" };
 
   function onSave() {
     if (access.audience === "guest") {

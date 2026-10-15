@@ -21,6 +21,7 @@ export function SignupForm() {
   const router = useRouter();
   const search = useSearchParams();
   const nextPath = search.get("next");
+  const needsAccountForRequest = Boolean(nextPath?.includes("/account/post-job"));
   const draft = useAppSelector((state) => state.intake.draft);
 
   const [step, setStep] = useState<"details" | "otp">("details");
@@ -210,7 +211,11 @@ export function SignupForm() {
         Step 1 of 2
       </p>
       <h1 className="mt-2 text-[28px] md:text-[32px]">Create a free account</h1>
-      <p className="mt-2 text-sm text-copy">Homeowner accounts are free. Phone OTP next.</p>
+      <p className="mt-2 text-sm text-copy">
+        {needsAccountForRequest
+          ? "You need an account to create a request. Homeowner signup is free."
+          : "Homeowner accounts are free. Phone OTP next."}
+      </p>
 
       <form className="mt-6 space-y-3.5" onSubmit={submitDetails}>
         <Field label="Full name">

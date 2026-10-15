@@ -51,25 +51,36 @@ export function LoginForm() {
       <h1 className="text-[28px] md:text-[32px]">Welcome back</h1>
       <p className="mt-2 text-sm text-copy">Sign in to continue.</p>
 
-      <div className="mt-6 grid grid-cols-2 overflow-hidden rounded-[10px] border border-line">
+      <div
+        role="tablist"
+        aria-label="Account type"
+        className="mt-6 grid grid-cols-2 rounded-full border border-line bg-smoke p-1"
+      >
         {(
           [
             ["homeowner", "Homeowner"],
             ["pro", "Professional"],
           ] as const
-        ).map(([value, label]) => (
-          <button
-            key={value}
-            type="button"
-            onClick={() => setRole(value)}
-            className={cn(
-              "min-h-[48px] font-display text-sm font-bold",
-              role === value ? "bg-primary text-white" : "bg-white text-title hover:text-primary",
-            )}
-          >
-            {label}
-          </button>
-        ))}
+        ).map(([value, label]) => {
+          const active = role === value;
+          return (
+            <button
+              key={value}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => setRole(value)}
+              className={cn(
+                "min-h-[44px] rounded-full font-display text-sm font-bold transition-colors",
+                active
+                  ? "bg-primary text-white shadow-sm"
+                  : "bg-transparent text-title hover:text-primary",
+              )}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
 
       <form className="mt-6 space-y-4" onSubmit={submit}>

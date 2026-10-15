@@ -69,17 +69,17 @@ export function HomeHero() {
       <div className="container-site relative grid min-h-[560px] items-center gap-8 py-16 md:min-h-[640px] lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
         <div className="max-w-xl">
           <p className="mb-3 font-display text-[12px] font-bold uppercase tracking-[0.18em] text-white/70">
-            Local home repair
+            LocalHomeFix
           </p>
           <h1 className="text-[36px] leading-[1.1] text-white md:text-[52px]">
-            Start with what needs fixing.
+            Find trusted local pros for home repairs
           </h1>
-          <p className="mt-4 max-w-sm text-[15px] leading-6 text-white/78">
-            Browse free. Post when ready. Pay the pro directly.
+          <p className="mt-4 max-w-md text-[15px] leading-6 text-white/78">
+            Browse free. Post a request when you are ready. Pay the professional directly.
           </p>
           <div className="mt-6">
             <Button href="/browse-pros" variant="white" size="lg">
-              Find a pro
+              Browse professionals
             </Button>
           </div>
         </div>

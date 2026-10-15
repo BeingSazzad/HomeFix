@@ -32,13 +32,7 @@ const sections = [
 export default function PrivacyPage() {
   return (
     <>
-      <PageBanner
-        align="center"
-        eyebrow="Legal"
-        title="Privacy Policy"
-        description="Effective September 10, 2026. How LocalHomeFix collects, uses, and shares information on the marketplace."
-        image={photos.banners.legal}
-      />
+      <PageBanner eyebrow="Legal" title="Privacy Policy" image={photos.banners.legal} />
       <LegalSections sections={sections} />
     </>
   );
