@@ -90,7 +90,6 @@ export function ProCard({
           {pro.rating.toFixed(1)}
           <span className="text-muted">· {pro.reviewCount} reviews</span>
         </p>
-        <span className="mt-auto pt-4 font-display text-sm font-bold text-primary">View profile →</span>
       </div>
     </Link>
   );
