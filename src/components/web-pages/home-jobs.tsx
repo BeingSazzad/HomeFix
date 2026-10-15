@@ -9,9 +9,13 @@ export function HomeJobs() {
     <section className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading eyebrow="Jobs" title="Open requests" />
-          <Button href="/browse-jobs" variant="ghost">
-            Browse jobs
+          <SectionHeading
+            eyebrow="For professionals"
+            title="Example open requests"
+            description="Pros see matching jobs after clearance and an active membership. Homeowners post from a free account."
+          />
+          <Button href="/pro-register" variant="ghost">
+            Apply as a pro
           </Button>
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -20,7 +24,7 @@ export function HomeJobs() {
             return (
               <Link
                 key={job.id}
-                href="/login"
+                href="/login?role=pro&next=/pro/jobs"
                 className="group flex h-full flex-col overflow-hidden rounded-[20px] bg-white soft-shadow"
               >
                 <div className="relative h-44 overflow-hidden">
@@ -36,6 +40,7 @@ export function HomeJobs() {
                   <p className="mt-2 text-sm text-copy">
                     {job.city}, {job.state} {job.zip}
                   </p>
+                  <p className="mt-3 text-[12px] font-semibold text-muted">Sign in as a pro to open the job board</p>
                 </div>
               </Link>
             );

@@ -1,12 +1,20 @@
 import type { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/cn";
 
 export function StatRow({
   items,
 }: {
   items: { value: string; label: string; icon?: LucideIcon }[];
 }) {
+  const cols =
+    items.length === 3
+      ? "sm:grid-cols-3"
+      : items.length === 2
+        ? "sm:grid-cols-2"
+        : "sm:grid-cols-2 xl:grid-cols-4";
+
   return (
-    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+    <div className={cn("grid gap-5", cols)}>
       {items.map((item) => {
         const Icon = item.icon;
         return (
@@ -17,7 +25,7 @@ export function StatRow({
               </span>
             ) : null}
             <p className="font-display text-[36px] font-bold leading-none text-title">{item.value}</p>
-            <p className="mt-3 text-[15px] leading-6 text-copy">{item.label}</p>
+            <p className="mt-3 text-[16px] leading-6 text-copy">{item.label}</p>
           </article>
         );
       })}

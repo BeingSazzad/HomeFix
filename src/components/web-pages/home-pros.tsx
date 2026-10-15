@@ -10,10 +10,15 @@ export function HomePros() {
   return (
     <section className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
-        <SectionHeading align="center" eyebrow="Professionals" title="Cleared local providers" />
+        <SectionHeading
+          align="center"
+          eyebrow="Local professionals"
+          title="Pros you can browse today"
+          description="These providers finished administrator review. You can open any profile without an account."
+        />
         <div className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {list.map((pro) => (
-            <Link key={pro.id} href="/signup" className="group text-center">
+            <Link key={pro.id} href={`/browse-pros/${pro.id}`} className="group text-center">
               <div
                 className="mx-auto h-40 w-40 rounded-full bg-cover bg-center ring-8 ring-smoke transition-transform duration-300 group-hover:scale-[1.03]"
                 style={{ backgroundImage: `url(${photos.services[pro.categorySlug]})` }}
@@ -27,7 +32,7 @@ export function HomePros() {
           ))}
         </div>
         <div className="mt-10 text-center">
-          <Button href="/browse-pros">Find a pro</Button>
+          <Button href="/browse-pros">Browse all pros</Button>
         </div>
       </div>
     </section>

@@ -35,7 +35,7 @@ Visual tokens taken from the Plumby template (`html.vecurosoft.com/plumby`), the
 
 ## Hierarchy
 
-- Section labels: 13px uppercase, primary, no pill.
+- Section labels: 12px uppercase, primary, no pill.
 - Headings: title `#00151D`. On dark surfaces, force white.
 - Body: copy `#5B5B5B`.
 - Icons: smoke well + primary glyph. Hover inverts to primary well + white glyph.

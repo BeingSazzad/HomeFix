@@ -1,18 +1,25 @@
-import { Card } from "@/components/ui/card";
+"use client";
 
-const rows = [
-  { label: "Response rate", value: "92%" },
-  { label: "Lead to hire", value: "25%" },
-  { label: "Quotes sent", value: "2" },
-  { label: "Jobs completed", value: "1" },
-];
+import { Card } from "@/components/ui/card";
+import { selectAllQuotes } from "@/lib/marketplace";
+import { useAppSelector } from "@/redux/hooks";
 
 export default function AnalyticsPage() {
+  const quotes = useAppSelector(selectAllQuotes);
+  const hired = Object.keys(useAppSelector((state) => state.marketplace.hiredByJob)).length;
+  const mine = quotes.filter((quote) => quote.proId === "pro-1" || quote.id.startsWith("quote-local"));
+
+  const rows = [
+    { label: "Quotes sent", value: String(mine.length) },
+    { label: "Hires recorded", value: String(hired) },
+    { label: "Open quotes", value: String(Math.max(mine.length - hired, 0)) },
+  ];
+
   return (
     <div>
-      <h1 className="text-[28px]">Analytics</h1>
-      <p className="mt-1 text-sm text-copy">Mock performance numbers for UI review. Nothing here is live billing data.</p>
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+      <h1 className="text-[28px]">Activity</h1>
+      <p className="mt-1 text-sm text-copy">Counts from this demo session only. No invented conversion rates.</p>
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
         {rows.map((row) => (
           <Card key={row.label}>
             <p className="text-sm text-muted">{row.label}</p>

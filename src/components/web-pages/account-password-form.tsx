@@ -41,7 +41,7 @@ export function AccountPasswordForm() {
     <div className="space-y-4">
       <div>
         <h1 className="text-[28px]">Change password</h1>
-        <p className="mt-1 text-sm text-copy">Use a password you do not reuse on other sites.</p>
+        <p className="mt-1 text-sm text-copy">Choose a password you do not use elsewhere.</p>
       </div>
       <Card>
         <form className="space-y-4" onSubmit={submit}>
@@ -55,7 +55,7 @@ export function AccountPasswordForm() {
             <PasswordField name="confirm" autoComplete="new-password" required />
           </Field>
           {error ? <p className="text-sm text-error">{error}</p> : null}
-          {saved ? <p className="text-sm text-success">Password updated. Use it the next time you sign in.</p> : null}
+          {saved ? <p className="text-sm text-success">Password updated.</p> : null}
           <Button type="submit">Update password</Button>
         </form>
       </Card>

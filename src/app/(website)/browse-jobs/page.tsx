@@ -1,70 +1,53 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Field, NativeSelect, TextField } from "@/components/ui/field";
-import { EmptyState } from "@/components/ui/empty-state";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { PageBanner } from "@/components/layout/page-banner";
-import { JobCard } from "@/components/shared/job-card";
-import { categories, jobs } from "@/Mockdata";
+import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
+import { loginHref } from "@/lib/role-access";
 import { useAppSelector } from "@/redux/hooks";
 
+/**
+ * Public marketing gate only — job details stay private on /pro/jobs after clearance + membership.
+ */
 export default function BrowseJobsPage() {
   const user = useAppSelector((state) => state.auth.user);
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("");
+  const router = useRouter();
 
-  const results = useMemo(
-    () =>
-      jobs.filter((job) => {
-        const matchesCategory = !category || job.categorySlug === category;
-        const haystack = `${job.title} ${job.description}`.toLowerCase();
-        return matchesCategory && (!query || haystack.includes(query.toLowerCase()));
-      }),
-    [category, query],
-  );
+  useEffect(() => {
+    if (user?.role === "pro") router.replace("/pro/jobs");
+  }, [router, user]);
 
   return (
     <>
       <PageBanner
-        eyebrow="Jobs"
-        title="Find jobs near you"
-        description="Approved professionals with an active membership can see homeowner contact details."
+        eyebrow="For professionals"
+        title="Matched jobs live on your board"
+        description="Open requests are not public. After clearance and an active membership, you quote from Available jobs inside your account."
         image={photos.banners.jobs}
       />
-      <section className="bg-surface py-12">
-        <div className="container-site">
-          <div className="grid gap-3 rounded-[14px] bg-white p-4 md:grid-cols-2">
-            <Field label="Search">
-              <TextField value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Leak, painting, outlet…" />
-            </Field>
-            <Field label="Category">
-              <NativeSelect value={category} onChange={(event) => setCategory(event.target.value)}>
-                <option value="">All services</option>
-                {categories.map((item) => (
-                  <option key={item.id} value={item.slug}>
-                    {item.name}
-                  </option>
-                ))}
-              </NativeSelect>
-            </Field>
+      <section className="bg-surface py-12 md:py-16">
+        <div className="container-site max-w-2xl space-y-4">
+          <p className="text-[16px] leading-7 text-copy">
+            Homeowners post privately. Guests never see request details. Pros open the job board only after
+            administrator review and membership.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {user?.role === "pro" ? (
+              <Button href="/pro/jobs">Open available jobs</Button>
+            ) : (
+              <>
+                <Button href={loginHref({ role: "pro", next: "/pro/jobs" })}>Pro sign in</Button>
+                <Button href="/pro-register" variant="ghost">
+                  Apply as a pro
+                </Button>
+              </>
+            )}
+            <Button href="/browse-pros" variant="ghost">
+              Browse pros instead
+            </Button>
           </div>
-          {results.length === 0 ? (
-            <div className="mt-6">
-              <EmptyState title="No jobs in this view" description="Adjust the filters or check back later." />
-            </div>
-          ) : (
-            <div className="mt-6 grid gap-4">
-              {results.map((job) => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                  href={user?.role === "pro" ? `/pro/jobs/${job.id}` : "/login"}
-                  actionLabel={user?.role === "pro" ? "View details" : "Log in to quote"}
-                />
-              ))}
-            </div>
-          )}
         </div>
       </section>
     </>

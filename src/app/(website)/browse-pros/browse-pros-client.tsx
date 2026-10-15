@@ -78,10 +78,10 @@ export function BrowseProsClient() {
         {results.length === 0 ? (
           <div className="mt-6">
             <EmptyState
-              title="No cleared providers match this view"
+              title="No reviewed professionals match this view"
               description="Try another service or ZIP. If you already have a draft, you can post the request and wait for quotes."
               actionLabel="Post a request"
-              href="/signup"
+              href="/signup?next=%2Faccount%2Fpost-job"
             />
           </div>
         ) : (

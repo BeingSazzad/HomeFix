@@ -68,14 +68,15 @@ export function HomeHero() {
 
       <div className="container-site relative grid min-h-[620px] items-center gap-10 py-20 md:min-h-[740px] lg:grid-cols-[1.1fr_0.9fr] lg:py-[140px]">
         <div className="max-w-xl">
-          <p className="mb-4 font-display text-[13px] font-bold uppercase tracking-[0.18em] text-white/70">
+          <p className="mb-4 font-display text-[12px] font-bold uppercase tracking-[0.18em] text-white/70">
             Local home repair
           </p>
           <h1 className="text-[40px] leading-[1.1] text-white md:text-[56px]">
             Start with what needs fixing.
           </h1>
           <p className="mt-5 max-w-md text-[16px] leading-7 text-white/78">
-            Describe the job. Compare cleared locals. Keep quotes and messages on one request.
+            Browse reviewed local pros for free. Post a request when you are ready — quotes and chat stay on one job,
+            and you pay the pro directly.
           </p>
           <div className="mt-8">
             <Button href="/browse-pros" variant="white" size="lg">
@@ -85,10 +86,10 @@ export function HomeHero() {
         </div>
 
         <div className="rounded-[20px] bg-white p-6 text-title soft-shadow md:p-8">
-          <p className="font-display text-[13px] font-bold uppercase tracking-[0.16em] text-primary">
+          <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
             Start a request
           </p>
-          <h2 className="mt-2 text-[24px] leading-tight">Nothing posts until you create an account.</h2>
+          <h2 className="mt-2 text-[24px] leading-tight">Draft here first. Nothing goes live until you sign up.</h2>
           <div className="mt-5 space-y-3">
             <Field label="What is going on?">
               <TextArea
@@ -120,7 +121,7 @@ export function HomeHero() {
               </Field>
             </div>
             <Button type="button" className="w-full" onClick={summarize}>
-              Get summary
+              Preview my request
             </Button>
             {error ? <p className="text-sm text-error">{error}</p> : null}
             {preview ? (
@@ -131,8 +132,8 @@ export function HomeHero() {
                 <p className="mt-2 font-display text-lg font-bold text-title">{preview.title}</p>
                 <p className="mt-1 text-sm leading-6 text-copy">{preview.summary}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <Button size="sm" href="/signup">
-                    Continue to post
+                  <Button size="sm" href="/signup?next=%2Faccount%2Fpost-job">
+                    Create free account to post
                   </Button>
                   <Button
                     size="sm"

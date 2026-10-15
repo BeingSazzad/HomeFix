@@ -5,8 +5,10 @@ const groups = [
     title: "For homeowners",
     links: [
       { href: "/browse-pros", label: "Find a Pro" },
+      { href: "/services", label: "Services" },
       { href: "/how-it-works", label: "How it works" },
-      { href: "/signup", label: "Create an account" },
+      { href: "/how-it-works#faq", label: "FAQ" },
+      { href: "/signup?next=%2Faccount%2Fpost-job", label: "Create an account" },
     ],
   },
   {
@@ -14,8 +16,8 @@ const groups = [
     links: [
       { href: "/pro-register", label: "Apply as a pro" },
       { href: "/pricing", label: "Membership" },
-      { href: "/browse-jobs", label: "Browse jobs" },
-      { href: "/login", label: "Pro login" },
+      { href: "/browse-jobs", label: "Job board access" },
+      { href: "/login?role=pro&next=/pro/jobs", label: "Pro login" },
     ],
   },
   {
@@ -85,7 +87,8 @@ export function Footer() {
             <p className="font-display text-2xl font-bold">LocalHomeFix</p>
           </div>
           <p className="mt-5 max-w-xs text-sm leading-7 text-white/68">
-            Homeowner requests, provider quotes, project messages, and completed-job reviews — in one place.
+            Post a home repair, compare quotes from reviewed locals, and keep messages on one job. You pay the pro
+            directly.
           </p>
           <div className="mt-6 flex gap-2">
             {socials.map((item) => (
@@ -105,7 +108,7 @@ export function Footer() {
         {groups.map((group) => (
           <div key={group.title}>
             <p className="font-display text-lg font-bold">{group.title}</p>
-            <ul className="mt-5 space-y-3 text-[15px] text-white/68">
+            <ul className="mt-5 space-y-3 text-[16px] text-white/68">
               {group.links.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="hover:text-white">

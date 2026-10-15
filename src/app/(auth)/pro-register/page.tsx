@@ -6,18 +6,113 @@ import { Steps } from "antd";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field, NativeSelect, TextArea, TextField } from "@/components/ui/field";
-import { categories } from "@/Mockdata";
 import { AuthLinks } from "@/components/web-pages/auth-links";
 import { PasswordField } from "@/components/ui/password-field";
+import { categories } from "@/Mockdata";
+import { proSignupFields } from "@/lib/product-model";
 import { loginAs } from "@/redux/slices/authSlice";
+import { saveApplicationDraft, submitApplication } from "@/redux/slices/featuresSlice";
 import { useAppDispatch } from "@/redux/hooks";
 
-const steps = ["Personal info", "Business profile", "Area & credentials"];
+const steps = ["Account", "Business", "Area & screening"];
+
+type FormState = {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  businessName: string;
+  trade: string;
+  bio: string;
+  serviceZip: string;
+  radius: string;
+  insurance: boolean;
+  license: boolean;
+  checkr: boolean;
+};
+
+const empty: FormState = {
+  name: "",
+  email: "",
+  phone: "",
+  password: "",
+  businessName: "",
+  trade: "",
+  bio: "",
+  serviceZip: "",
+  radius: "25",
+  insurance: false,
+  license: false,
+  checkr: false,
+};
 
 export default function ProRegisterPage() {
   const [step, setStep] = useState(0);
+  const [form, setForm] = useState<FormState>(empty);
+  const [draftSaved, setDraftSaved] = useState(false);
+  const [error, setError] = useState("");
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  function patch(partial: Partial<FormState>) {
+    setForm((prev) => ({ ...prev, ...partial }));
+  }
+
+  function validateStep() {
+    if (step === 0) {
+      if (form.name.trim().length < 2) return "Enter your full name.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return "Enter a valid work email.";
+      if (form.phone.replace(/\D/g, "").length < 10) return "Enter a valid business phone.";
+      if (form.password.length < 8) return "Password must be at least 8 characters.";
+    }
+    if (step === 1) {
+      if (form.businessName.trim().length < 2) return "Enter your business name.";
+      if (!form.trade) return "Select your primary trade.";
+      if (form.bio.trim().length < 20) return "Add a short bio (at least 20 characters).";
+    }
+    if (step === 2) {
+      if (!/^\d{5}$/.test(form.serviceZip.trim())) return "Enter a valid service ZIP.";
+      if (!form.insurance) return "Confirm liability insurance to continue.";
+      if (!form.checkr) return "Authorize Checkr screening to continue.";
+    }
+    return "";
+  }
+
+  function next() {
+    const message = validateStep();
+    if (message) {
+      setError(message);
+      return;
+    }
+    setError("");
+    if (step < 2) {
+      setStep((value) => value + 1);
+      return;
+    }
+    dispatch(
+      saveApplicationDraft({
+        ...Object.fromEntries(
+          Object.entries(form).map(([key, value]) => [key, String(value)]),
+        ),
+        savedAt: new Date().toISOString(),
+      }),
+    );
+    dispatch(submitApplication());
+    dispatch(
+      loginAs({
+        role: "pro",
+        profile: {
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          zip: form.serviceZip.trim(),
+          city: "Austin",
+          state: "TX",
+        },
+      }),
+    );
+    router.push("/pro/application?applied=1");
+  }
 
   return (
     <Card className="max-w-none">
@@ -26,45 +121,84 @@ export default function ProRegisterPage() {
       </p>
       <h1 className="mt-2 text-[28px]">Join as a professional</h1>
       <p className="mt-2 text-sm text-copy">
-        Three months free after approval, then $19.99/month. Contact details stay hidden until clearance plus membership.
+        After review: free trial, then $19.99/mo. Path: Application → Membership → Jobs.
       </p>
+
       <div className="mt-5">
         <Steps current={step} items={steps.map((title) => ({ title }))} size="small" />
       </div>
       <div className="mt-6 space-y-3">
         {step === 0 ? (
           <>
-            <Field label="Full name"><TextField placeholder="Joe Smith" /></Field>
-            <Field label="Email"><TextField type="email" placeholder="joe@example.com" /></Field>
-            <Field label="Phone" hint="Shared with matched homeowners only after approval and an active trial or subscription.">
-              <TextField placeholder="(555) 000-0000" />
+            <Field label="Full name *" hint={proSignupFields[0].why}>
+              <TextField value={form.name} onChange={(e) => patch({ name: e.target.value })} placeholder="Joe Smith" />
             </Field>
-            <Field label="Password">
-              <PasswordField placeholder="At least 8 characters" autoComplete="new-password" />
+            <Field label="Work email *" hint={proSignupFields[1].why}>
+              <TextField
+                type="email"
+                value={form.email}
+                onChange={(e) => patch({ email: e.target.value })}
+                placeholder="joe@business.com"
+              />
+            </Field>
+            <Field label="Business phone *" hint={proSignupFields[2].why}>
+              <TextField
+                value={form.phone}
+                onChange={(e) => patch({ phone: e.target.value })}
+                placeholder="(555) 000-0000"
+              />
+            </Field>
+            <Field label="Password *" hint={proSignupFields[3].why}>
+              <PasswordField
+                value={form.password}
+                onChange={(e) => patch({ password: e.target.value })}
+                placeholder="At least 8 characters"
+                autoComplete="new-password"
+              />
             </Field>
           </>
         ) : null}
         {step === 1 ? (
           <>
-            <Field label="Business name"><TextField placeholder="Joe's Plumbing LLC" /></Field>
-            <Field label="Primary trade">
-              <NativeSelect defaultValue="">
-                <option value="" disabled>Select your primary trade</option>
+            <Field label="Business name *" hint={proSignupFields[4].why}>
+              <TextField
+                value={form.businessName}
+                onChange={(e) => patch({ businessName: e.target.value })}
+                placeholder="Joe's Plumbing LLC"
+              />
+            </Field>
+            <Field label="Primary trade *" hint={proSignupFields[5].why}>
+              <NativeSelect value={form.trade} onChange={(e) => patch({ trade: e.target.value })}>
+                <option value="" disabled>
+                  Select your primary trade
+                </option>
                 {categories.map((item) => (
-                  <option key={item.id} value={item.slug}>{item.name}</option>
+                  <option key={item.id} value={item.slug}>
+                    {item.name}
+                  </option>
                 ))}
               </NativeSelect>
             </Field>
-            <Field label="Bio">
-              <TextArea placeholder="What homeowners should know about your work." />
+            <Field label="Short bio *" hint={proSignupFields[6].why}>
+              <TextArea
+                value={form.bio}
+                onChange={(e) => patch({ bio: e.target.value })}
+                placeholder="What homeowners should know about your work."
+              />
             </Field>
           </>
         ) : null}
         {step === 2 ? (
           <>
-            <Field label="Service ZIP"><TextField placeholder="78704" /></Field>
-            <Field label="Travel radius">
-              <NativeSelect defaultValue="25">
+            <Field label="Service ZIP *" hint={proSignupFields[7].why}>
+              <TextField
+                value={form.serviceZip}
+                onChange={(e) => patch({ serviceZip: e.target.value })}
+                placeholder="78704"
+              />
+            </Field>
+            <Field label="Travel radius *" hint={proSignupFields[8].why}>
+              <NativeSelect value={form.radius} onChange={(e) => patch({ radius: e.target.value })}>
                 <option value="10">Within 10 miles</option>
                 <option value="25">Within 25 miles</option>
                 <option value="50">Within 50 miles</option>
@@ -73,18 +207,37 @@ export default function ProRegisterPage() {
               </NativeSelect>
             </Field>
             <label className="block text-sm text-copy">
-              <input type="checkbox" className="mr-2" /> I carry general liability insurance
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={form.insurance}
+                onChange={(e) => patch({ insurance: e.target.checked })}
+              />
+              I carry general liability insurance *
             </label>
             <label className="block text-sm text-copy">
-              <input type="checkbox" className="mr-2" /> I hold a valid trade license
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={form.license}
+                onChange={(e) => patch({ license: e.target.checked })}
+              />
+              I hold a valid trade license (if required in my area)
             </label>
             <label className="block text-sm text-copy">
-              <input type="checkbox" className="mr-2" /> I authorize a Checkr hosted background screening. Do not send SSN or ID files to LocalHomeFix.
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={form.checkr}
+                onChange={(e) => patch({ checkr: e.target.checked })}
+              />
+              I authorize Checkr screening. Do not send SSN or ID files to LocalHomeFix. *
             </label>
           </>
         ) : null}
       </div>
-      <div className="mt-6 flex gap-2">
+      {error ? <p className="mt-4 text-sm text-error">{error}</p> : null}
+      <div className="mt-6 flex flex-wrap gap-2">
         {step > 0 ? (
           <Button type="button" variant="ghost" onClick={() => setStep((value) => value - 1)}>
             Back
@@ -92,22 +245,31 @@ export default function ProRegisterPage() {
         ) : null}
         <Button
           type="button"
+          variant="ghost"
           onClick={() => {
-            if (step < 2) {
-              setStep((value) => value + 1);
-              return;
-            }
-            dispatch(loginAs("pro"));
-            router.push("/pro/verification");
+            dispatch(
+              saveApplicationDraft({
+                ...Object.fromEntries(
+                  Object.entries(form).map(([key, value]) => [key, String(value)]),
+                ),
+                step: String(step),
+                savedAt: new Date().toISOString(),
+              }),
+            );
+            setDraftSaved(true);
           }}
         >
+          Save and resume later
+        </Button>
+        <Button type="button" onClick={next}>
           {step < 2 ? "Next" : "Submit application"}
         </Button>
       </div>
+      {draftSaved ? <p className="mt-3 text-sm text-success">Draft saved. Continue anytime from Application.</p> : null}
       <AuthLinks
         prompt="Already have an account?"
-        href="/login"
-        label="Sign in"
+        href="/login?role=pro"
+        label="Sign in as pro"
         extras={[
           { href: "/signup", label: "I'm a homeowner" },
           { href: "/browse-pros", label: "Continue as guest" },

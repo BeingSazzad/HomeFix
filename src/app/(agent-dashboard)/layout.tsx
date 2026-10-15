@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
 import { useAppSelector } from "@/redux/hooks";
@@ -10,10 +9,14 @@ import { useAppSelector } from "@/redux/hooks";
 const items = [
   { href: "/pro", label: "Overview" },
   { href: "/pro/jobs", label: "Available jobs" },
+  { href: "/pro/messages", label: "Messages" },
+  { href: "/pro/notifications", label: "Notifications" },
+  { href: "/pro/application", label: "Application" },
   { href: "/pro/verification", label: "Verification" },
-  { href: "/pro/analytics", label: "Analytics" },
+  { href: "/pro/reviews", label: "Reviews" },
   { href: "/pro/pricing", label: "Membership" },
   { href: "/pro/profile", label: "Profile" },
+  { href: "/pro/security", label: "Security" },
   { href: "/pro/password", label: "Password" },
 ];
 
@@ -37,11 +40,10 @@ export default function AgentDashboardLayout({
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       <Navbar />
-      <div className="container-site flex flex-1 flex-col gap-6 py-8 md:flex-row">
+      <div className="container-site flex flex-1 flex-col items-stretch gap-4 py-4 pb-10 md:flex-row md:items-start md:gap-6 md:py-6">
         <DashboardSidebar items={items} />
-        <div className="min-w-0 flex-1">{children}</div>
+        <div className="min-w-0 w-full flex-1">{children}</div>
       </div>
-      <Footer />
     </div>
   );
 }

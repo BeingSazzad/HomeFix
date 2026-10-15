@@ -28,11 +28,14 @@ const authSlice = createSlice({
       state.user = role === "pro" || role === "homeowner" ? userFromRole(role) : null;
       state.hydrated = true;
     },
-    loginAs(state, action: PayloadAction<UserRole>) {
-      state.user = userFromRole(action.payload);
+    loginAs(state, action: PayloadAction<UserRole | { role: UserRole; profile?: Partial<User> }>) {
+      const role = typeof action.payload === "string" ? action.payload : action.payload.role;
+      const profile = typeof action.payload === "string" ? undefined : action.payload.profile;
+      const base = userFromRole(role);
+      state.user = profile ? { ...base, ...profile, id: base.id, role } : base;
       state.hydrated = true;
       if (typeof window !== "undefined") {
-        window.localStorage.setItem(STORAGE_KEY, action.payload);
+        window.localStorage.setItem(STORAGE_KEY, role);
       }
     },
     login(state, action: PayloadAction<User>) {

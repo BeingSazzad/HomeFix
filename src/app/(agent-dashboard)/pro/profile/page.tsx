@@ -1,5 +1,5 @@
-import { AccountProfileForm } from "@/components/web-pages/account-profile-form";
+import { ProProfileForm } from "@/components/web-pages/pro-profile-form";
 
 export default function ProProfilePage() {
-  return <AccountProfileForm />;
+  return <ProProfileForm />;
 }

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { AccountMenu } from "@/components/layout/account-menu";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { signupHref } from "@/lib/role-access";
 import { useAppSelector } from "@/redux/hooks";
 
 const publicLinks = [
@@ -67,10 +68,10 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/login" className="font-display text-[15px] font-semibold text-title hover:text-primary">
+              <Link href="/login" className="font-display text-[16px] font-semibold text-title hover:text-primary">
                 Log in
               </Link>
-              <Button href="/signup">Create a request</Button>
+              <Button href={signupHref("/account/post-job")}>Create a request</Button>
             </>
           )}
         </div>
@@ -103,7 +104,7 @@ export function Navbar() {
                 <Link href="/login" onClick={() => setOpen(false)} className="font-display font-medium text-title">
                   Log in
                 </Link>
-                <Button href="/signup" size="sm">
+                <Button href={signupHref("/account/post-job")} size="sm">
                   Create a request
                 </Button>
               </>

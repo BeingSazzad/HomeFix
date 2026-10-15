@@ -39,6 +39,8 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
+  phone?: string;
+  street?: string;
   city?: string;
   state?: string;
   zip?: string;
@@ -95,13 +97,32 @@ export interface Quote {
   warranty?: string;
 }
 
+export interface ChatMessage {
+  id: string;
+  sender: "homeowner" | "pro";
+  senderName: string;
+  body: string;
+  sentAt: string;
+  read?: boolean;
+  attachment?: {
+    name: string;
+    size: string;
+    type: string;
+    url?: string;
+  };
+}
+
 export interface MessageThread {
   id: string;
   jobId: string;
   jobTitle: string;
   otherParty: string;
+  proId?: string;
+  unread: number;
   lastMessage: string;
+  lastSender: "homeowner" | "pro";
   updatedAt: string;
+  messages: ChatMessage[];
 }
 
 export interface IntakeDraft {

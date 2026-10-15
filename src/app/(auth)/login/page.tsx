@@ -1,101 +1,10 @@
-"use client";
-
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Field, TextField } from "@/components/ui/field";
-import { PasswordField } from "@/components/ui/password-field";
-import { AuthLinks } from "@/components/web-pages/auth-links";
-import { cn } from "@/lib/cn";
-import { loginAs } from "@/redux/slices/authSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { Suspense } from "react";
+import { LoginForm } from "@/components/web-pages/login-form";
 
 export default function LoginPage() {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const [role, setRole] = useState<"homeowner" | "pro">("homeowner");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  function submit(event: React.FormEvent) {
-    event.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Enter a valid email address.");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
-    setError("");
-    dispatch(loginAs(role));
-    router.push(role === "pro" ? "/pro" : "/account");
-  }
-
   return (
-    <Card className="p-6 md:p-8">
-      <p className="font-display text-[13px] font-bold uppercase tracking-[0.16em] text-primary">Sign in</p>
-      <h1 className="mt-2 text-[32px]">Welcome back</h1>
-      <p className="mt-2 text-sm leading-6 text-copy">
-        Homeowners open their requests. Professionals open the job board after clearance.
-      </p>
-
-      <div className="mt-6 grid grid-cols-2 overflow-hidden rounded-[10px] border border-line">
-        {(
-          [
-            ["homeowner", "Homeowner"],
-            ["pro", "Professional"],
-          ] as const
-        ).map(([value, label]) => (
-          <button
-            key={value}
-            type="button"
-            onClick={() => setRole(value)}
-            className={cn(
-              "min-h-[50px] font-display text-sm font-bold",
-              role === value ? "bg-primary text-white" : "bg-white text-title hover:text-primary",
-            )}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      <form className="mt-6 space-y-4" onSubmit={submit}>
-        <Field label="Email">
-          <TextField
-            required
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder={role === "pro" ? "pro@business.com" : "you@email.com"}
-            autoComplete="email"
-          />
-        </Field>
-        <Field label="Password">
-          <PasswordField
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="Your password"
-            autoComplete="current-password"
-          />
-        </Field>
-        <div className="flex justify-end">
-          <Link href="/forgot-password" className="font-display text-sm font-bold text-primary">
-            Forgot password
-          </Link>
-        </div>
-        {error ? <p className="text-sm text-error">{error}</p> : null}
-        <Button type="submit" className="w-full">
-          Sign in
-        </Button>
-      </form>
-
-      <AuthLinks prompt="New homeowner?" href="/signup" label="Create an account" />
-    </Card>
+    <Suspense fallback={<div className="text-sm text-muted">Loading sign in…</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

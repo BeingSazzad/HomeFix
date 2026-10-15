@@ -5,15 +5,15 @@ import { StatRow } from "@/components/ui/stat-row";
 import { photos } from "@/lib/media";
 
 const points = [
-  "Public listings appear only after administrator review",
-  "Screening and marketplace clearance stay separate",
-  "The request, quotes, messages, and review stay connected",
-  "Homeowners pay LocalHomeFix nothing for the project",
+  "Only reviewed professionals appear in public search",
+  "Background screening and listing approval stay separate decisions",
+  "Your request keeps quotes, messages, and the final review together",
+  "Homeowners pay LocalHomeFix $0 — pros pay for marketplace access",
 ];
 
 const stats = [
-  { value: "$0", label: "Homeowner project fee", icon: BadgeDollarSign },
-  { value: "9", label: "Catalog trades", icon: Wrench },
+  { value: "$0", label: "What homeowners pay us", icon: BadgeDollarSign },
+  { value: "9", label: "Home service trades", icon: Wrench },
   { value: "$19.99", label: "Pro membership / month", icon: CreditCard },
   { value: "3", label: "Free months after approval", icon: CalendarDays },
 ];
@@ -33,19 +33,23 @@ export function HomeTrust() {
           />
         </div>
         <div>
-          <SectionHeading eyebrow="The marketplace" title="From first note to finished review" />
+          <SectionHeading
+            eyebrow="What you get"
+            title="A clear place for the job — not a middleman on the bill"
+            description="LocalHomeFix helps you find and talk to local pros. The repair payment stays between you and the professional you choose."
+          />
           <ul className="mt-8 space-y-4">
             {points.map((point) => (
               <li key={point} className="flex items-start gap-3">
                 <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-smoke text-primary">
                   <Check className="h-3.5 w-3.5" />
                 </span>
-                <span className="text-[15px] leading-7 text-copy">{point}</span>
+                <span className="text-[16px] leading-7 text-copy">{point}</span>
               </li>
             ))}
           </ul>
           <div className="mt-8">
-            <Button href="/how-it-works">How it works</Button>
+            <Button href="/how-it-works">See the full flow</Button>
           </div>
         </div>
       </div>

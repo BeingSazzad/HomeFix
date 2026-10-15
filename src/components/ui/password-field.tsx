@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/cn";
 
 const controlClass =
-  "w-full min-h-[50px] rounded-[10px] border border-line bg-white px-4 pr-16 text-[15px] text-title outline-none transition-colors placeholder:text-muted focus:border-primary";
+  "w-full min-h-[50px] rounded-[10px] border border-line bg-white px-4 pr-16 text-[16px] text-title outline-none transition-colors placeholder:text-muted focus:border-primary";
 
 export function PasswordField({
   className,

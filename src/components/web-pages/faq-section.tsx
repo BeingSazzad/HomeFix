@@ -16,15 +16,15 @@ export function FaqSection({
   const [open, setOpen] = useState(0);
 
   return (
-    <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
+    <section id="faq" className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
         <SectionHeading
           align="center"
           eyebrow={eyebrow}
           title={title}
-          description="Browse first if you want. An account is only for posting a request or applying as a professional."
+          description="Browse free. Create an account only to post or apply as a pro."
         />
-        <div className="mx-auto mt-10 max-w-3xl divide-y divide-line rounded-[20px] bg-white px-2 soft-shadow">
+        <div className="mx-auto mt-8 max-w-3xl divide-y divide-line border-y border-line">
           {faqs.map((item, index) => {
             const active = open === index;
             return (
@@ -32,15 +32,20 @@ export function FaqSection({
                 <button
                   type="button"
                   onClick={() => setOpen(active ? -1 : index)}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left"
+                  className="flex w-full items-start justify-between gap-4 py-4 text-left"
                   aria-expanded={active}
                 >
-                  <span className="font-display text-[16px] font-bold text-title">{item.q}</span>
+                  <span className="text-[16px] font-semibold leading-6 text-title">{item.q}</span>
                   <ChevronDown
-                    className={cn("h-5 w-5 shrink-0 text-primary transition-transform", active && "rotate-180")}
+                    className={cn(
+                      "mt-0.5 h-4 w-4 shrink-0 text-muted transition-transform",
+                      active && "rotate-180 text-primary",
+                    )}
                   />
                 </button>
-                {active ? <p className="px-5 pb-5 text-[15px] leading-7 text-copy">{item.a}</p> : null}
+                {active ? (
+                  <p className="pb-4 text-[16px] leading-7 text-copy">{item.a}</p>
+                ) : null}
               </div>
             );
           })}

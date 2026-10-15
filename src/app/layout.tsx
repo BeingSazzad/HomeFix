@@ -17,11 +17,11 @@ const rubik = Rubik({
 
 export const metadata: Metadata = {
   title: {
-    default: "LocalHomeFix — Find cleared local home service professionals",
+    default: "LocalHomeFix — Find reviewed local home service pros",
     template: "%s · LocalHomeFix",
   },
   description:
-    "Describe a home repair, compare quotes from cleared local professionals, and keep the request, messages, and review in one place.",
+    "Browse reviewed local pros free, post a home repair request, compare quotes in one place, and pay the professional directly.",
 };
 
 export default function RootLayout({

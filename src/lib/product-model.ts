@@ -1,0 +1,133 @@
+/**
+ * Single product model for LocalHomeFix role journeys.
+ * Keep UI copy and gates aligned with this file.
+ */
+
+export type ProductRole = "guest" | "homeowner" | "pro";
+
+export type SignupField = {
+  key: string;
+  label: string;
+  required: boolean;
+  why: string;
+};
+
+export const homeownerSignupFields: SignupField[] = [
+  { key: "name", label: "Full name", required: true, why: "Shown on your requests and messages." },
+  { key: "email", label: "Email", required: true, why: "Sign-in and quote alerts." },
+  { key: "phone", label: "Mobile phone", required: true, why: "Pros unlock this only after clearance + membership." },
+  { key: "zip", label: "Home ZIP", required: true, why: "Matches nearby reviewed professionals." },
+  { key: "password", label: "Password", required: true, why: "Protects your free homeowner account." },
+];
+
+export const proSignupFields: SignupField[] = [
+  { key: "name", label: "Full name", required: true, why: "Account owner on the application." },
+  { key: "email", label: "Work email", required: true, why: "Sign-in and lead alerts." },
+  { key: "phone", label: "Business phone", required: true, why: "Shared only after you are cleared and membership is active." },
+  { key: "password", label: "Password", required: true, why: "Protects the pro account." },
+  { key: "businessName", label: "Business name", required: true, why: "Public profile title after clearance." },
+  { key: "trade", label: "Primary trade", required: true, why: "Which job board leads you see." },
+  { key: "bio", label: "Short bio", required: true, why: "Helps homeowners choose you." },
+  { key: "serviceZip", label: "Service ZIP", required: true, why: "Center of your service area." },
+  { key: "radius", label: "Travel radius", required: true, why: "How far you will take jobs." },
+  { key: "insurance", label: "Liability insurance", required: true, why: "Required before admin review." },
+  { key: "license", label: "Trade license (if required)", required: false, why: "Upload evidence in Verification." },
+  { key: "checkr", label: "Checkr screening consent", required: true, why: "Screening is separate from marketplace clearance." },
+];
+
+export const roleFeatures: Record<
+  ProductRole,
+  { can: string[]; cannot: string[]; landsOn: string }
+> = {
+  guest: {
+    landsOn: "Public site only (/browse-pros, /pricing, /how-it-works)",
+    can: ["Browse reviewed pro profiles", "Draft a request on the homepage (nothing posts yet)"],
+    cannot: [
+      "Post a live request",
+      "Save pros",
+      "Message anyone",
+      "See the pro job board",
+      "See homeowner phone/email",
+    ],
+  },
+  homeowner: {
+    landsOn: "/account — Your requests",
+    can: [
+      "Post a request (free)",
+      "See your own jobs, quotes, messages, reviews",
+      "Hire a quote and invite a saved pro",
+      "Save professionals",
+      "Manage profile, addresses, security",
+    ],
+    cannot: [
+      "Pay LocalHomeFix a project fee (there is none)",
+      "See the pro job board",
+      "Start pro membership",
+      "Quote other homeowners' jobs",
+    ],
+  },
+  pro: {
+    landsOn: "/pro — Overview, then Application → Membership → Jobs",
+    can: [
+      "Track application / clearance",
+      "Start $19.99 membership (3 free months)",
+      "See matched open jobs after clearance",
+      "Quote and message when membership is active",
+      "Unlock homeowner contact when cleared + membership on",
+    ],
+    cannot: [
+      "Post homeowner requests from a pro account",
+      "See phone/email before clearance + active membership",
+      "Quote while membership is paused or cancelled",
+      "Appear in public search before admin clearance",
+    ],
+  },
+};
+
+/** What happens when a homeowner posts a request */
+export const postJourney = {
+  poster: "homeowner" as const,
+  destination: {
+    homeownerView: "/account/jobs/[id]",
+    homeownerList: "/account",
+    proBoard: "/pro/jobs",
+    proDetail: "/pro/jobs/[id]",
+  },
+  whoSeesWhat: [
+    {
+      role: "Homeowner (you)",
+      view: "Full request detail: status tracker, photos, quotes, hire, invite, messages, review, dispute.",
+    },
+    {
+      role: "Reviewed pro · membership active",
+      view: "Job appears on Available jobs. Can open detail, send quote, message. Contact unlocks if cleared + membership.",
+    },
+    {
+      role: "Pro · not cleared or membership off",
+      view: "May see the board after clearance only. Quote/message/contact stay locked until membership is active.",
+    },
+    {
+      role: "Guest / other homeowners",
+      view: "Do not see your private request. Public site never lists homeowner phone or street.",
+    },
+  ],
+  requiredToPost: [
+    "Title",
+    "Trade / category",
+    "Description",
+    "ZIP",
+    "Timing",
+  ],
+  optionalToPost: ["Photos (up to 4)", "Saved address", "Budget", "Property type"],
+};
+
+export const postRequiredHints = {
+  title: "Short label pros scan on the job board.",
+  category: "Routes the request to matching trades.",
+  description: "What is broken, where it is, and access notes.",
+  zip: "Used for nearby matching. Exact street stays private until contact unlock.",
+  urgency: "Helps pros prioritize.",
+  photos: "Optional but improves quote quality.",
+  budget: "Optional range — not a checkout price.",
+  propertyType: "Optional context for the pro.",
+};

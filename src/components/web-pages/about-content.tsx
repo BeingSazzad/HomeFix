@@ -1,4 +1,4 @@
-import { BadgeDollarSign, CalendarDays, Check, CreditCard, FileText, Handshake, MapPin, MessagesSquare, Wrench } from "lucide-react";
+import { BadgeDollarSign, CalendarDays, Check, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StatRow } from "@/components/ui/stat-row";
@@ -7,42 +7,34 @@ import { HomeCta } from "@/components/web-pages/home-cta";
 import { photos } from "@/lib/media";
 
 const checks = [
-  "Homeowners browse without an account and pay LocalHomeFix nothing",
-  "Professionals apply, finish screening, then wait for administrator clearance",
-  "Contact is shared only after clearance and an active trial or subscription",
-  "Scope, contract, schedule, and payment stay between the two sides",
+  "Homeowners browse free and never pay LocalHomeFix for the repair",
+  "Professionals apply, finish screening, then wait for administrator review",
+  "Phone and email unlock only after approval plus an active trial or membership",
+  "Scope, schedule, contract, and payment stay between homeowner and pro",
 ];
 
 const stats = [
-  { value: "$0", label: "Homeowner project fee", icon: BadgeDollarSign },
-  { value: "9", label: "Catalog trades", icon: Wrench },
-  { value: "$19.99", label: "Membership / month", icon: CreditCard },
-  { value: "3", label: "Free months after approval", icon: CalendarDays },
+  { value: "$0", label: "Homeowner fee to LocalHomeFix", icon: BadgeDollarSign },
+  { value: "$19.99", label: "Pro membership per month", icon: CreditCard },
+  { value: "3 mo", label: "Free for pros after approval", icon: CalendarDays },
 ];
 
 const roles = [
   {
-    title: "A marketplace, not a contractor",
-    text: "LocalHomeFix organizes requests, quotes, messages, and completed-job reviews. It is not the employer, agent, or insurer of either party.",
+    title: "We organize the job. Pros do the work.",
+    text: "LocalHomeFix keeps requests, quotes, messages, and reviews in one place. We are not the employer, agent, or insurer of either party.",
     image: photos.services.plumbing,
   },
   {
-    title: "Homeowners stay off the platform bill",
-    text: "Describe the work, compare quotes, and keep the thread on one request. The repair payment is agreed with the professional.",
+    title: "Homeowners: free to post and compare",
+    text: "Describe the work, compare quotes, and keep the conversation on one request. You pay the professional directly — not a platform project fee.",
     image: photos.services.electrical,
   },
   {
-    title: "Professionals pay for access",
-    text: "After clearance, membership is $19.99 a month with three free months. Screening and marketplace clearance are separate decisions.",
+    title: "Professionals: one membership for access",
+    text: "After review, membership is $19.99 a month with three free months. Screening and marketplace approval are separate decisions.",
     image: photos.hero,
   },
-];
-
-const steps = [
-  { n: "01", icon: FileText, title: "Explain the job", text: "Share the details that help a professional understand the work." },
-  { n: "02", icon: MapPin, title: "See who is cleared", text: "Public profiles are limited to providers who finished administrator review." },
-  { n: "03", icon: MessagesSquare, title: "Compare with context", text: "Quotes, messages, and the completed-job review stay on the same request." },
-  { n: "04", icon: Handshake, title: "Agree directly", text: "You set scope, schedule, contract, and payment with the professional." },
 ];
 
 export function AboutContent() {
@@ -51,21 +43,25 @@ export function AboutContent() {
       <PageBanner
         eyebrow="About"
         title="LocalHomeFix Inc."
-        description="A marketplace for homeowner requests, provider quotes, project messages, and completed-job reviews."
+        description="A marketplace where homeowners post jobs, reviewed pros send quotes, and payment stays between both sides."
         image={photos.banners.about}
       />
 
       <section className="bg-white py-16 md:py-20">
         <div className="container-site grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <SectionHeading eyebrow="The company" title="One record of the work" />
+            <SectionHeading
+              eyebrow="The company"
+              title="One place for the request — not the repair bill"
+              description="We help homeowners and local pros find each other. We do not take the project payment."
+            />
             <ul className="mt-8 space-y-4">
               {checks.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-smoke text-primary">
                     <Check className="h-3.5 w-3.5" />
                   </span>
-                  <span className="text-[15px] leading-7 text-copy">{item}</span>
+                  <span className="text-[16px] leading-7 text-copy">{item}</span>
                 </li>
               ))}
             </ul>
@@ -83,7 +79,7 @@ export function AboutContent() {
               style={{ backgroundImage: `url(${photos.trustAlt})` }}
             />
             <div className="absolute left-5 top-5 rounded-[10px] bg-primary px-5 py-4 text-white">
-              <p className="font-display text-[34px] font-bold leading-none text-white">$0</p>
+              <p className="font-display text-[36px] font-bold leading-none text-white">$0</p>
               <p className="mt-1 text-sm font-semibold text-white">homeowner project fee</p>
             </div>
           </div>
@@ -95,7 +91,12 @@ export function AboutContent() {
 
       <section className="bg-surface py-16 md:py-20">
         <div className="container-site">
-          <SectionHeading align="center" eyebrow="Who uses it" title="Three sides of the same request" />
+          <SectionHeading
+            align="center"
+            eyebrow="Who uses it"
+            title="Homeowners, professionals, and the marketplace"
+            description="Each side has a clear role. LocalHomeFix connects them without selling repair packages."
+          />
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {roles.map((role) => (
               <article key={role.title} className="overflow-hidden rounded-[20px] bg-white soft-shadow">
@@ -106,29 +107,6 @@ export function AboutContent() {
                 </div>
               </article>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-16 md:py-20">
-        <div className="container-site">
-          <SectionHeading align="center" eyebrow="The flow" title="How a request moves" />
-          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {steps.map((step) => (
-              <article key={step.n} className="rounded-[14px] bg-smoke p-5">
-                <div className="flex items-center justify-between">
-                  <span className="grid h-12 w-12 place-items-center rounded-full bg-white text-primary">
-                    <step.icon className="h-5 w-5" />
-                  </span>
-                  <span className="font-display text-sm font-bold text-primary">{step.n}</span>
-                </div>
-                <h3 className="mt-4 text-xl">{step.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-copy">{step.text}</p>
-              </article>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Button href="/signup">Create a request</Button>
           </div>
         </div>
       </section>

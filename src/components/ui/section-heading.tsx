@@ -18,7 +18,7 @@ export function SectionHeading({
       {eyebrow ? (
         <p
           className={cn(
-            "mb-3 font-display text-[13px] font-bold uppercase tracking-[0.18em]",
+            "mb-3 font-display text-[12px] font-bold uppercase tracking-[0.18em]",
             light ? "text-white/70" : "text-primary",
           )}
         >
@@ -29,7 +29,7 @@ export function SectionHeading({
       {description ? (
         <p
           className={cn(
-            "mt-3 max-w-lg text-[15px] leading-7",
+            "mt-3 max-w-lg text-[16px] leading-7",
             light ? "text-white/75" : "text-copy",
             align === "center" && "mx-auto",
           )}

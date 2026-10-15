@@ -23,7 +23,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <Card className="p-6 md:p-8">
-      <p className="font-display text-[13px] font-bold uppercase tracking-[0.16em] text-primary">Account</p>
+      <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">Account</p>
       <h1 className="mt-2 text-[32px]">Forgot password</h1>
       {sent ? (
         <>
@@ -31,8 +31,11 @@ export default function ForgotPasswordPage() {
             If an account exists for <span className="font-semibold text-title">{email}</span>, a reset link is on the way.
             Check inbox and spam.
           </p>
-          <div className="mt-6">
-            <Button href="/login" className="w-full">
+          <div className="mt-6 space-y-3">
+            <Button href="/reset-password" className="w-full">
+              Continue to reset
+            </Button>
+            <Button href="/login" variant="ghost" className="w-full">
               Back to sign in
             </Button>
           </div>

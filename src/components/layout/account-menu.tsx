@@ -31,13 +31,16 @@ export function AccountMenu({ user }: { user: User }) {
       ? [
           { href: "/pro", label: "Dashboard" },
           { href: "/pro/jobs", label: "Available jobs" },
-          { href: "/pro/verification", label: "Verification" },
+          { href: "/pro/messages", label: "Messages" },
+          { href: "/pro/notifications", label: "Notifications" },
           { href: "/pro/pricing", label: "Membership" },
         ]
       : [
           { href: "/account", label: "My requests" },
           { href: "/account/post-job", label: "Post a request" },
           { href: "/account/messages", label: "Messages" },
+          { href: "/account/saved", label: "Saved pros" },
+          { href: "/account/notifications", label: "Notifications" },
         ];
 
   useEffect(() => {

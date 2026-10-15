@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
 import { useAppSelector } from "@/redux/hooks";
@@ -11,7 +10,10 @@ const items = [
   { href: "/account", label: "Requests" },
   { href: "/account/post-job", label: "Post a request" },
   { href: "/account/messages", label: "Messages" },
+  { href: "/account/saved", label: "Saved pros" },
+  { href: "/account/notifications", label: "Notifications" },
   { href: "/account/profile", label: "Profile" },
+  { href: "/account/security", label: "Security" },
   { href: "/account/password", label: "Password" },
 ];
 
@@ -35,11 +37,10 @@ export default function UserDashboardLayout({
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       <Navbar />
-      <div className="container-site flex flex-1 flex-col gap-6 py-8 md:flex-row">
+      <div className="container-site flex flex-1 flex-col items-stretch gap-4 py-4 pb-10 md:flex-row md:items-start md:gap-6 md:py-6">
         <DashboardSidebar items={items} />
-        <div className="min-w-0 flex-1">{children}</div>
+        <div className="min-w-0 w-full flex-1">{children}</div>
       </div>
-      <Footer />
     </div>
   );
 }
