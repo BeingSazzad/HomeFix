@@ -23,7 +23,7 @@ export function HomeAbout() {
     <section className="relative overflow-hidden bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="pointer-events-none absolute inset-0 opacity-[0.3] [background-image:radial-gradient(circle_at_1px_1px,color-mix(in_srgb,var(--primary)_28%,transparent)_1px,transparent_0)] [background-size:28px_28px]" />
 
-      <div className="container-site relative grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
+      <div className="container-site relative grid items-center gap-10 pb-6 lg:grid-cols-2 lg:gap-12 lg:pb-8">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-smoke px-3 py-1.5 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
             About us

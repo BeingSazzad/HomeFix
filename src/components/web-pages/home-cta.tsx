@@ -6,7 +6,7 @@ export function HomeCta() {
     <section className="relative overflow-hidden bg-title">
       <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${photos.cta})` }} />
       <div className="absolute inset-0 bg-title/78" />
-      <div className="container-site relative flex flex-col items-center gap-6 py-14 text-center md:py-16">
+      <div className="container-site relative flex flex-col items-center gap-6 py-[var(--section-sm)] text-center md:py-[var(--section)]">
         <div>
           <h2 className="mx-auto max-w-lg text-[28px] leading-tight text-white md:text-[36px]">
             Ready to get started?

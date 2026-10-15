@@ -8,7 +8,7 @@ const facts = [
 
 export function HomeFacts() {
   return (
-    <section className="bg-primary py-10 md:py-12">
+    <section className="bg-primary py-12 md:py-14">
       <div className="container-site">
         <ul className="grid gap-8 text-center sm:grid-cols-3 sm:gap-6">
           {facts.map((item) => (
