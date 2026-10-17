@@ -84,6 +84,23 @@ export const roleFeatures: Record<
   },
 };
 
+/**
+ * Marketplace loop (no admin UI in this build):
+ * Browse / Job post → Profile / Leads → Messages → Offer → Negotiate → Booking → Work → Dual confirm → Pay pro directly → Review
+ *
+ * Job status ≠ Offer status. One job, many offers; accepting one books and declines siblings.
+ */
+export const marketplaceLoop = [
+  "Browse or post",
+  "Message or collect offers",
+  "Compare / counter / accept",
+  "Confirm schedule (booking)",
+  "Work + optional change requests",
+  "Pro marks done → homeowner confirms",
+  "Pay the pro directly",
+  "Review or dispute",
+] as const;
+
 /** What happens when a homeowner posts a request */
 export const postJourney = {
   poster: "homeowner" as const,
@@ -96,19 +113,19 @@ export const postJourney = {
   whoSeesWhat: [
     {
       role: "Homeowner (you)",
-      view: "Full request detail: status tracker, photos, quotes, hire, invite, messages, review, dispute.",
+      view: "Full request: tracker, photos, offers, compare, counter, booking, change requests, dual completion, review, dispute.",
     },
     {
       role: "Reviewed pro · membership active",
-      view: "Job appears on Available jobs. Can open detail, send quote, message. Contact unlocks if cleared + membership.",
+      view: "Job on Available jobs. Quote with full offer fields, message, accept counters, start work, change requests.",
     },
     {
       role: "Pro · not cleared or membership off",
-      view: "May see the board after clearance only. Quote/message/contact stay locked until membership is active.",
+      view: "Board after clearance only. Quote/message/contact locked until membership is active.",
     },
     {
       role: "Guest / other homeowners",
-      view: "Do not see your private request. Public site never lists homeowner phone or street.",
+      view: "Private request stays private. Public site never lists homeowner phone or street.",
     },
   ],
   requiredToPost: [

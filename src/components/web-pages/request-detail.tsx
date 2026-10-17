@@ -1,22 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { QuoteCard } from "@/components/shared/quote-card";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { StatusTracker } from "@/components/shared/status-tracker";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Field, NativeSelect, TextArea } from "@/components/ui/field";
+import { Field, NativeSelect, TextArea, TextField } from "@/components/ui/field";
 import { useRoleAccess } from "@/hooks/use-role-access";
-import { selectJob, selectQuotesForJob } from "@/lib/marketplace";
+import {
+  selectBooking,
+  selectChangeRequests,
+  selectCompletion,
+  selectJob,
+  selectQuotesForJob,
+} from "@/lib/marketplace";
 import {
   getCategory,
+  getPro,
   professionals,
   propertyTypeLabels,
   threadsForJob,
   urgencyLabels,
 } from "@/Mockdata";
+import {
+  addChangeRequest,
+  homeownerConfirmComplete,
+  proMarkComplete,
+  requestReschedule,
+  resolveChangeRequest,
+} from "@/redux/slices/marketplaceSlice";
 import {
   addNotification,
   addReview,
@@ -44,6 +58,9 @@ export function RequestDetail({
   const { access } = useRoleAccess();
   const job = useAppSelector((state) => selectJob(state, id));
   const quotes = useAppSelector((state) => selectQuotesForJob(state, id));
+  const booking = useAppSelector((state) => selectBooking(state, id));
+  const changeRequests = useAppSelector((state) => selectChangeRequests(state, id));
+  const completion = useAppSelector((state) => selectCompletion(state, id));
   const photosForJob = useAppSelector((state) => state.features.jobPhotos[id] ?? []);
   const invited = useAppSelector((state) => state.features.invitedPros[id] ?? []);
   const favorites = useAppSelector((state) => state.features.favorites);
@@ -56,6 +73,23 @@ export function RequestDetail({
   const [disputeNote, setDisputeNote] = useState("");
   const [inviteId, setInviteId] = useState("");
   const [savedMsg, setSavedMsg] = useState("");
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [rescheduleDate, setRescheduleDate] = useState("");
+  const [rescheduleTime, setRescheduleTime] = useState("10:00");
+  const [changeAmount, setChangeAmount] = useState("");
+  const [changeReason, setChangeReason] = useState("");
+
+  const sortedQuotes = useMemo(
+    () =>
+      [...quotes].sort((a, b) => {
+        const rank = (s: string) =>
+          s === "accepted" ? 0 : s === "countered" ? 1 : s === "pending" ? 2 : 3;
+        return rank(a.status) - rank(b.status) || a.amount - b.amount;
+      }),
+    [quotes],
+  );
+
+  const compareSet = sortedQuotes.filter((q) => compareIds.includes(q.id));
 
   if (!marketplaceReady) {
     return (
@@ -93,6 +127,7 @@ export function RequestDetail({
     : job.homeownerName;
   const category = getCategory(job.categorySlug);
   const messages = threadsForJob(job.id);
+  const hiredPro = hiredQuote ? getPro(hiredQuote.proId) : null;
   const meta = [
     category?.name,
     isProView ? `${job.city}, ${job.state} · ZIP ${job.zip}` : `${job.city}, ${job.state} ${job.zip}`,
@@ -106,6 +141,12 @@ export function RequestDetail({
       pro.clearance === "cleared" &&
       (favorites.includes(pro.id) || pro.categorySlug === job.categorySlug),
   );
+
+  const workActive =
+    job.status === "hired" ||
+    job.status === "scheduled" ||
+    job.status === "in_progress" ||
+    job.status === "awaiting_confirm";
 
   return (
     <div className="space-y-6">
@@ -134,9 +175,10 @@ export function RequestDetail({
             ))}
           </div>
         ) : null}
+
         {canHire ? (
           <div className="mt-4 flex flex-wrap gap-2">
-            {job.status !== "cancelled" && job.status !== "completed" ? (
+            {job.status !== "cancelled" && job.status !== "completed" && job.status !== "disputed" ? (
               <>
                 <Button
                   type="button"
@@ -147,39 +189,250 @@ export function RequestDetail({
                     setSavedMsg("Request closed.");
                   }}
                 >
-                  Close
+                  Cancel request
                 </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => {
-                    dispatch(setJobStatus({ jobId: id, status: "getting_quotes" }));
-                    setSavedMsg("Reposted.");
-                  }}
-                >
-                  Repost
-                </Button>
+                {!hiredQuoteId ? (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      dispatch(setJobStatus({ jobId: id, status: "getting_quotes" }));
+                      setSavedMsg("Reposted for new offers.");
+                    }}
+                  >
+                    Repost
+                  </Button>
+                ) : null}
               </>
-            ) : null}
-            {job.status === "hired" || job.status === "scheduled" || job.status === "in_progress" ? (
-              <Button
-                type="button"
-                size="sm"
-                onClick={() => {
-                  dispatch(setJobStatus({ jobId: id, status: "completed" }));
-                  setSavedMsg("Marked completed.");
-                }}
-              >
-                Mark completed
-              </Button>
             ) : null}
           </div>
         ) : null}
         {savedMsg ? <p className="mt-3 text-sm text-success">{savedMsg}</p> : null}
       </div>
 
-      {canHire && job.status !== "cancelled" && job.status !== "completed" ? (
+      {/* Booking panel */}
+      {booking && workActive ? (
+        <Card>
+          <h2 className="text-lg">Booking</h2>
+          <dl className="mt-3 grid gap-2 text-sm text-copy sm:grid-cols-2">
+            <div>
+              <dt className="text-xs text-muted">Pro</dt>
+              <dd className="font-semibold text-title">{hiredPro?.businessName ?? "Professional"}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted">Agreed price</dt>
+              <dd className="font-semibold text-title">${booking.agreedPrice}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted">Schedule</dt>
+              <dd>
+                {booking.scheduledDate} · {booking.scheduledTime}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted">Payment</dt>
+              <dd>Pay the pro directly — not through LocalHomeFix</dd>
+            </div>
+          </dl>
+          <p className="mt-3 text-sm leading-6 text-copy">{booking.scopeSnapshot}</p>
+
+          {(canHire || isProView) && job.status !== "awaiting_confirm" && job.status !== "completed" ? (
+            <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
+              <Field label="New date">
+                <TextField
+                  type="date"
+                  value={rescheduleDate}
+                  onChange={(e) => setRescheduleDate(e.target.value)}
+                />
+              </Field>
+              <Field label="New time">
+                <TextField
+                  type="time"
+                  value={rescheduleTime}
+                  onChange={(e) => setRescheduleTime(e.target.value)}
+                />
+              </Field>
+              <div className="flex items-end">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  disabled={!rescheduleDate}
+                  onClick={() => {
+                    dispatch(
+                      requestReschedule({
+                        jobId: id,
+                        scheduledDate: rescheduleDate,
+                        scheduledTime: rescheduleTime,
+                      }),
+                    );
+                    setSavedMsg("Schedule updated.");
+                  }}
+                >
+                  Reschedule
+                </Button>
+              </div>
+            </div>
+          ) : null}
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {isProView && (job.status === "scheduled" || job.status === "hired") ? (
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => {
+                  dispatch(setJobStatus({ jobId: id, status: "in_progress" }));
+                  setSavedMsg("Marked in progress.");
+                }}
+              >
+                Start work
+              </Button>
+            ) : null}
+            {isProView && (job.status === "in_progress" || job.status === "scheduled") && !completion?.proMarkedAt ? (
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => {
+                  dispatch(proMarkComplete({ jobId: id }));
+                  dispatch(setJobStatus({ jobId: id, status: "awaiting_confirm" }));
+                  dispatch(
+                    addNotification({
+                      title: "Work marked complete",
+                      body: "Confirm completion when you’re satisfied, then pay the pro directly.",
+                      href: `/account/jobs/${id}`,
+                      createdAt: "Just now",
+                      role: "homeowner",
+                    }),
+                  );
+                  setSavedMsg("Waiting for homeowner confirmation.");
+                }}
+              >
+                Mark work complete
+              </Button>
+            ) : null}
+            {canHire && job.status === "awaiting_confirm" ? (
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => {
+                  dispatch(homeownerConfirmComplete({ jobId: id }));
+                  dispatch(setJobStatus({ jobId: id, status: "completed" }));
+                  setSavedMsg("Completion confirmed. Leave a review when ready.");
+                }}
+              >
+                Confirm completion
+              </Button>
+            ) : null}
+          </div>
+          {completion?.proMarkedAt && !completion.homeownerConfirmedAt ? (
+            <p className="mt-3 text-sm text-amber-800">
+              Pro marked complete. Homeowner confirmation unlocks the review step.
+            </p>
+          ) : null}
+        </Card>
+      ) : null}
+
+      {/* Change requests */}
+      {(isProView || canHire) && hiredQuoteId && workActive ? (
+        <Card>
+          <h2 className="text-lg">Change requests</h2>
+          <p className="mt-1 text-sm text-copy">
+            Extra work or price changes need homeowner approval before the agreed total updates.
+          </p>
+          {isProView ? (
+            <div className="mt-4 grid gap-3 sm:grid-cols-[140px_1fr_auto]">
+              <Field label="Extra ($)">
+                <TextField
+                  type="number"
+                  min={1}
+                  value={changeAmount}
+                  onChange={(e) => setChangeAmount(e.target.value)}
+                  placeholder="75"
+                />
+              </Field>
+              <Field label="Why">
+                <TextField
+                  value={changeReason}
+                  onChange={(e) => setChangeReason(e.target.value)}
+                  placeholder="Corroded shutoff valve needs replace"
+                />
+              </Field>
+              <div className="flex items-end">
+                <Button
+                  type="button"
+                  size="sm"
+                  disabled={!changeAmount || changeReason.trim().length < 6}
+                  onClick={() => {
+                    dispatch(
+                      addChangeRequest({
+                        jobId: id,
+                        amount: Number(changeAmount),
+                        reason: changeReason.trim(),
+                      }),
+                    );
+                    dispatch(
+                      addNotification({
+                        title: "Change request",
+                        body: `Pro requested +$${changeAmount} — review on your job.`,
+                        href: `/account/jobs/${id}`,
+                        createdAt: "Just now",
+                        role: "homeowner",
+                      }),
+                    );
+                    setChangeAmount("");
+                    setChangeReason("");
+                    setSavedMsg("Change request sent.");
+                  }}
+                >
+                  Send
+                </Button>
+              </div>
+            </div>
+          ) : null}
+          <ul className="mt-4 space-y-2">
+            {changeRequests.length === 0 ? (
+              <li className="text-sm text-muted">No change requests yet.</li>
+            ) : (
+              changeRequests.map((cr) => (
+                <li
+                  key={cr.id}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-[10px] border border-line px-3 py-2 text-sm"
+                >
+                  <span>
+                    <span className="font-semibold text-title">+${cr.amount}</span> — {cr.reason}
+                    <span className="ml-2 text-muted">({cr.status})</span>
+                  </span>
+                  {canHire && cr.status === "pending" ? (
+                    <span className="flex gap-2">
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={() => {
+                          dispatch(resolveChangeRequest({ id: cr.id, status: "approved" }));
+                          setSavedMsg("Change approved — agreed price updated.");
+                        }}
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => dispatch(resolveChangeRequest({ id: cr.id, status: "rejected" }))}
+                      >
+                        Reject
+                      </Button>
+                    </span>
+                  ) : null}
+                </li>
+              ))
+            )}
+          </ul>
+        </Card>
+      ) : null}
+
+      {canHire && job.status !== "cancelled" && job.status !== "completed" && !hiredQuoteId ? (
         <div className="flex flex-wrap items-end gap-3">
           <Field label="Invite a pro" className="min-w-[220px] flex-1">
             <NativeSelect value={inviteId} onChange={(event) => setInviteId(event.target.value)}>
@@ -217,16 +470,69 @@ export function RequestDetail({
       ) : null}
 
       <div>
-        <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-xl">Quotes</h2>
-          <p className="text-sm text-muted">{quotes.length}</p>
+        <div className="flex flex-wrap items-baseline justify-between gap-3">
+          <h2 className="text-xl">Offers</h2>
+          <p className="text-sm text-muted">
+            {quotes.length} · compare side by side before you hire
+          </p>
         </div>
-        {quotes.length === 0 ? (
-          <p className="mt-2 text-sm text-copy">No quotes yet.</p>
+        {compareSet.length >= 2 ? (
+          <div className="mt-3 overflow-x-auto rounded-[12px] border border-line bg-white">
+            <table className="min-w-full text-left text-sm">
+              <thead className="border-b border-line bg-surface text-muted">
+                <tr>
+                  <th className="px-3 py-2 font-medium"> </th>
+                  {compareSet.map((q) => (
+                    <th key={q.id} className="px-3 py-2 font-semibold text-title">
+                      {getPro(q.proId)?.businessName ?? "Pro"}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Price", (q: (typeof compareSet)[0]) => `$${q.amount}${q.priceMax ? `–$${q.priceMax}` : ""}`],
+                  ["Type", (q: (typeof compareSet)[0]) => q.priceType],
+                  ["Duration", (q: (typeof compareSet)[0]) => q.estimatedDuration ?? "—"],
+                  ["Materials", (q: (typeof compareSet)[0]) =>
+                    q.materialsIncluded == null ? "—" : q.materialsIncluded ? "Included" : "Extra"],
+                  ["Schedule", (q: (typeof compareSet)[0]) => q.proposedSchedule ?? q.availability],
+                  ["Expires", (q: (typeof compareSet)[0]) => q.expiresAt ?? "—"],
+                ].map(([label, fn]) => (
+                  <tr key={String(label)} className="border-b border-line last:border-0">
+                    <td className="px-3 py-2 text-muted">{label as string}</td>
+                    {compareSet.map((q) => (
+                      <td key={q.id} className="px-3 py-2 text-copy">
+                        {(fn as (q: (typeof compareSet)[0]) => string)(q)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
+        {sortedQuotes.length === 0 ? (
+          <p className="mt-2 text-sm text-copy">No offers yet.</p>
         ) : (
           <div className="mt-3 space-y-3">
-            {quotes.map((quote) => (
-              <QuoteCard key={quote.id} quote={quote} canHire={canHire && job.status !== "cancelled"} />
+            {sortedQuotes.map((quote) => (
+              <QuoteCard
+                key={quote.id}
+                quote={quote}
+                canHire={canHire && job.status !== "cancelled" && job.status !== "disputed"}
+                compareMode={canHire && !hiredQuoteId}
+                selected={compareIds.includes(quote.id)}
+                onToggleCompare={() =>
+                  setCompareIds((ids) =>
+                    ids.includes(quote.id)
+                      ? ids.filter((x) => x !== quote.id)
+                      : ids.length >= 3
+                        ? ids
+                        : [...ids, quote.id],
+                  )
+                }
+              />
             ))}
           </div>
         )}
@@ -274,7 +580,7 @@ export function RequestDetail({
               <TextArea
                 value={reviewBody}
                 onChange={(event) => setReviewBody(event.target.value)}
-                placeholder="How did the work go?"
+                placeholder="Quality, communication, and overall experience…"
               />
             </Field>
             <Button
@@ -302,9 +608,14 @@ export function RequestDetail({
         </Card>
       ) : null}
 
-      {canHire ? (
+      {canHire && job.status !== "cancelled" ? (
         <details className="rounded-[12px] border border-line bg-white p-4">
-          <summary className="cursor-pointer font-display text-sm font-bold text-title">Report a problem</summary>
+          <summary className="cursor-pointer font-display text-sm font-bold text-title">
+            Report a problem / open dispute
+          </summary>
+          <p className="mt-2 text-sm text-copy">
+            Use this for safety issues, no-shows, or unresolved quality problems. Opens a disputed status on this job.
+          </p>
           <TextArea
             className="mt-3"
             value={disputeNote}
@@ -318,20 +629,21 @@ export function RequestDetail({
             className="mt-3"
             disabled={disputeNote.trim().length < 8}
             onClick={() => {
+              dispatch(setJobStatus({ jobId: id, status: "disputed" }));
               dispatch(
                 addNotification({
-                  title: "Report submitted",
-                  body: "Support will review.",
+                  title: "Dispute opened",
+                  body: "Support will review. Keep messages and photos for context.",
                   href: `/account/jobs/${id}`,
                   createdAt: "Just now",
                   role: "homeowner",
                 }),
               );
               setDisputeNote("");
-              setSavedMsg("Report submitted.");
+              setSavedMsg("Dispute opened.");
             }}
           >
-            Submit report
+            Open dispute
           </Button>
         </details>
       ) : null}

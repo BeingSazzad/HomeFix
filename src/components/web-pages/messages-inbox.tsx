@@ -1,13 +1,14 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowLeft, FileText, Paperclip, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TextArea } from "@/components/ui/field";
 import { cn } from "@/lib/cn";
 import { useRoleAccess } from "@/hooks/use-role-access";
-import { threads as seedThreads } from "@/Mockdata";
+import { getPro, threads as seedThreads } from "@/Mockdata";
 import type { ChatMessage, MessageThread } from "@/types";
 
 type PendingFile = {
@@ -44,6 +45,8 @@ const BUBBLE =
 
 export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pro" }) {
   const { access } = useRoleAccess();
+  const searchParams = useSearchParams();
+  const dmProId = searchParams.get("dm");
   const fileInput = useRef<HTMLInputElement>(null);
   const [threads, setThreads] = useState(() =>
     role === "pro"
@@ -63,6 +66,41 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
   const mySender = role === "pro" ? "pro" : "homeowner";
   const myName = role === "pro" ? "Ortega Plumbing" : "Maya Chen";
   const canSend = role === "homeowner" ? access.canHomeownerMessage : access.canProMessage;
+
+  useEffect(() => {
+    if (role !== "homeowner" || !dmProId) return;
+    const pro = getPro(dmProId);
+    if (!pro) return;
+    const threadId = `dm-${pro.id}`;
+    setThreads((list) => {
+      if (list.some((t) => t.id === threadId)) return list;
+      const thread: MessageThread = {
+        id: threadId,
+        jobId: `dm:${pro.id}`,
+        jobTitle: `Chat with ${pro.businessName}`,
+        otherParty: pro.businessName,
+        proId: pro.id,
+        unread: 0,
+        lastMessage: "Say hello and share photos of the job.",
+        lastSender: "homeowner",
+        updatedAt: "Just now",
+        isDirect: true,
+        messages: [
+          {
+            id: `${threadId}-0`,
+            sender: "pro",
+            senderName: pro.businessName,
+            body: `Hi — thanks for reaching out to ${pro.businessName}. Share a few details or photos and I’ll follow up.`,
+            sentAt: "Just now",
+            read: true,
+          },
+        ],
+      };
+      return [thread, ...list];
+    });
+    setActiveId(threadId);
+    setMobileChat(true);
+  }, [dmProId, role]);
 
   const active = useMemo(
     () => threads.find((thread) => thread.id === activeId) ?? null,
@@ -243,12 +281,21 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <p className="truncate font-display text-sm font-bold text-title">{active.otherParty}</p>
-                      <Link
-                        href={`${jobBase}/${active.jobId}`}
-                        className="shrink-0 text-[12px] font-semibold text-primary"
-                      >
-                        View request
-                      </Link>
+                      {active.isDirect || active.jobId.startsWith("dm:") ? (
+                        <Link
+                          href={active.proId ? `/browse-pros/${active.proId}` : "/browse-pros"}
+                          className="shrink-0 text-[12px] font-semibold text-primary"
+                        >
+                          View profile
+                        </Link>
+                      ) : (
+                        <Link
+                          href={`${jobBase}/${active.jobId}`}
+                          className="shrink-0 text-[12px] font-semibold text-primary"
+                        >
+                          View request
+                        </Link>
+                      )}
                     </div>
                     <p className="truncate text-[13px] text-copy">{active.jobTitle}</p>
                   </div>

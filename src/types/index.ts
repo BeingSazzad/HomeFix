@@ -1,5 +1,6 @@
 export type UserRole = "homeowner" | "pro" | "admin";
 
+/** Job lifecycle — separate from per-offer status */
 export type JobStatus =
   | "draft"
   | "active"
@@ -8,8 +9,19 @@ export type JobStatus =
   | "hired"
   | "scheduled"
   | "in_progress"
+  | "awaiting_confirm"
   | "completed"
-  | "cancelled";
+  | "cancelled"
+  | "disputed";
+
+/** Per-offer status — a job can have many offers */
+export type OfferStatus =
+  | "pending"
+  | "countered"
+  | "accepted"
+  | "rejected"
+  | "withdrawn"
+  | "expired";
 
 export type QuotePriceType = "fixed" | "estimate" | "hourly" | "time_and_materials";
 
@@ -24,6 +36,10 @@ export type PropertyType =
   | "other";
 
 export type ClearanceStatus = "cleared" | "pending" | "rejected" | "suspended";
+
+export type ChangeRequestStatus = "pending" | "approved" | "rejected";
+
+export type BookingStatus = "pending_schedule" | "confirmed" | "reschedule_requested";
 
 export interface Category {
   id: string;
@@ -67,6 +83,12 @@ export interface Professional {
   licensed: boolean;
   insured: boolean;
   emergency: boolean;
+  /** Profile starting price — final job price comes from the offer */
+  startingPrice: number;
+  /** Short availability note shown on profile */
+  availabilityNote: string;
+  /** True if they can take work this week */
+  availableThisWeek: boolean;
 }
 
 export interface Job {
@@ -93,8 +115,46 @@ export interface Quote {
   amount: number;
   priceMax?: number;
   scope: string;
+  /** What’s not included */
+  exclusions?: string;
   availability: string;
   warranty?: string;
+  materialsIncluded?: boolean;
+  estimatedDuration?: string;
+  proposedSchedule?: string;
+  expiresAt?: string;
+  paymentTerms?: string;
+  status: OfferStatus;
+  /** Homeowner counter-proposal */
+  counterAmount?: number;
+  counterNote?: string;
+}
+
+export interface Booking {
+  jobId: string;
+  quoteId: string;
+  proId: string;
+  agreedPrice: number;
+  scheduledDate: string;
+  scheduledTime: string;
+  scopeSnapshot: string;
+  status: BookingStatus;
+  notes?: string;
+}
+
+export interface ChangeRequest {
+  id: string;
+  jobId: string;
+  amount: number;
+  reason: string;
+  status: ChangeRequestStatus;
+  createdAt: string;
+}
+
+export interface JobCompletion {
+  jobId: string;
+  proMarkedAt?: string;
+  homeownerConfirmedAt?: string;
 }
 
 export interface ChatMessage {
@@ -114,6 +174,7 @@ export interface ChatMessage {
 
 export interface MessageThread {
   id: string;
+  /** Omit or use dm:proId for direct chats without a job */
   jobId: string;
   jobTitle: string;
   otherParty: string;
@@ -123,6 +184,8 @@ export interface MessageThread {
   lastSender: "homeowner" | "pro";
   updatedAt: string;
   messages: ChatMessage[];
+  /** True when started from a pro profile, not a job */
+  isDirect?: boolean;
 }
 
 export interface IntakeDraft {

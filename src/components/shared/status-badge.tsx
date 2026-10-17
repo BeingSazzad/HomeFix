@@ -10,8 +10,10 @@ const tones: Record<JobStatus, "blue" | "green" | "amber" | "slate" | "orange"> 
   hired: "orange",
   scheduled: "amber",
   in_progress: "amber",
+  awaiting_confirm: "amber",
   completed: "green",
   cancelled: "slate",
+  disputed: "orange",
 };
 
 export function StatusBadge({ status }: { status: JobStatus }) {

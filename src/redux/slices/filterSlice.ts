@@ -4,7 +4,10 @@ interface FilterState {
   query: string;
   category: string;
   zip: string;
-  sort: "rated" | "reviews" | "jobs";
+  sort: "rated" | "reviews" | "jobs" | "price_low" | "price_high";
+  maxPrice: string;
+  minRating: string;
+  availableThisWeek: boolean;
 }
 
 const initialState: FilterState = {
@@ -12,6 +15,9 @@ const initialState: FilterState = {
   category: "",
   zip: "",
   sort: "rated",
+  maxPrice: "",
+  minRating: "",
+  availableThisWeek: false,
 };
 
 const filterSlice = createSlice({
@@ -30,11 +36,29 @@ const filterSlice = createSlice({
     setSort(state, action: PayloadAction<FilterState["sort"]>) {
       state.sort = action.payload;
     },
+    setMaxPrice(state, action: PayloadAction<string>) {
+      state.maxPrice = action.payload;
+    },
+    setMinRating(state, action: PayloadAction<string>) {
+      state.minRating = action.payload;
+    },
+    setAvailableThisWeek(state, action: PayloadAction<boolean>) {
+      state.availableThisWeek = action.payload;
+    },
     resetFilters() {
       return initialState;
     },
   },
 });
 
-export const { setQuery, setCategory, setZip, setSort, resetFilters } = filterSlice.actions;
+export const {
+  setQuery,
+  setCategory,
+  setZip,
+  setSort,
+  setMaxPrice,
+  setMinRating,
+  setAvailableThisWeek,
+  resetFilters,
+} = filterSlice.actions;
 export default filterSlice.reducer;

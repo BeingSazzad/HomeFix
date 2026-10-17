@@ -14,7 +14,17 @@ export default function ProJobsPage() {
   const { access } = useRoleAccess();
   const leadActions = useAppSelector((state) => state.features.leadActions);
   const jobs = useAppSelector(selectAllJobs).filter((job) => {
-    if (job.status === "completed" || job.status === "cancelled" || job.status === "hired") return false;
+    const closed = [
+      "completed",
+      "cancelled",
+      "hired",
+      "scheduled",
+      "in_progress",
+      "awaiting_confirm",
+      "disputed",
+      "draft",
+    ].includes(job.status);
+    if (closed) return false;
     return leadActions[job.id] !== "declined";
   });
 

@@ -7,7 +7,14 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Field, NativeSelect, TextField } from "@/components/ui/field";
 import { ProCard } from "@/components/shared/pro-card";
 import { categories, professionals } from "@/Mockdata";
-import { setCategory, setQuery, setSort, setZip } from "@/redux/slices/filterSlice";
+import {
+  setCategory,
+  setMaxPrice,
+  setMinRating,
+  setQuery,
+  setSort,
+  setZip,
+} from "@/redux/slices/filterSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export function BrowseProsClient() {
@@ -19,28 +26,43 @@ export function BrowseProsClient() {
 
   const results = useMemo(() => {
     const locationQ = location.trim().toLowerCase();
+    const maxPrice = filters.maxPrice ? Number(filters.maxPrice) : null;
+    const minRating = filters.minRating ? Number(filters.minRating) : null;
+
     const list = professionals.filter((pro) => {
       const matchesCategory = !category || pro.categorySlug === category;
       const locationHaystack = `${pro.zip} ${pro.city} ${pro.state}`.toLowerCase();
       const matchesLocation =
         !locationQ ||
         locationHaystack.includes(locationQ) ||
-        ( /^\d+$/.test(locationQ) && pro.zip.startsWith(locationQ.slice(0, 3)) );
+        (/^\d+$/.test(locationQ) && pro.zip.startsWith(locationQ.slice(0, 3)));
       const haystack = `${pro.businessName} ${pro.trade} ${pro.bio}`.toLowerCase();
       const matchesQuery = !filters.query || haystack.includes(filters.query.toLowerCase());
-      return matchesCategory && matchesLocation && matchesQuery && pro.clearance === "cleared";
+      const matchesPrice = maxPrice == null || !Number.isFinite(maxPrice) || pro.startingPrice <= maxPrice;
+      const matchesRating = minRating == null || !Number.isFinite(minRating) || pro.rating >= minRating;
+      return (
+        matchesCategory &&
+        matchesLocation &&
+        matchesQuery &&
+        matchesPrice &&
+        matchesRating &&
+        pro.clearance === "cleared"
+      );
     });
+
     return [...list].sort((a, b) => {
       if (filters.sort === "reviews") return b.reviewCount - a.reviewCount;
       if (filters.sort === "jobs") return b.jobsCompleted - a.jobsCompleted;
+      if (filters.sort === "price_low") return a.startingPrice - b.startingPrice;
+      if (filters.sort === "price_high") return b.startingPrice - a.startingPrice;
       return b.rating - a.rating;
     });
-  }, [category, filters.query, filters.sort, location]);
+  }, [category, filters, location]);
 
   return (
     <section className="bg-surface py-12">
       <div className="container-site">
-        <div className="grid gap-3 rounded-[14px] bg-white p-5 soft-shadow md:grid-cols-4">
+        <div className="grid gap-3 rounded-[14px] bg-white p-5 soft-shadow md:grid-cols-3 lg:grid-cols-6">
           <Field label="Search">
             <TextField
               value={filters.query}
@@ -68,6 +90,26 @@ export function BrowseProsClient() {
               placeholder="ZIP or city"
             />
           </Field>
+          <Field label="Max starting $">
+            <TextField
+              type="number"
+              min={0}
+              value={filters.maxPrice}
+              onChange={(event) => dispatch(setMaxPrice(event.target.value))}
+              placeholder="e.g. 150"
+            />
+          </Field>
+          <Field label="Min rating">
+            <NativeSelect
+              value={filters.minRating}
+              onChange={(event) => dispatch(setMinRating(event.target.value))}
+            >
+              <option value="">Any</option>
+              <option value="4.5">4.5+</option>
+              <option value="4.7">4.7+</option>
+              <option value="4.8">4.8+</option>
+            </NativeSelect>
+          </Field>
           <Field label="Sort">
             <NativeSelect
               value={filters.sort}
@@ -76,15 +118,16 @@ export function BrowseProsClient() {
               <option value="rated">Highest rated</option>
               <option value="reviews">Most reviews</option>
               <option value="jobs">Most jobs completed</option>
+              <option value="price_low">Starting price ↑</option>
+              <option value="price_high">Starting price ↓</option>
             </NativeSelect>
           </Field>
         </div>
-        <p className="mt-4 text-sm text-muted">{results.length} professionals in this view</p>
         {results.length === 0 ? (
           <div className="mt-6">
             <EmptyState
               title="No reviewed professionals match this view"
-              description="Try another service or location, or post a request."
+              description="Try another service, price, or location — or post a request for offers."
               actionLabel="Post a request"
               href="/signup?next=%2Faccount%2Fpost-job"
             />

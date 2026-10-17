@@ -84,6 +84,15 @@ export function ProProfileForm() {
                 rows={3}
               />
             </Field>
+            <Field label="Starting price ($)">
+              <TextField name="startingPrice" type="number" min={1} defaultValue={95} />
+            </Field>
+            <Field label="Availability note">
+              <TextField name="availability" defaultValue="Thu–Sat · same-week openings" />
+            </Field>
+            <p className="sm:col-span-2 text-xs text-muted">
+              Starting price is a profile guide. Final job price is always set in each offer.
+            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 border-t border-line pt-3">

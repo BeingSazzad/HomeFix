@@ -90,6 +90,12 @@ export function ProCard({
           {pro.rating.toFixed(1)}
           <span className="text-muted">· {pro.reviewCount} reviews</span>
         </p>
+        <p className="mt-auto pt-3 text-sm font-semibold text-title">
+          From ${pro.startingPrice}
+          <span className="ml-1.5 font-normal text-muted">
+            {pro.availableThisWeek ? "· open this week" : "· book ahead"}
+          </span>
+        </p>
       </div>
     </Link>
   );

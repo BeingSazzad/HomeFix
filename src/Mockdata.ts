@@ -129,6 +129,9 @@ export const professionals: Professional[] = [
     licensed: true,
     insured: true,
     emergency: true,
+    startingPrice: 95,
+    availabilityNote: "Thu–Sat · same-week openings",
+    availableThisWeek: true,
   },
   {
     id: "pro-2",
@@ -150,6 +153,9 @@ export const professionals: Professional[] = [
     licensed: true,
     insured: true,
     emergency: false,
+    startingPrice: 85,
+    availabilityNote: "Weekdays · next openings Mon",
+    availableThisWeek: true,
   },
   {
     id: "pro-3",
@@ -171,6 +177,9 @@ export const professionals: Professional[] = [
     licensed: true,
     insured: true,
     emergency: true,
+    startingPrice: 120,
+    availabilityNote: "Book 3–5 days ahead",
+    availableThisWeek: false,
   },
   {
     id: "pro-4",
@@ -192,6 +201,9 @@ export const professionals: Professional[] = [
     licensed: false,
     insured: true,
     emergency: false,
+    startingPrice: 150,
+    availabilityNote: "Weekends preferred",
+    availableThisWeek: true,
   },
 ];
 
@@ -268,8 +280,15 @@ export const quotes: Quote[] = [
     amount: 180,
     priceMax: 320,
     scope: "Inspect supply lines and P-trap. Replace failed fittings and reseal the drain.",
+    exclusions: "Cabinet refinishing and drywall repair not included.",
     availability: "Thursday or Friday this week",
     warranty: "90-day workmanship on the repair",
+    materialsIncluded: true,
+    estimatedDuration: "1–2 hours",
+    proposedSchedule: "Thu 1–3 PM or Fri morning",
+    expiresAt: "2026-10-20",
+    paymentTerms: "Pay the pro directly after the visit — card or cash.",
+    status: "pending",
   },
   {
     id: "quote-2",
@@ -278,7 +297,14 @@ export const quotes: Quote[] = [
     priceType: "hourly",
     amount: 95,
     scope: "Diagnostic visit first. Parts billed separately if a receptacle is replaced.",
+    exclusions: "Panel upgrades and new circuits.",
     availability: "Next Monday",
+    materialsIncluded: false,
+    estimatedDuration: "45–90 min diagnostic",
+    proposedSchedule: "Mon after 2 PM",
+    expiresAt: "2026-10-18",
+    paymentTerms: "Diagnostic fee due at visit; parts invoiced separately.",
+    status: "pending",
   },
   {
     id: "quote-3",
@@ -287,8 +313,15 @@ export const quotes: Quote[] = [
     priceType: "fixed",
     amount: 240,
     scope: "Trace the circuit, repair or replace the failed outlet, test adjacent receptacles.",
+    exclusions: "Whole-home rewiring.",
     availability: "Tomorrow afternoon",
     warranty: "1 year on the electrical repair",
+    materialsIncluded: true,
+    estimatedDuration: "2 hours",
+    proposedSchedule: "Tomorrow 2–4 PM",
+    expiresAt: "2026-10-17",
+    paymentTerms: "Fixed price — pay the pro when work is done.",
+    status: "pending",
   },
 ];
 
@@ -372,14 +405,25 @@ export const urgencyLabels: Record<Job["urgency"], string> = {
 
 export const statusLabels: Record<Job["status"], string> = {
   draft: "Draft",
-  active: "Active",
-  getting_quotes: "Getting quotes",
-  quotes_in: "Quotes in",
+  active: "Posted",
+  getting_quotes: "Matched",
+  quotes_in: "Offers in",
   hired: "Hired",
   scheduled: "Scheduled",
   in_progress: "In progress",
+  awaiting_confirm: "Confirm completion",
   completed: "Completed",
   cancelled: "Cancelled",
+  disputed: "Disputed",
+};
+
+export const offerStatusLabels: Record<string, string> = {
+  pending: "Pending",
+  countered: "Countered",
+  accepted: "Accepted",
+  rejected: "Declined",
+  withdrawn: "Withdrawn",
+  expired: "Expired",
 };
 
 export function getCategory(slug: string) {

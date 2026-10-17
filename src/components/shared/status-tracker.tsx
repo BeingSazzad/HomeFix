@@ -6,6 +6,9 @@ export function StatusTracker({ status }: { status: JobStatus }) {
   if (status === "cancelled") {
     return <p className="text-sm font-semibold text-muted">Request closed</p>;
   }
+  if (status === "disputed") {
+    return <p className="text-sm font-semibold text-error">Dispute open — support reviewing</p>;
+  }
 
   return (
     <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
