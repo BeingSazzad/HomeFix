@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ShieldCheck, Zap } from "lucide-react";
+import { Check, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
 import { cn } from "@/lib/cn";
@@ -12,12 +12,6 @@ const points = [
   "Pay Contractors Directly",
   "No Middleman Fees",
   "Your Privacy Protected",
-];
-
-const trustFaces = [
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80",
-  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&h=80&q=80",
 ];
 
 export function HomeAbout() {
@@ -49,37 +43,17 @@ export function HomeAbout() {
             ))}
           </ul>
 
-          <div className="mt-10 sm:mt-11 flex flex-wrap items-center gap-5">
+          <div className="mt-10 sm:mt-11">
             <Button href="/about" size="lg">
               Learn our story ↗
             </Button>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center">
-                {trustFaces.map((src, index) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={src}
-                    src={src}
-                    alt=""
-                    className={cn(
-                      "h-8 w-8 rounded-full border-2 border-surface object-cover shadow-xs",
-                      index > 0 && "-ml-2.5",
-                    )}
-                  />
-                ))}
-              </div>
-              <p className="text-xs font-semibold text-title flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-                Licensed & Background Cleared
-              </p>
-            </div>
           </div>
         </div>
 
         <div className="relative z-[1] mx-auto w-full max-w-[480px] lg:max-w-none">
           <div
             className="h-[380px] overflow-hidden rounded-[28px] bg-cover bg-center shadow-lg md:h-[440px]"
-            style={{ backgroundImage: `url(${photos.trust})` }}
+            style={{ backgroundImage: `url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80)` }}
           />
 
           {/* Floating Pill: $0 Fee */}

@@ -88,12 +88,9 @@ export function HomeProcess() {
           })}
         </div>
 
-        <div className="mt-14 sm:mt-16 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mt-14 sm:mt-16 flex justify-center">
           <Button href="/signup?next=%2Faccount%2Fpost-job" size="lg">
             Post your request free ↗
-          </Button>
-          <Button href="/how-it-works" variant="ghost" size="lg">
-            Learn about our vetting standards
           </Button>
         </div>
       </div>
