@@ -218,19 +218,13 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 <span className="grid h-24 w-24 sm:h-28 sm:w-28 place-items-center rounded-[24px] border-4 border-white bg-gradient-to-br from-[#0d56d6] via-[#0b4ec7] to-[#009ae5] font-display text-3xl sm:text-4xl font-bold text-white shadow-xl">
                   {initials(pro.name)}
                 </span>
-                <span
-                  title="Cleared & Verified Pro"
-                  className="absolute -bottom-1.5 -right-1.5 grid h-8 w-8 place-items-center rounded-full border-2 border-white bg-primary text-white shadow-md"
-                >
-                  <ShieldCheck className="h-4 w-4" />
-                </span>
               </div>
 
               <div className="space-y-1.5 pt-2 sm:pt-4">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-2.5 py-0.5 text-xs font-semibold text-primary">
                     <BadgeCheck className="h-3.5 w-3.5" />
-                    Top Pro · Cleared
+                    Top Pro · Background Cleared
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-surface border border-line px-2.5 py-0.5 text-xs font-medium text-copy">
                     <MapPin className="h-3 w-3 text-muted" />
@@ -238,8 +232,15 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   </span>
                 </div>
 
-                <h1 className="font-display text-[26px] sm:text-[32px] md:text-[36px] font-bold tracking-tight text-title leading-tight">
-                  {pro.businessName}
+                <h1 className="font-display text-[26px] sm:text-[32px] md:text-[36px] font-bold tracking-tight text-title leading-tight flex items-center gap-2.5 flex-wrap">
+                  <span>{pro.businessName}</span>
+                  <span
+                    title="Screened & Verified Professional"
+                    className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-2.5 py-1 text-xs sm:text-sm font-semibold text-primary"
+                  >
+                    <ShieldCheck className="h-4 w-4 text-primary fill-primary/20 shrink-0" />
+                    <span>Verified</span>
+                  </span>
                 </h1>
 
                 <p className="font-sans text-sm text-[#555] flex flex-wrap items-center gap-2">

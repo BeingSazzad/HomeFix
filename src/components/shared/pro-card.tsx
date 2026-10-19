@@ -51,13 +51,6 @@ export function ProCard({
           className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
           style={{ backgroundImage: `url(${image})` }}
         />
-        <span
-          title="Verified"
-          aria-label="Verified"
-          className="absolute left-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white text-primary shadow-xs"
-        >
-          <ShieldCheck className="h-4 w-4" />
-        </span>
         <button
           type="button"
           aria-label={saved ? "Remove from saved" : "Save professional"}
@@ -81,7 +74,13 @@ export function ProCard({
       </div>
       <div className="flex flex-1 flex-col p-5">
         <h3 className="font-display text-[18px] sm:text-[19px] font-medium tracking-tight leading-snug text-title transition-colors group-hover:text-primary min-h-[46px] line-clamp-2">
-          {pro.businessName}
+          <span>{pro.businessName}</span>
+          <span title="Screened & Verified Professional" className="inline-block ml-1.5 -mt-0.5 align-middle">
+            <ShieldCheck
+              className="h-4 w-4 text-primary fill-primary/15"
+              aria-label="Verified Pro"
+            />
+          </span>
         </h3>
 
         <div className="mt-3 flex items-center gap-2">
