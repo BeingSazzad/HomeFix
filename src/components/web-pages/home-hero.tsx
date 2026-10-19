@@ -1,49 +1,109 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ClipboardList, MapPin, Star, Wrench } from "lucide-react";
+import {
+  ClipboardList,
+  MapPin,
+  Search,
+  Sparkles,
+  Star,
+  TriangleAlert,
+  Wrench,
+  RotateCcw,
+  HelpCircle,
+  ShieldCheck,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field, NativeSelect, TextArea, TextField } from "@/components/ui/field";
+import { EmergencyBanner } from "@/components/shared/emergency-banner";
 import { photos } from "@/lib/media";
 import { categories } from "@/Mockdata";
 import { saveDraft } from "@/redux/slices/intakeSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { cn } from "@/lib/cn";
 
+// DEMO DATA: Trust faces placeholder for social proof
 const trustFaces = [
   "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80",
   "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80",
   "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&h=80&q=80",
 ];
 
+const EMERGENCY_PATTERNS = [
+  "gas leak",
+  "smell gas",
+  "gas odor",
+  "electrical fire",
+  "sparks",
+  "sparking",
+  "flames",
+  "fire",
+  "flooding",
+  "burst pipe",
+  "carbon monoxide",
+  "co detector",
+  "ceiling collapsing",
+  "exposed live wire",
+];
+
+function detectEmergency(text: string): boolean {
+  const lower = text.toLowerCase();
+  return EMERGENCY_PATTERNS.some((pattern) => lower.includes(pattern));
+}
+
+function guessServiceCategory(problem: string): string {
+  const p = problem.toLowerCase();
+  if (p.includes("leak") || p.includes("sink") || p.includes("pipe") || p.includes("faucet") || p.includes("drain") || p.includes("toilet") || p.includes("water heater") || p.includes("clog")) {
+    return "plumbing";
+  }
+  if (p.includes("circuit") || p.includes("breaker") || p.includes("outlet") || p.includes("wiring") || p.includes("light") || p.includes("switch") || p.includes("power")) {
+    return "electrical";
+  }
+  if (p.includes("ac") || p.includes("air condition") || p.includes("furnace") || p.includes("heat") || p.includes("thermostat") || p.includes("cooling")) {
+    return "hvac";
+  }
+  if (p.includes("roof") || p.includes("shingle") || p.includes("gutter") || p.includes("skylight")) {
+    return "roofing";
+  }
+  if (p.includes("fridge") || p.includes("refrigerator") || p.includes("washer") || p.includes("dryer") || p.includes("dishwasher") || p.includes("oven") || p.includes("stove")) {
+    return "appliance-repair";
+  }
+  if (p.includes("tree") || p.includes("lawn") || p.includes("grass") || p.includes("sprinkler")) {
+    return "landscaping";
+  }
+  if (p.includes("paint") || p.includes("drywall") || p.includes("door") || p.includes("deck") || p.includes("shelf") || p.includes("lock") || p.includes("fence")) {
+    return "handyman";
+  }
+  return "";
+}
+
 function buildDraft(problem: string, categorySlug: string, zip: string) {
-  const guessed =
-    categorySlug ||
-    (problem.toLowerCase().includes("leak") || problem.toLowerCase().includes("sink")
-      ? "plumbing"
-      : "");
+  const guessed = categorySlug || guessServiceCategory(problem) || "handyman";
   const match = categories.find((item) => item.slug === guessed);
   return {
     problem,
     categorySlug: guessed,
     zip,
-    title: match ? `${match.name} help needed` : "Home repair request",
+    title: match ? `${match.name} repair` : "Home repair request",
     summary: problem,
     followUps: [
       "What type of property is this?",
-      "Are there access details the professional should know?",
-      "Which days or times work best?",
-      "Can you add photos of the affected area?",
+      "Are there access details the contractor should know?",
+      "Which days or times work best for your schedule?",
+      "Can you upload photos of the area?",
     ],
   };
 }
 
 export function HomeHero() {
   const dispatch = useAppDispatch();
+  const [mode, setMode] = useState<"ai" | "direct">("ai");
   const [problem, setProblem] = useState("");
   const [categorySlug, setCategorySlug] = useState("");
   const [zip, setZip] = useState("");
   const [error, setError] = useState("");
+  const [showEmergency, setShowEmergency] = useState(false);
+  const [isChangingCategory, setIsChangingCategory] = useState(false);
   const [preview, setPreview] = useState<ReturnType<typeof buildDraft> | null>(null);
 
   const suggested = useMemo(
@@ -51,160 +111,240 @@ export function HomeHero() {
     [preview],
   );
 
-  function summarize() {
-    if (problem.trim().length < 10) {
-      setError("Describe the problem in at least 10 characters.");
+  function handleSummarize() {
+    // 1. Safety check for life-threatening emergencies
+    if (detectEmergency(problem)) {
+      setShowEmergency(true);
       return;
     }
+
+    if (mode === "ai" && problem.trim().length < 8) {
+      setError("Please describe the issue in a few words (e.g. 'pipe leaking under kitchen sink').");
+      return;
+    }
+
+    if (mode === "direct" && !categorySlug) {
+      setError("Please choose a service trade.");
+      return;
+    }
+
     if (zip.trim().length < 2) {
-      setError("Enter a ZIP or city.");
+      setError("Please enter your ZIP code or city.");
       return;
     }
+
     setError("");
     const draft = buildDraft(problem.trim(), categorySlug, zip.trim());
     setPreview(draft);
     dispatch(saveDraft(draft));
   }
 
+  function handleNotSure() {
+    setError("");
+    const fallbackCategory = "handyman";
+    setCategorySlug(fallbackCategory);
+    const draft = buildDraft(
+      problem.trim() || "General home inspection and repair needed",
+      fallbackCategory,
+      zip.trim() || "Austin, TX",
+    );
+    setPreview(draft);
+    dispatch(saveDraft(draft));
+  }
+
   return (
-    <section className="relative min-h-[620px] overflow-hidden bg-title text-white md:min-h-[680px]">
-      <div
-        className="absolute inset-0 bg-cover bg-[center_20%]"
-        style={{ backgroundImage: `url(${photos.hero})` }}
-      />
-      <div className="hero-wash absolute inset-0 z-[1]" />
+    <>
+      {showEmergency ? (
+        <EmergencyBanner onDismiss={() => setShowEmergency(false)} />
+      ) : null}
 
-      <div className="container-site relative z-[2] grid min-h-[620px] items-center gap-8 py-14 md:min-h-[680px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-20">
-        <div className="relative z-[1] max-w-xl">
-          <span className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1.5 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-white">
-            Local services
-          </span>
-          <h1 className="mt-4 text-[36px] leading-[1.12] text-white md:text-[48px] lg:text-[52px]">
-            Find trusted local pros for{" "}
-            <span className="text-primary-hover">home repairs</span>
-          </h1>
-          <p className="mt-4 max-w-md text-[15px] leading-7 text-white/90">
-            Browse free. Post a request when you are ready. Pay the professional directly —
-            LocalHomeFix never takes the repair payment.
-          </p>
+      <section className="relative min-h-[680px] overflow-hidden bg-title text-white md:min-h-[740px] lg:min-h-[780px]">
+        <div
+          className="absolute inset-0 bg-cover bg-[center_20%]"
+          style={{ backgroundImage: `url(${photos.hero})` }}
+        />
+        <div className="hero-wash absolute inset-0 z-[1]" />
 
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <div className="flex items-center">
-              {trustFaces.map((src, index) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={src}
-                  src={src}
-                  alt=""
-                  className={cn(
-                    "h-9 w-9 rounded-full border-2 border-white/80 object-cover",
-                    index > 0 && "-ml-2.5",
-                  )}
-                />
-              ))}
+        <div className="container-site relative z-[2] grid min-h-[680px] items-center gap-10 py-14 md:min-h-[740px] md:py-16 lg:min-h-[780px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-24">
+          <div className="relative z-[1] max-w-xl">
+            {/* H1 typography */}
+            <h1 className="hero-title text-white !text-white text-[38px] sm:text-[48px] lg:text-[64px] font-[500] leading-[1.08] lg:leading-[67px] tracking-[-1.8px] lg:tracking-[-3.2px]">
+              Find trusted local pros for{" "}
+              <span className="text-secondary">home repairs</span>
+            </h1>
+
+            {/* Subtitle with proper spacing */}
+            <p className="mt-4 max-w-[540px] font-['Inter_Display',Inter,sans-serif] text-[18px] font-normal leading-[25px] tracking-[-0.18px] text-white/85">
+              Compare upfront bids from background-checked local contractors. Pay them directly when the job is done — with zero platform fees.
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Button href="/browse-pros" variant="white" size="lg" className="font-medium text-sm">
+                Browse Directory ↗
+              </Button>
+              <Button href="/how-it-works" variant="ghost" size="lg" className="text-white hover:bg-white/10 border-white/30 text-sm">
+                How it works
+              </Button>
             </div>
-            <div>
-              <div className="flex items-center gap-0.5" aria-label="4.8 out of 5 stars">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-accent text-accent" />
-                ))}
+          </div>
+
+          <div className="relative z-10 rounded-[24px] border border-white/80 bg-white/95 p-6 text-title shadow-[0_20px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl md:p-7">
+            {/* Minimal Header with Mode Switcher */}
+            <div className="flex items-center justify-between border-b border-line/60 pb-3.5">
+              <div className="flex items-center gap-2">
+                <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary/10 text-primary">
+                  {mode === "ai" ? <Sparkles className="h-4 w-4" /> : <Search className="h-4 w-4" />}
+                </span>
+                <h2 className="font-geist text-[17px] sm:text-[19px] font-medium tracking-tight text-title">
+                  {mode === "ai" ? "What needs fixing?" : "Select your trade"}
+                </h2>
               </div>
-              <p className="mt-0.5 text-sm font-semibold text-white">
-                4.8/5 from local homeowners
-              </p>
-            </div>
-          </div>
 
-          <div className="mt-7">
-            <Button href="/browse-pros" variant="white" size="lg">
-              Browse professionals →
-            </Button>
-          </div>
-        </div>
-
-        <div className="relative z-10 rounded-[20px] border border-white/70 bg-white/95 p-5 text-title shadow-[0_28px_64px_color-mix(in_srgb,var(--ink)_32%,transparent),0_8px_24px_color-mix(in_srgb,var(--ink)_14%,transparent)] backdrop-blur-md md:p-6">
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-smoke text-primary">
-              <ClipboardList className="h-4 w-4" />
-            </span>
-            <div>
-              <p className="font-display text-[12px] font-bold uppercase tracking-[0.12em] text-primary">
-                Start a request
-              </p>
-              <p className="font-display text-lg font-bold leading-tight text-title">Draft your request</p>
-            </div>
-          </div>
-
-          <div className="mt-4 space-y-3">
-            <Field label="What service do you need?">
-              <span className="relative block">
-                <Wrench className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-primary" />
-                <NativeSelect
-                  value={categorySlug}
-                  onChange={(event) => setCategorySlug(event.target.value)}
-                  className="pl-9"
+              {/* Minimalist Segmented Pill */}
+              <div className="inline-flex rounded-full bg-smoke p-1 text-xs">
+                <button
+                  type="button"
+                  onClick={() => { setMode("ai"); setError(""); }}
+                  className={cn(
+                    "rounded-full px-3 py-1 font-medium transition-all text-xs",
+                    mode === "ai" ? "bg-white text-title font-semibold shadow-xs" : "text-[#757575] hover:text-title",
+                  )}
                 >
-                  <option value="">Select a service</option>
-                  {categories.map((item) => (
-                    <option key={item.id} value={item.slug}>
-                      {item.name}
-                    </option>
-                  ))}
-                </NativeSelect>
-              </span>
-            </Field>
+                  Describe
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setMode("direct"); setError(""); }}
+                  className={cn(
+                    "rounded-full px-3 py-1 font-medium transition-all text-xs",
+                    mode === "direct" ? "bg-white text-title font-semibold shadow-xs" : "text-[#757575] hover:text-title",
+                  )}
+                >
+                  Pick Trade
+                </button>
+              </div>
+            </div>
 
-            <Field label="Describe the job">
-              <TextArea
-                value={problem}
-                onChange={(event) => setProblem(event.target.value)}
-                placeholder="Leak under the kitchen sink…"
-                className="min-h-[72px]"
-                rows={2}
-              />
-            </Field>
+            <div className="mt-4 space-y-3">
+              {mode === "direct" || isChangingCategory ? (
+                <div className="relative">
+                  <Wrench className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+                  <NativeSelect
+                    value={categorySlug}
+                    onChange={(event) => {
+                      setCategorySlug(event.target.value);
+                      if (preview) {
+                        setPreview({
+                          ...preview,
+                          categorySlug: event.target.value,
+                        });
+                      }
+                    }}
+                    className="pl-10 text-sm rounded-xl border-line/80 bg-surface/50 focus:bg-white"
+                  >
+                    <option value="">Select a trade (e.g. Plumbing, HVAC, Electrician)</option>
+                    {categories.map((item) => (
+                      <option key={item.id} value={item.slug}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                </div>
+              ) : null}
 
-            <Field label="Location">
-              <span className="relative block">
-                <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-primary" />
+              {mode === "ai" ? (
+                <div>
+                  <TextArea
+                    value={problem}
+                    onChange={(event) => {
+                      setProblem(event.target.value);
+                      if (detectEmergency(event.target.value)) {
+                        setShowEmergency(true);
+                      }
+                    }}
+                    placeholder="Describe your issue (e.g. water leaking under sink, AC blowing warm air upstairs...)"
+                    className="min-h-[84px] resize-none text-sm rounded-xl border-line/80 bg-surface/50 p-3.5 focus:bg-white transition-colors"
+                    rows={3}
+                  />
+                </div>
+              ) : null}
+
+              <div className="relative">
+                <MapPin className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
                 <TextField
                   value={zip}
                   onChange={(event) => setZip(event.target.value)}
-                  placeholder="ZIP or city"
-                  className="pl-9"
+                  placeholder="Austin ZIP code or neighborhood (e.g. 78701)"
+                  className="pl-10 text-sm rounded-xl border-line/80 bg-surface/50 focus:bg-white"
                 />
-              </span>
-            </Field>
-
-            <Button type="button" className="w-full" onClick={summarize}>
-              Review my request →
-            </Button>
-            {error ? <p className="text-sm text-error">{error}</p> : null}
-            {preview ? (
-              <div className="rounded-[12px] bg-smoke p-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  {suggested ? `Suggested: ${suggested.name}` : "Draft ready"}
-                </p>
-                <p className="mt-1 font-display text-sm font-bold text-title">{preview.title}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <Button size="sm" href="/signup?next=%2Faccount%2Fpost-job">
-                    Sign up to post
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    href={`/browse-pros?category=${preview.categorySlug}&location=${encodeURIComponent(preview.zip)}`}
-                  >
-                    Browse pros
-                  </Button>
-                </div>
               </div>
-            ) : (
-              <p className="text-center text-[12px] text-muted">Nothing posts until you sign up.</p>
-            )}
+
+              <div className="pt-1">
+                <Button
+                  type="button"
+                  size="lg"
+                  className="w-full text-sm font-semibold rounded-xl h-11 shadow-xs transition-all hover:shadow-md"
+                  onClick={handleSummarize}
+                >
+                  {mode === "ai" ? "Review My Request ↗" : "Find Matching Pros ↗"}
+                </Button>
+              </div>
+
+              {error ? (
+                <p className="flex items-center gap-1.5 text-xs text-error font-medium" role="alert">
+                  <TriangleAlert className="h-3.5 w-3.5 shrink-0" />
+                  {error}
+                </p>
+              ) : null}
+
+              {preview ? (
+                <div className="rounded-xl border border-primary/20 bg-primary/5 p-3.5 text-xs">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p className="text-[10.5px] font-bold uppercase tracking-wider text-primary">
+                        Recommended trade:
+                      </p>
+                      <p className="mt-0.5 font-display text-[16px] font-semibold text-title">
+                        {suggested?.name ?? "General Home Repair"}
+                      </p>
+                      <p className="mt-0.5 text-xs text-[#757575]">
+                        Your request will be open for multiple vetted contractors to quote.
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsChangingCategory(!isChangingCategory)}
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+                    >
+                      <RotateCcw className="h-3 w-3" />
+                      {isChangingCategory ? "Done" : "Change"}
+                    </button>
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap gap-2 border-t border-primary/10 pt-2.5">
+                    <Button size="sm" href="/signup?next=%2Faccount%2Fpost-job" className="flex-1 text-xs">
+                      Post Request for Quotes ↗
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      href={`/browse-pros?category=${preview.categorySlug}&location=${encodeURIComponent(preview.zip)}`}
+                      className="text-xs"
+                    >
+                      Browse {suggested?.name ?? "pros"}
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-center text-[11.5px] text-[#757575] pt-0.5">
+                  100% Free to post • No spam sales calls • Direct to pro
+                </p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

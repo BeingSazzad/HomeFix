@@ -147,14 +147,16 @@ export function SignupForm() {
   if (step === "otp") {
     return (
       <Card className="p-6 md:p-8">
-        <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
           Step 2 of 2
-        </p>
-        <h1 className="mt-2 text-[28px] md:text-[32px]">Verify your phone</h1>
-        <p className="mt-2 text-sm text-copy">
+        </span>
+        <h1 className="mt-3 font-display text-[22px] sm:text-[24px] font-semibold leading-snug tracking-tight text-title">
+          Verify your phone
+        </h1>
+        <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#757575]">
           Enter the 6-digit code sent to <span className="font-semibold text-title">{maskedPhone || phone}</span>.
         </p>
-        <p className="mt-1 text-[12px] text-muted">Demo code: {DEMO_OTP}</p>
+        <p className="mt-1 font-sans text-xs text-[#757575]/80">Demo code: {DEMO_OTP}</p>
 
         <form className="mt-6 space-y-4" onSubmit={submitOtp}>
           <div className="flex justify-between gap-2">
@@ -211,12 +213,14 @@ export function SignupForm() {
   }
 
   return (
-    <Card className="p-6 md:p-8">
-      <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
+    <Card className="p-5 sm:p-7">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
         Step 1 of 2
-      </p>
-      <h1 className="mt-2 text-[28px] md:text-[32px]">Create a free account</h1>
-      <p className="mt-2 text-sm text-copy">
+      </span>
+      <h1 className="mt-2.5 font-display text-[22px] sm:text-[24px] font-semibold leading-snug tracking-tight text-title">
+        Create a free account
+      </h1>
+      <p className="mt-1 font-sans text-sm leading-relaxed text-[#757575]">
         {needsAccountForRequest
           ? "You need a homeowner account to create a request. Signup is free."
           : "Choose your role. Homeowners are free. Pros apply for review."}
@@ -225,7 +229,7 @@ export function SignupForm() {
       <div
         role="tablist"
         aria-label="Account type"
-        className="mt-6 grid grid-cols-2 rounded-full border border-line bg-smoke p-1"
+        className="mt-4 sm:mt-5 grid grid-cols-2 rounded-full border border-line bg-smoke p-1"
       >
         {(
           [
@@ -254,79 +258,88 @@ export function SignupForm() {
         })}
       </div>
 
-      <form className="mt-6 space-y-3.5" onSubmit={submitDetails}>
-        <Field label="Full name">
-          <TextField
-            required
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            placeholder="Jane Smith"
-            autoComplete="name"
-          />
-        </Field>
-        <Field label="Email">
-          <TextField
-            required
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="you@email.com"
-            autoComplete="email"
-          />
-        </Field>
-        <Field label="Mobile phone">
-          <TextField
-            required
-            type="tel"
-            value={phone}
-            onChange={(event) => setPhone(event.target.value)}
-            placeholder="(512) 555-0100"
-            autoComplete="tel"
-          />
-        </Field>
-        <Field label="Home ZIP">
-          <TextField
-            required
-            value={zip}
-            onChange={(event) => setZip(event.target.value)}
-            placeholder="78701"
-            inputMode="numeric"
-            autoComplete="postal-code"
-          />
-        </Field>
-        <Field label="Password">
-          <PasswordField
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="At least 6 characters"
-            autoComplete="new-password"
-          />
-        </Field>
-        <Field label="Confirm password">
-          <PasswordField
-            required
-            value={confirm}
-            onChange={(event) => setConfirm(event.target.value)}
-            placeholder="Repeat password"
-            autoComplete="new-password"
-          />
-        </Field>
-        <label className="flex items-start gap-3 text-sm leading-6 text-copy">
-          <input type="checkbox" required className="mt-1 h-4 w-4 accent-primary" />
+      <form className="mt-5 space-y-3" onSubmit={submitDetails}>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1.5fr_1fr]">
+          <Field label="Full name">
+            <TextField
+              required
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Jane Smith"
+              autoComplete="name"
+            />
+          </Field>
+          <Field label="Home ZIP">
+            <TextField
+              required
+              value={zip}
+              onChange={(event) => setZip(event.target.value)}
+              placeholder="78701"
+              inputMode="numeric"
+              autoComplete="postal-code"
+            />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Field label="Email">
+            <TextField
+              required
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@email.com"
+              autoComplete="email"
+            />
+          </Field>
+          <Field label="Mobile phone">
+            <TextField
+              required
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              placeholder="(512) 555-0100"
+              autoComplete="tel"
+            />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Field label="Password">
+            <PasswordField
+              required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Min 6 characters"
+              autoComplete="new-password"
+            />
+          </Field>
+          <Field label="Confirm password">
+            <PasswordField
+              required
+              value={confirm}
+              onChange={(event) => setConfirm(event.target.value)}
+              placeholder="Repeat password"
+              autoComplete="new-password"
+            />
+          </Field>
+        </div>
+
+        <label className="flex items-start gap-2.5 pt-1 text-xs leading-5 text-copy">
+          <input type="checkbox" required className="mt-0.5 h-4 w-4 rounded accent-primary" />
           <span>
             I agree to the{" "}
-            <Link href="/terms" className="font-semibold text-primary">
+            <Link href="/terms" className="font-semibold text-primary hover:underline">
               Terms & Conditions
             </Link>{" "}
             and{" "}
-            <Link href="/privacy" className="font-semibold text-primary">
+            <Link href="/privacy" className="font-semibold text-primary hover:underline">
               Privacy Policy
             </Link>
             .
           </span>
         </label>
-        {error ? <p className="text-sm text-error">{error}</p> : null}
+        {error ? <p className="text-xs font-medium text-error">{error}</p> : null}
         <Button type="submit" className="w-full">
           Continue to OTP
         </Button>

@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Archivo, Rubik } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import { Providers } from "@/app/providers";
 import "./globals.css";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
 });
 
-const rubik = Rubik({
-  variable: "--font-rubik",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
@@ -30,10 +30,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${archivo.variable} ${rubik.variable} h-full`}>
+    <html lang="en" data-scroll-behavior="smooth" className={`${geist.variable} ${inter.variable} h-full`}>
       <body className="min-h-full bg-background font-sans antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+

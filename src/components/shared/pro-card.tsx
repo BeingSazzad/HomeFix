@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Heart, MapPin, ShieldCheck, Star } from "lucide-react";
+import { Heart, MapPin, ShieldCheck } from "lucide-react";
+import { ProRatingBlock } from "@/components/shared/pro-rating-block";
 import { photos } from "@/lib/media";
 import { signupHref } from "@/lib/role-access";
 import { toggleFavorite } from "@/redux/slices/featuresSlice";
@@ -41,7 +42,7 @@ export function ProCard({
     <Link
       href={href}
       className={cn(
-        "group flex h-full min-w-0 w-full flex-col overflow-hidden rounded-[14px] border border-line bg-white",
+        "group flex h-full min-w-0 w-full flex-col overflow-hidden rounded-[22px] border border-line/80 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md",
         className,
       )}
     >
@@ -53,7 +54,7 @@ export function ProCard({
         <span
           title="Verified"
           aria-label="Verified"
-          className="absolute left-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white text-primary"
+          className="absolute left-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white text-primary shadow-xs"
         >
           <ShieldCheck className="h-4 w-4" />
         </span>
@@ -69,7 +70,7 @@ export function ProCard({
           }
           disabled={access.audience === "pro"}
           className={cn(
-            "absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white",
+            "absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white shadow-xs",
             saved && access.canSavePro ? "text-error" : "text-muted",
             access.audience === "pro" && "opacity-50",
           )}
@@ -78,24 +79,46 @@ export function ProCard({
           <Heart className={cn("h-3.5 w-3.5", saved && access.canSavePro && "fill-current")} />
         </button>
       </div>
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className="text-[18px] leading-snug text-title group-hover:text-primary">{pro.businessName}</h3>
-        <p className="mt-1 text-sm font-semibold text-primary">{pro.trade}</p>
-        <p className="mt-2 flex items-center gap-1.5 text-sm text-copy">
-          <MapPin className="h-3.5 w-3.5 shrink-0 text-muted" />
-          {pro.city}, {pro.state}
-        </p>
-        <p className="mt-1.5 flex items-center gap-1.5 text-sm text-copy">
-          <Star className="h-3.5 w-3.5 shrink-0 text-accent" />
-          {pro.rating.toFixed(1)}
-          <span className="text-muted">· {pro.reviewCount} reviews</span>
-        </p>
-        <p className="mt-auto pt-3 text-sm font-semibold text-title">
-          From ${pro.startingPrice}
-          <span className="ml-1.5 font-normal text-muted">
-            {pro.availableThisWeek ? "· open this week" : "· book ahead"}
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-display text-[18px] sm:text-[19px] font-medium tracking-tight leading-snug text-title transition-colors group-hover:text-primary min-h-[46px] line-clamp-2">
+          {pro.businessName}
+        </h3>
+
+        <div className="mt-3 flex items-center gap-2">
+          <span className="inline-flex items-center rounded-full bg-smoke px-2.5 py-0.5 font-sans text-[11px] font-semibold uppercase tracking-wider text-primary">
+            {pro.trade}
           </span>
-        </p>
+          <span className="flex items-center gap-1 font-sans text-xs text-[#757575]">
+            <MapPin className="h-3.5 w-3.5 shrink-0 text-[#757575]" />
+            {pro.city}, {pro.state}
+          </span>
+        </div>
+
+        {/* DEMO DATA: Swappable rating block. Hidden when reviewCount === 0 */}
+        <div className="mt-3">
+          <ProRatingBlock
+            rating={pro.rating}
+            reviewCount={pro.reviewCount}
+            size="sm"
+          />
+        </div>
+
+        <div className="mt-5 border-t border-line/60 pt-3.5">
+          <div className="flex items-center justify-between">
+            <span className="font-display text-[15px] font-semibold text-title">
+              From ${pro.startingPrice}
+            </span>
+            <span className="inline-flex items-center gap-1.5 font-sans text-xs text-[#757575]">
+              <span
+                className={cn(
+                  "h-1.5 w-1.5 rounded-full",
+                  pro.availableThisWeek ? "bg-emerald-500" : "bg-amber-500",
+                )}
+              />
+              {pro.availableThisWeek ? "Open this week" : "Book ahead"}
+            </span>
+          </div>
+        </div>
       </div>
     </Link>
   );

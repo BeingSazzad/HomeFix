@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { QuoteComparePanel } from "@/components/shared/quote-compare-panel";
 import { QuoteCard } from "@/components/shared/quote-card";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { StatusTracker } from "@/components/shared/status-tracker";
@@ -476,41 +477,13 @@ export function RequestDetail({
             {quotes.length} · compare side by side before you hire
           </p>
         </div>
+        {/* New: proper compare modal — replaces old inline table */}
         {compareSet.length >= 2 ? (
-          <div className="mt-3 overflow-x-auto rounded-[12px] border border-line bg-white">
-            <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-line bg-surface text-muted">
-                <tr>
-                  <th className="px-3 py-2 font-medium"> </th>
-                  {compareSet.map((q) => (
-                    <th key={q.id} className="px-3 py-2 font-semibold text-title">
-                      {getPro(q.proId)?.businessName ?? "Pro"}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  ["Price", (q: (typeof compareSet)[0]) => `$${q.amount}${q.priceMax ? `–$${q.priceMax}` : ""}`],
-                  ["Type", (q: (typeof compareSet)[0]) => q.priceType],
-                  ["Duration", (q: (typeof compareSet)[0]) => q.estimatedDuration ?? "—"],
-                  ["Materials", (q: (typeof compareSet)[0]) =>
-                    q.materialsIncluded == null ? "—" : q.materialsIncluded ? "Included" : "Extra"],
-                  ["Schedule", (q: (typeof compareSet)[0]) => q.proposedSchedule ?? q.availability],
-                  ["Expires", (q: (typeof compareSet)[0]) => q.expiresAt ?? "—"],
-                ].map(([label, fn]) => (
-                  <tr key={String(label)} className="border-b border-line last:border-0">
-                    <td className="px-3 py-2 text-muted">{label as string}</td>
-                    {compareSet.map((q) => (
-                      <td key={q.id} className="px-3 py-2 text-copy">
-                        {(fn as (q: (typeof compareSet)[0]) => string)(q)}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <QuoteComparePanel
+            quotes={compareSet}
+            jobId={id}
+            onClose={() => setCompareIds([])}
+          />
         ) : null}
         {sortedQuotes.length === 0 ? (
           <p className="mt-2 text-sm text-copy">No offers yet.</p>

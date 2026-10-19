@@ -1,15 +1,17 @@
-import { Check, Users, Zap } from "lucide-react";
+"use client";
+
+import { Check, ShieldCheck, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
 import { cn } from "@/lib/cn";
 
 const points = [
-  "Reviewed pros only",
-  "Quotes in one place",
-  "Browse free — no account needed",
-  "Pay the pro directly",
-  "Clear pricing — $0 homeowner fee",
-  "Pros join after clearance",
+  "Verified Professionals",
+  "Clear, Itemized Quotes",
+  "100% Free for Homeowners",
+  "Pay Contractors Directly",
+  "No Middleman Fees",
+  "Your Privacy Protected",
 ];
 
 const trustFaces = [
@@ -21,36 +23,37 @@ const trustFaces = [
 export function HomeAbout() {
   return (
     <section className="relative overflow-x-clip bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.3] [background-image:radial-gradient(circle_at_1px_1px,color-mix(in_srgb,var(--primary)_28%,transparent)_1px,transparent_0)] [background-size:28px_28px]" />
-
-      <div className="container-site relative z-[1] grid items-center gap-10 pb-8 lg:grid-cols-2 lg:gap-12 lg:pb-10">
+      <div className="container-site relative z-[1] grid items-center gap-10 pb-4 lg:grid-cols-2 lg:gap-14">
         <div>
-          <span className="inline-flex items-center gap-2 rounded-full bg-smoke px-3 py-1.5 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
-            About us
-          </span>
-
-          <h2 className="mt-4 max-w-lg text-[28px] leading-tight text-title md:text-[36px]">
-            Local help, without the middleman on the bill
-          </h2>
-          <p className="mt-3 max-w-md text-[15px] leading-7 text-copy">
-            LocalHomeFix connects homeowners with reviewed local pros. We organize the request —
-            payment stays between you and the professional.
+          <p className="font-geist text-[13px] sm:text-[14px] font-medium text-[#757575]">
+            Our Approach
           </p>
 
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+          <h2 className="mt-3.5 font-geist text-[32px] font-medium leading-[1.15] tracking-[-1.5px] sm:text-[40px] sm:leading-[46px] sm:tracking-[-2px] md:text-[48px] md:leading-[54px] md:tracking-[-2.88px] !text-black">
+            Quality Home Repairs, Without Extra Fees
+          </h2>
+
+          <p className="mt-4 max-w-xl font-['Inter_Display',Inter,sans-serif] text-[18px] font-normal leading-[25px] tracking-[-0.18px] text-[#757575]">
+            Find trusted local professionals, compare clear quotes, and pay contractors directly. No pushy sales calls or hidden markups.
+          </p>
+
+          {/* Clean checklist without subtext */}
+          <ul className="mt-7 grid gap-3.5 sm:grid-cols-2">
             {points.map((point) => (
-              <li key={point} className="flex items-start gap-2.5 text-sm leading-6 text-copy">
-                <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-white">
-                  <Check className="h-3 w-3" />
+              <li key={point} className="flex items-center gap-2.5 text-[14.5px] font-semibold text-title">
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
+                  <Check className="h-3 w-3 stroke-[2.5]" />
                 </span>
-                {point}
+                <span>{point}</span>
               </li>
             ))}
           </ul>
 
-          <div className="mt-7 flex flex-wrap items-center gap-4">
-            <Button href="/about">More information</Button>
-            <div className="flex items-center gap-2.5">
+          <div className="mt-10 sm:mt-11 flex flex-wrap items-center gap-5">
+            <Button href="/about" size="lg">
+              Learn our story ↗
+            </Button>
+            <div className="flex items-center gap-3">
               <div className="flex items-center">
                 {trustFaces.map((src, index) => (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -59,15 +62,15 @@ export function HomeAbout() {
                     src={src}
                     alt=""
                     className={cn(
-                      "h-8 w-8 rounded-full border-2 border-surface object-cover",
-                      index > 0 && "-ml-2",
+                      "h-8 w-8 rounded-full border-2 border-surface object-cover shadow-xs",
+                      index > 0 && "-ml-2.5",
                     )}
                   />
                 ))}
               </div>
-              <p className="flex items-center gap-1.5 text-sm font-semibold text-title">
-                <Users className="h-4 w-4 text-primary" />
-                Trusted by local homeowners
+              <p className="text-xs font-semibold text-title flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-primary" />
+                Licensed & Background Cleared
               </p>
             </div>
           </div>
@@ -75,22 +78,28 @@ export function HomeAbout() {
 
         <div className="relative z-[1] mx-auto w-full max-w-[480px] lg:max-w-none">
           <div
-            className="h-[360px] overflow-hidden rounded-[24px] bg-cover bg-center md:h-[420px]"
+            className="h-[380px] overflow-hidden rounded-[28px] bg-cover bg-center shadow-lg md:h-[440px]"
             style={{ backgroundImage: `url(${photos.trust})` }}
           />
-          <div className="absolute right-4 top-4 z-10 rounded-[14px] bg-primary px-4 py-3 text-white shadow-[0_16px_36px_color-mix(in_srgb,var(--ink)_28%,transparent)]">
-            <p className="font-display text-[24px] font-bold leading-none text-white">$0</p>
-            <p className="mt-1 text-xs font-semibold text-white/85">Service fee</p>
+
+          {/* Floating Pill: $0 Fee */}
+          <div className="absolute right-4 top-4 z-10 rounded-[18px] bg-primary p-3.5 text-white shadow-lg">
+            <p className="font-display text-[22px] font-bold leading-none text-white">$0</p>
+            <p className="mt-1 text-xs font-semibold text-white/90">Platform Fee</p>
           </div>
+
+          {/* Floating Thumbnail */}
           <div
-            className="absolute -bottom-4 left-4 z-10 h-24 w-32 overflow-hidden rounded-[14px] border-[3px] border-white bg-cover bg-center shadow-[0_18px_40px_color-mix(in_srgb,var(--ink)_26%,transparent)] sm:h-28 sm:w-40"
+            className="absolute -bottom-4 left-4 z-10 h-24 w-32 overflow-hidden rounded-[18px] border-4 border-white bg-cover bg-center shadow-2xl sm:h-28 sm:w-40"
             style={{ backgroundImage: `url(${photos.trustAlt})` }}
           />
-          <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2 rounded-full border border-black/5 bg-white px-3.5 py-2 shadow-[0_14px_32px_color-mix(in_srgb,var(--ink)_20%,transparent)]">
+
+          {/* Floating Badge */}
+          <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2.5 rounded-full border border-black/5 bg-white/95 px-4 py-2.5 shadow-xl backdrop-blur-md">
             <span className="grid h-7 w-7 place-items-center rounded-full bg-primary text-white">
               <Zap className="h-3.5 w-3.5" />
             </span>
-            <p className="font-display text-xs font-bold text-title">Fast & reliable</p>
+            <p className="font-display text-xs font-bold text-title">Fast local response</p>
           </div>
         </div>
       </div>

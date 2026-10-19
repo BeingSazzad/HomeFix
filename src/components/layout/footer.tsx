@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/ui/logo";
 
 const groups = [
   {
@@ -78,20 +79,9 @@ export function Footer() {
     <footer className="bg-title text-white">
       <div className="container-site grid gap-10 border-b border-white/10 py-16 md:grid-cols-2 lg:grid-cols-[1.2fr_repeat(3,0.7fr)]">
         <div>
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-11 w-11 place-items-center rounded-full bg-primary text-white">
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
-                <path d="M12 2.2C12 2.2 6.8 9.1 6.8 13.4c0 2.9 2.3 5.4 5.2 5.4s5.2-2.5 5.2-5.4C17.2 9.1 12 2.2 12 2.2Z" />
-              </svg>
-            </span>
-            <p className="font-display text-2xl font-bold">LocalHomeFix</p>
-          </div>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-white/68">
-            Post a repair, compare quotes, pay the pro directly.
-            <br />
-            Browse reviewed local professionals free — no account needed to look.
-            <br />
-            Homeowners pay $0 to LocalHomeFix. Pros join after clearance.
+          <Logo variant="dark" size="lg" />
+          <p className="mt-4 max-w-sm text-sm leading-6 text-white/75">
+            Austin&apos;s direct home repair network. Compare itemized quotes from background-checked local specialists, message privately, and pay directly upon job completion.
           </p>
           <div className="mt-6 flex gap-2">
             {socials.map((item) => (
@@ -101,7 +91,7 @@ export function Footer() {
                 aria-label={item.label}
                 target={item.href.startsWith("http") ? "_blank" : undefined}
                 rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                className="grid h-11 w-11 place-items-center rounded-[10px] border border-white/20 text-white transition-colors hover:border-primary hover:bg-primary"
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/20 text-white transition-colors hover:border-primary hover:bg-primary"
               >
                 {item.icon}
               </a>
@@ -110,11 +100,11 @@ export function Footer() {
         </div>
         {groups.map((group) => (
           <div key={group.title}>
-            <p className="font-display text-lg font-bold">{group.title}</p>
-            <ul className="mt-5 space-y-3 text-[16px] text-white/68">
+            <p className="font-display text-base font-semibold tracking-tight text-white">{group.title}</p>
+            <ul className="mt-5 space-y-3 text-sm text-white/70">
               {group.links.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="hover:text-white">
+                  <Link href={link.href} className="hover:text-white transition-colors">
                     {link.label}
                   </Link>
                 </li>

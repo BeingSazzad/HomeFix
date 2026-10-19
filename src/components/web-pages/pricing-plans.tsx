@@ -1,16 +1,61 @@
 "use client";
 
-import { Check, X } from "lucide-react";
+import {
+  Search,
+  ClipboardList,
+  Layers,
+  ShieldCheck,
+  CheckCircle2,
+  BadgePercent,
+  Briefcase,
+  MessagesSquare,
+  Zap,
+  Sparkles,
+  Award,
+  Phone,
+  TrendingUp,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/cn";
-import { plans } from "@/lib/site-content";
+import { plans, type PlanItem } from "@/lib/site-content";
 import { useRoleAccess } from "@/hooks/use-role-access";
 
+function getPlanIcon(name: string) {
+  switch (name) {
+    case "search":
+      return Search;
+    case "clipboard":
+      return ClipboardList;
+    case "layers":
+      return Layers;
+    case "shield":
+      return ShieldCheck;
+    case "percent":
+      return BadgePercent;
+    case "briefcase":
+      return Briefcase;
+    case "message":
+      return MessagesSquare;
+    case "zap":
+      return Zap;
+    case "sparkles":
+      return Sparkles;
+    case "award":
+      return Award;
+    case "phone":
+      return Phone;
+    case "trending":
+      return TrendingUp;
+    default:
+      return CheckCircle2;
+  }
+}
+
 export function PricingPlans({
-  eyebrow = "Pricing",
-  title = "Who pays, and for what",
-  description = "Access fees only — not repair packages.",
+  eyebrow = "Transparent Pricing",
+  title = "Clear pricing for every repair.",
+  description = "Know your costs upfront. Zero middleman markup, zero hidden commissions.",
 }: {
   eyebrow?: string;
   title?: string;
@@ -21,11 +66,14 @@ export function PricingPlans({
   return (
     <section className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
-        <SectionHeading align="center" eyebrow={eyebrow} title={title} description={description} />
-        <div className="mx-auto mt-8 grid max-w-5xl gap-5 md:grid-cols-2">
-          {plans.map((plan) => {
+        <div className="flex flex-col items-center text-center">
+          <SectionHeading align="center" eyebrow={eyebrow} title={title} description={description} />
+        </div>
+
+        <div className="mx-auto mt-14 sm:mt-16 grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {plans.map((plan: PlanItem) => {
             const isHome = plan.id === "homeowner";
-            const isPro = plan.id === "pro";
+            const isPro = plan.id === "pro" || plan.id === "pro-annual";
             const yours =
               (isHome && access.audience === "homeowner") ||
               (isPro && access.audience === "pro" && membershipActive);
@@ -55,64 +103,105 @@ export function PricingPlans({
               <article
                 key={plan.name}
                 className={cn(
-                  "rounded-[20px] p-8 md:p-10",
-                  plan.featured ? "bg-primary text-white" : "border border-line bg-white",
+                  "relative flex flex-col justify-between rounded-[24px] bg-white p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
+                  plan.featured
+                    ? "border-2 border-primary/50 shadow-md ring-1 ring-primary/20"
+                    : "border border-line shadow-xs",
                 )}
               >
-                <div className="flex flex-wrap items-center gap-2">
-                  <p
-                    className={cn(
-                      "font-display text-sm font-bold uppercase tracking-[0.14em]",
-                      plan.featured ? "text-white/80" : "text-primary",
-                    )}
-                  >
-                    {plan.name}
+                {/* Subtle top brand dot glow on featured card */}
+                {plan.featured ? (
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-primary/10 blur-2xl"
+                  />
+                ) : null}
+
+                <div>
+                  {/* Top Bar: Title & Badge */}
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="font-display text-[20px] sm:text-[22px] font-medium tracking-tight text-title">
+                      {plan.name}
+                    </h3>
+                    {yours ? (
+                      <span className="rounded-full bg-smoke px-3 py-0.5 font-display text-xs font-semibold text-primary">
+                        Your plan
+                      </span>
+                    ) : plan.badge ? (
+                      <span
+                        className={cn(
+                          "rounded-full px-3 py-0.5 font-display text-xs font-semibold",
+                          plan.featured
+                            ? "border border-primary/25 bg-primary/10 text-primary"
+                            : "border border-line bg-smoke text-title/70",
+                        )}
+                      >
+                        {plan.badge}
+                      </span>
+                    ) : null}
+                  </div>
+
+                  {/* Tagline */}
+                  <p className="mt-2 font-sans text-xs sm:text-[13px] leading-relaxed text-[#757575] min-h-[36px]">
+                    {plan.tagline}
                   </p>
-                  {yours ? (
-                    <span
-                      className={cn(
-                        "rounded-[10px] px-2.5 py-1 font-display text-[12px] font-bold",
-                        plan.featured ? "bg-white text-primary" : "bg-smoke text-primary",
-                      )}
-                    >
-                      Your plan
+
+                  {/* Price */}
+                  <div className="mt-6 flex items-baseline gap-1.5">
+                    <span className="font-display text-[38px] sm:text-[42px] font-medium leading-none tracking-tight text-title">
+                      {plan.price}
                     </span>
-                  ) : null}
-                </div>
-                <p
-                  className={cn(
-                    "mt-4 font-display text-[48px] font-bold leading-none",
-                    plan.featured ? "text-white" : "text-title",
-                  )}
-                >
-                  {plan.price}
-                  {plan.period ? (
-                    <span className={cn("text-lg font-medium", plan.featured ? "text-white/75" : "text-copy")}>
+                    <span className="font-sans text-xs sm:text-sm text-[#757575]">
                       {plan.period}
                     </span>
-                  ) : null}
-                </p>
-                <p className={cn("mt-3 text-[16px] leading-7", plan.featured ? "text-white/80" : "text-copy")}>
-                  {plan.tagline}
-                </p>
-                <ul className={cn("mt-8 space-y-3 text-[16px]", plan.featured ? "text-white/90" : "text-copy")}>
-                  {plan.features.map((item) => (
-                    <li key={item} className="flex gap-3">
-                      <Check className={cn("mt-0.5 h-5 w-5 shrink-0", plan.featured ? "text-white" : "text-primary")} />
-                      {item}
-                    </li>
-                  ))}
-                  {plan.limits.slice(0, 1).map((item) => (
-                    <li key={item} className="flex gap-3 opacity-80">
-                      <X className={cn("mt-0.5 h-5 w-5 shrink-0", plan.featured ? "text-white/70" : "text-muted")} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8">
-                  <Button href={href} variant={plan.featured ? "white" : "primary"} className="w-full">
-                    {cta}
-                  </Button>
+                  </div>
+
+                  {/* CTA Button placed with generous top margin */}
+                  <div className="mt-7">
+                    {plan.featured ? (
+                      <Button
+                        href={href}
+                        className="w-full"
+                      >
+                        {cta}
+                      </Button>
+                    ) : (
+                      <Button
+                        href={href}
+                        variant="ghost"
+                        className="w-full"
+                      >
+                        {cta}
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Generous Divider separating CTA button from Features */}
+                  <div className="mt-8 mb-6 border-t border-line/70" />
+
+                  {/* Features List with comfortable breathing room */}
+                  <ul className="space-y-3.5">
+                    {plan.features.map((feat) => {
+                      const Icon = getPlanIcon(feat.icon);
+                      return (
+                        <li key={feat.text} className="flex items-center gap-3.5">
+                          <span
+                            className={cn(
+                              "grid h-6 w-6 shrink-0 place-items-center rounded-md",
+                              plan.featured
+                                ? "bg-primary/10 text-primary"
+                                : "bg-smoke text-title/70",
+                            )}
+                          >
+                            <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                          </span>
+                          <span className="font-sans text-xs sm:text-[13.5px] leading-snug text-title/90 font-normal">
+                            {feat.text}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               </article>
             );

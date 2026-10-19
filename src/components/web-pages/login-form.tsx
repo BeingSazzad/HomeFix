@@ -48,8 +48,12 @@ export function LoginForm() {
 
   return (
     <Card className="p-6 md:p-8">
-      <h1 className="text-[28px] md:text-[32px]">Welcome back</h1>
-      <p className="mt-2 text-sm text-copy">Sign in to continue.</p>
+      <h1 className="font-display text-[22px] sm:text-[24px] font-semibold leading-snug tracking-tight text-title">
+        Welcome back
+      </h1>
+      <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#757575]">
+        Sign in to manage your requests and quotes.
+      </p>
 
       <div
         role="tablist"
@@ -114,7 +118,7 @@ export function LoginForm() {
         </Button>
       </form>
 
-      <AuthLinks prompt="New here?" href="/signup" label="Create an account" />
+      <AuthLinks prompt="Don't have an account?" href="/signup" label="Sign up" />
     </Card>
   );
 }

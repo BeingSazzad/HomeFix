@@ -38,70 +38,70 @@ const journeys: Record<
   }
 > = {
   homeowner: {
-    eyebrow: "Free account",
-    title: "From problem to hire",
-    summary: "Browse free. Sign up to post. Pay the pro directly.",
+    eyebrow: "For Homeowners",
+    title: "How to hire with zero hassle",
+    summary: "Browse verified local pros for free, post your job, compare bids, and pay directly upon completion.",
     steps: [
       {
         n: "01",
-        title: "Post the request",
-        text: "Describe the work, location, and timing.",
+        title: "Post your repair request",
+        text: "Tell us what needs fixing, your preferred timing, and add photos. It takes under 2 minutes.",
         icon: ClipboardList,
       },
       {
         n: "02",
-        title: "Get quotes",
-        text: "Reviewed pros in your area can reply.",
+        title: "Receive itemized quotes",
+        text: "Cleared local contractors in your neighborhood review the details and submit price estimates.",
         icon: Search,
       },
       {
         n: "03",
-        title: "Compare quotes",
-        text: "Quotes and chat stay on the same job.",
+        title: "Compare bids & ratings",
+        text: "Inspect labor, parts, estimated arrival times, and verified neighbor reviews in one private dashboard.",
         icon: MessagesSquare,
       },
       {
         n: "04",
-        title: "Hire and review",
-        text: "Pay the pro directly, then leave a review.",
+        title: "Hire & pay when done",
+        text: "Schedule the visit directly with your technician. Pay them only when you're 100% happy with the work.",
         icon: Wallet,
       },
     ],
-    cta: { href: "/signup?next=%2Faccount%2Fpost-job", label: "Create free account" },
+    cta: { href: "/signup?next=%2Faccount%2Fpost-job", label: "Post a job free ↗" },
     secondary: { href: "/browse-pros", label: "Browse pros first" },
   },
   pro: {
-    eyebrow: "3 months free, then $19.99/mo",
-    title: "Apply, then quote",
-    summary: "Membership for job access — not repair packages.",
+    eyebrow: "For Contractors & Pros",
+    title: "Win local jobs without per-lead fees",
+    summary: "Keep 100% of what you earn. No bidding wars or paying for dead leads.",
     steps: [
       {
         n: "01",
-        title: "Apply",
-        text: "Business details, area, and screening consent.",
+        title: "Submit simple application",
+        text: "Share your business details, trade licenses, and service areas in Austin.",
         icon: UserPlus,
       },
       {
         n: "02",
-        title: "Get reviewed",
-        text: "Admin clearance before public search.",
+        title: "Clear credential check",
+        text: "Our team verifies your trade licenses and background so homeowners can hire with confidence.",
         icon: ShieldCheck,
       },
       {
         n: "03",
-        title: "Start membership",
-        text: "Three free months, then $19.99/mo.",
+        title: "Enjoy 3 months free",
+        text: "Quote homeowner jobs in your area with zero platform fees or commissions during your free trial.",
         icon: FileCheck2,
       },
       {
         n: "04",
-        title: "Quote and work",
-        text: "Quote leads, unlock contact, settle directly.",
+        title: "Flat monthly membership",
+        text: "After your trial, continue for just $19.99/mo flat. Quote unlimited jobs and keep every dollar you charge.",
         icon: Wrench,
       },
     ],
-    cta: { href: "/pro-register", label: "Apply as a pro" },
-    secondary: { href: "/pricing", label: "See membership" },
+    cta: { href: "/pro-register", label: "Apply as a pro ↗" },
+    secondary: { href: "/pricing", label: "See pricing breakdown" },
   },
 };
 
@@ -112,9 +112,9 @@ export function HowItWorksContent() {
   return (
     <div>
       <PageBanner
-        eyebrow="How it works"
-        title="How it works"
-        description="Pick your role. We never take the repair payment."
+        eyebrow="How It Works"
+        title="Simple, transparent home repairs"
+        description="Whether you're fixing a leak or growing your contractor business, LocalHomeFix keeps the process direct and commission-free."
         image={photos.banners.how}
       />
 

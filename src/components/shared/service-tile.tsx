@@ -41,23 +41,42 @@ export function ServiceTile({
     <button
       type="button"
       onClick={() => onSelect?.(category.slug)}
-      className="group overflow-hidden rounded-[18px] border border-line bg-white text-left soft-shadow"
+      className="group relative flex h-[210px] sm:h-[220px] w-full flex-col justify-between overflow-hidden rounded-[18px] border border-line/80 bg-white p-4 sm:p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_16px_36px_color-mix(in_srgb,var(--ink)_14%,transparent)] focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
     >
-      <span className="relative block h-44 overflow-hidden md:h-48">
-        <span
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-          style={{ backgroundImage: `url(${image})` }}
-        />
-      </span>
-      <span className="relative flex items-center gap-3 px-4 pb-4 pt-5">
-        <span className="absolute -top-5 left-4 grid h-10 w-10 place-items-center rounded-full bg-primary text-white shadow-md">
-          <Icon className="h-4 w-4" />
+      {/* Background Image with Zoom */}
+      <span
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
+        style={{ backgroundImage: `url(${image})` }}
+      />
+      {/* High-end gradient wash: soft top, rich dark bottom */}
+      <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/15 transition-opacity group-hover:from-black/90" />
+
+      {/* Top Bar: Service Icon & Typical Price */}
+      <div className="relative z-10 flex items-center justify-between gap-2">
+        <span className="grid h-9 w-9 place-items-center rounded-xl bg-white/20 text-white backdrop-blur-md transition-colors group-hover:bg-primary group-hover:text-white">
+          <Icon className="h-4 w-4" aria-hidden="true" />
         </span>
-        <span className="min-w-0 flex-1 pl-12 font-display text-[17px] font-bold text-title">
-          {category.name}
+        <span className="inline-flex items-center rounded-full border border-white/25 bg-black/30 px-2.5 py-1 text-[11px] font-semibold text-white/95 backdrop-blur-md">
+          {category.typicalRange}
         </span>
-        <ArrowUpRight className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-      </span>
+      </div>
+
+      {/* Bottom Bar: Title, Summary, and Action Arrow */}
+      <div className="relative z-10">
+        <div className="flex items-end justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <h3 className="font-display text-[18px] sm:text-[19px] font-medium leading-tight text-white group-hover:text-white">
+              {category.name}
+            </h3>
+            <p className="mt-1 line-clamp-1 font-sans text-xs text-white/75">
+              {category.summary}
+            </p>
+          </div>
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white text-title transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
+        </div>
+      </div>
     </button>
   );
 }

@@ -23,8 +23,12 @@ export default function ForgotPasswordPage() {
 
   return (
     <Card className="p-6 md:p-8">
-      <p className="font-display text-[12px] font-bold uppercase tracking-[0.16em] text-primary">Account</p>
-      <h1 className="mt-2 text-[32px]">Forgot password</h1>
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
+        Account Recovery
+      </span>
+      <h1 className="mt-3 font-display text-[22px] sm:text-[24px] font-semibold leading-snug tracking-tight text-title">
+        Forgot password
+      </h1>
       {sent ? (
         <>
           <p className="mt-3 text-sm leading-6 text-copy">

@@ -2,16 +2,16 @@ import type { ThemeConfig } from "antd";
 
 export const antdTheme: ThemeConfig = {
   token: {
-    colorPrimary: "#0D56D6",
-    colorInfo: "#00A1DE",
-    colorSuccess: "#28a745",
-    colorError: "#dc3545",
-    colorWarning: "#FA951F",
+    colorPrimary: "#2563eb",
+    colorInfo: "#0ea5e9",
+    colorSuccess: "#16a34a",
+    colorError: "#dc2626",
+    colorWarning: "#f59e0b",
     colorText: "#5B5B5B",
     colorTextHeading: "#00151D",
     colorBgLayout: "#ECF1F5",
     colorBorder: "#d7e2ea",
-    fontFamily: "var(--font-archivo), Archivo, sans-serif",
+    fontFamily: "var(--font-inter), Inter, sans-serif",
     borderRadius: 10,
     controlHeight: 50,
     controlHeightLG: 56,

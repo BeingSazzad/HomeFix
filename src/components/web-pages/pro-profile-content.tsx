@@ -20,6 +20,8 @@ import {
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ProRatingBlock } from "@/components/shared/pro-rating-block";
+import { SwappableReviewsSection } from "@/components/shared/swappable-reviews-section";
 import { photos } from "@/lib/media";
 import { portfolios, serviceLines } from "@/lib/pro-extras";
 import { signupHref } from "@/lib/role-access";
@@ -152,11 +154,8 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   <ShieldCheck className="h-4 w-4 text-primary" />
                   Verified pro
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-title">
-                  <Star className="h-4 w-4 fill-accent text-accent" />
-                  {pro.rating.toFixed(1)}
-                  <span className="font-normal text-muted">· {pro.reviewCount} reviews</span>
-                </span>
+                                {/* DEMO DATA: Swappable rating block */}
+                <ProRatingBlock rating={pro.rating} reviewCount={pro.reviewCount} />
                 <span className="inline-flex items-center gap-1.5 text-sm text-copy">
                   <MapPin className="h-4 w-4 text-muted" />
                   {pro.city}, {pro.state} {pro.zip}
@@ -250,40 +249,13 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               </p>
             </article>
 
-            <article className="rounded-[20px] bg-white p-5 soft-shadow md:p-7">
-              <div className="flex flex-wrap items-end justify-between gap-2">
-                <h2 className="text-[20px] md:text-[22px]">Customer reviews</h2>
-                <p className="inline-flex items-center gap-1.5 text-sm font-semibold text-title">
-                  <Star className="h-4 w-4 fill-accent text-accent" />
-                  {pro.rating.toFixed(1)} average
-                </p>
-              </div>
-
-              {reviews.length === 0 ? (
-                <p className="mt-4 text-sm text-copy">No written reviews yet.</p>
-              ) : (
-                <ul className="mt-5 space-y-4">
-                  {reviews.map((review) => (
-                    <li key={review.id} className="rounded-[14px] border border-line bg-surface p-4">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <p className="font-display text-sm font-bold text-title">{review.author}</p>
-                        <span className="inline-flex items-center gap-1 text-sm font-semibold text-title">
-                          <Star className="h-3.5 w-3.5 fill-accent text-accent" />
-                          {review.rating.toFixed(1)}
-                        </span>
-                      </div>
-                      <p className="mt-2 text-sm leading-6 text-copy">{review.body}</p>
-                      {review.reply ? (
-                        <p className="mt-3 rounded-[10px] bg-white px-3 py-2 text-sm text-copy">
-                          <span className="font-semibold text-title">Pro reply: </span>
-                          {review.reply}
-                        </p>
-                      ) : null}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </article>
+                        {/* DEMO DATA: Swappable customer reviews section � disappears cleanly if 0 reviews */}
+            <SwappableReviewsSection
+              proName={pro.businessName}
+              rating={pro.rating}
+              reviewCount={pro.reviewCount}
+              reviews={reviews}
+            />
           </div>
 
           <aside className="lg:sticky lg:top-28">

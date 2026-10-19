@@ -54,8 +54,8 @@ export function ProcessGrid({
             </span>
             <span className="font-display text-[40px] font-bold leading-none text-primary/20">{item.n}</span>
           </div>
-          <h3 className="mt-5 text-[18px] font-bold text-primary">{item.title}</h3>
-          <p className="mt-2 text-sm leading-6 text-copy">{item.text}</p>
+          <h3 className="mt-5 text-[18px] sm:text-[19px] font-medium text-title">{item.title}</h3>
+          <p className="mt-2 text-sm leading-6 text-[#757575]">{item.text}</p>
         </article>
       ))}
 

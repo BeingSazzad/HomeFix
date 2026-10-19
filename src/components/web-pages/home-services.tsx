@@ -7,8 +7,16 @@ import { ServiceTile } from "@/components/shared/service-tile";
 import { categories } from "@/Mockdata";
 import type { Category } from "@/types";
 
-/** Homepage shows a short sample; full catalog lives on /services */
-const featuredSlugs = ["plumbing", "electrical", "hvac", "handyman"] as const;
+const featuredSlugs = [
+  "plumbing",
+  "electrical",
+  "hvac",
+  "roofing",
+  "handyman",
+  "appliance-repair",
+  "painting",
+  "landscaping",
+] as const;
 
 export function HomeServices() {
   const router = useRouter();
@@ -21,16 +29,16 @@ export function HomeServices() {
       <div className="container-site">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeading
-            eyebrow="Services"
-            title="What can we help fix?"
-            description="Common trades first — see all nine on Services."
+            eyebrow="Specialties"
+            title="Popular home repair services"
+            description="Explore transparent pricing, estimated timelines, and screened pros in every category."
           />
           <Button href="/services" variant="ghost" className="hidden shrink-0 sm:inline-flex">
-            View all →
+            View all services ↗
           </Button>
         </div>
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 sm:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((category) => (
             <ServiceTile
               key={category.id}
@@ -40,9 +48,9 @@ export function HomeServices() {
           ))}
         </div>
 
-        <div className="mt-6 text-center sm:hidden">
-          <Button href="/services" variant="ghost">
-            View all →
+        <div className="mt-10 flex justify-center sm:hidden">
+          <Button href="/services" variant="ghost" className="w-full justify-center">
+            View all services ↗
           </Button>
         </div>
       </div>

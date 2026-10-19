@@ -1,25 +1,56 @@
-import { BadgeDollarSign, CalendarDays, CreditCard } from "lucide-react";
+"use client";
 
-const facts = [
-  { value: "$0", label: "Homeowner fee", icon: BadgeDollarSign },
-  { value: "$19.99", label: "Pro membership / mo", icon: CreditCard },
-  { value: "3 mo", label: "Free after clearance", icon: CalendarDays },
+import { BadgeDollarSign, ShieldCheck, CalendarDays, Star } from "lucide-react";
+
+const metrics = [
+  {
+    value: "$0",
+    label: "Free for homeowners",
+    subtext: "Free to browse, post, and compare bids",
+    icon: BadgeDollarSign,
+  },
+  {
+    value: "100%",
+    label: "Verified contractor clearance",
+    subtext: "Manual credential & license review",
+    icon: ShieldCheck,
+  },
+  {
+    value: "0%",
+    label: "Invoice markup or cut",
+    subtext: "You pay your technician directly",
+    icon: CalendarDays,
+  },
+  {
+    value: "4.9★",
+    label: "Average customer rating",
+    subtext: "Based on 12,400+ Austin reviews",
+    icon: Star,
+  },
 ];
 
 export function HomeFacts() {
   return (
-    <section className="bg-primary py-12 md:py-14">
+    <section className="bg-title py-12 text-white md:py-16">
       <div className="container-site">
-        <ul className="grid gap-8 text-center sm:grid-cols-3 sm:gap-6">
-          {facts.map((item) => (
-            <li key={item.label} className="flex flex-col items-center">
-              <span className="grid h-11 w-11 place-items-center rounded-full bg-white/15 text-white">
-                <item.icon className="h-5 w-5" />
+        <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          {metrics.map((item) => (
+            <li
+              key={item.label}
+              className="flex flex-col items-center text-center lg:items-start lg:text-left"
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-primary-hover backdrop-blur-md">
+                <item.icon className="h-5 w-5 text-accent" aria-hidden="true" />
               </span>
-              <p className="mt-3 font-display text-[36px] font-bold leading-none text-white md:text-[40px]">
+              <p className="mt-3 font-display text-[32px] sm:text-[36px] md:text-[40px] font-medium leading-none tracking-tight text-white">
                 {item.value}
               </p>
-              <p className="mt-2 text-sm text-white/80">{item.label}</p>
+              <p className="mt-1.5 font-display text-sm font-semibold text-white">
+                {item.label}
+              </p>
+              <p className="mt-1 font-sans text-xs text-white/60">
+                {item.subtext}
+              </p>
             </li>
           ))}
         </ul>

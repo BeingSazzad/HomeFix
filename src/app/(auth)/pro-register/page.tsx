@@ -114,8 +114,15 @@ export default function ProRegisterPage() {
 
   return (
     <Card className="max-w-none">
-      <h1 className="text-[28px]">Join as a professional</h1>
-      <p className="mt-2 text-sm text-copy">Apply for review. Membership is $19.99/mo after 3 free months.</p>
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
+        Pro Network
+      </span>
+      <h1 className="mt-3 font-display text-[22px] sm:text-[24px] font-semibold leading-snug tracking-tight text-title">
+        Join as a professional
+      </h1>
+      <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#757575]">
+        Apply for review. Membership is $19.99/mo after 3 free months.
+      </p>
 
       <div className="mt-5">
         <Steps current={step} items={steps.map((title) => ({ title }))} size="small" />

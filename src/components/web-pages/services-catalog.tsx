@@ -5,6 +5,8 @@ import { ServiceTile } from "@/components/shared/service-tile";
 import { Button } from "@/components/ui/button";
 import { categories } from "@/Mockdata";
 
+import { SectionHeading } from "@/components/ui/section-heading";
+
 export function ServicesCatalog() {
   const router = useRouter();
 
@@ -12,8 +14,12 @@ export function ServicesCatalog() {
     <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-[28px]">All home services</h2>
-          <p className="mt-2 text-sm text-copy">Pick a trade to browse reviewed pros nearby.</p>
+          <SectionHeading
+            align="center"
+            eyebrow="Directory"
+            title="All home services"
+            description="Pick a trade to browse reviewed pros nearby with transparent pricing and verified licenses."
+          />
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (

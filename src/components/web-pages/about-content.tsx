@@ -7,32 +7,44 @@ import { HomeCta } from "@/components/web-pages/home-cta";
 import { photos } from "@/lib/media";
 
 const checks = [
-  "Homeowners browse and post free — no project fee",
-  "Pros apply, screen, then wait for admin review",
-  "Contact unlocks only with clearance + membership",
-  "Payment stays between homeowner and pro",
+  {
+    title: "100% Free for homeowners",
+    desc: "Browse profiles, post requests, and compare quotes with zero fees",
+  },
+  {
+    title: "Verified credentials & licensing",
+    desc: "Active trade licenses and identity clearance confirmed before quoting",
+  },
+  {
+    title: "Strict privacy & no spam calls",
+    desc: "Your phone number is protected; contractors message through your request",
+  },
+  {
+    title: "Direct contractor payment",
+    desc: "Pay your technician directly upon completion with zero platform markup",
+  },
 ];
 
 const stats = [
-  { value: "$0", label: "Homeowner fee", icon: BadgeDollarSign },
-  { value: "$19.99", label: "Pro membership / mo", icon: CreditCard },
-  { value: "3 mo", label: "Free after approval", icon: CalendarDays },
+  { value: "$0", label: "Homeowner platform fee", icon: BadgeDollarSign },
+  { value: "$19.99", label: "Flat pro membership / mo", icon: CreditCard },
+  { value: "3 mo", label: "Free trial for approved pros", icon: CalendarDays },
 ];
 
 const roles = [
   {
-    title: "We organize the job",
-    text: "Requests, quotes, and messages in one place. We are not the repair contractor.",
+    title: "Our Role: Match & Protect",
+    text: "We organize repair requests, verify contractor licenses, and keep bids structured in one private dashboard.",
     image: photos.services.plumbing,
   },
   {
-    title: "Homeowners",
-    text: "Post free, compare quotes, pay the pro directly.",
+    title: "For Homeowners",
+    text: "Post your repair in under 2 minutes, compare quotes side-by-side, and pay your contractor directly upon completion.",
     image: photos.services.electrical,
   },
   {
-    title: "Professionals",
-    text: "$19.99/mo after 3 free months. Screening and clearance are separate.",
+    title: "For Independent Pros",
+    text: "Win local Austin repair jobs without paying per-lead fees. Keep 100% of your earnings with zero job commissions.",
     image: photos.hero,
   },
 ];
@@ -41,9 +53,9 @@ export function AboutContent() {
   return (
     <>
       <PageBanner
-        eyebrow="About"
-        title="About us"
-        description="Homeowners post. Reviewed pros quote. You pay the pro directly."
+        eyebrow="About LocalHomeFix"
+        title="Built to make home repair fair and honest"
+        description="We connect Austin homeowners with vetted independent contractors—without charging lead markups or selling private contact details."
         image={photos.banners.about}
       />
 
@@ -51,17 +63,24 @@ export function AboutContent() {
         <div className="container-site grid items-center gap-10 lg:grid-cols-2">
           <div>
             <SectionHeading
-              eyebrow="The company"
-              title="We connect. You pay the pro."
-              description="Requests and quotes in one place. No project fee from us."
+              eyebrow="Our Mission"
+              title="Zero middleman markups. 100% direct communication."
+              description="We believe homeowners deserve competitive quotes without aggressive sales calls, and contractors should keep every dollar they earn."
             />
-            <ul className="mt-6 space-y-3">
+            <ul className="mt-6 space-y-3.5">
               {checks.map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-smoke text-primary">
-                    <Check className="h-3.5 w-3.5" />
+                <li key={item.title} className="flex items-start gap-3">
+                  <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-smoke text-primary">
+                    <Check className="h-3 w-3 stroke-[3]" />
                   </span>
-                  <span className="text-[15px] leading-6 text-copy">{item}</span>
+                  <div className="min-w-0">
+                    <p className="font-display text-[14.5px] font-semibold leading-tight text-title">
+                      {item.title}
+                    </p>
+                    <p className="mt-0.5 font-sans text-[13px] leading-snug text-[#757575]">
+                      {item.desc}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -94,16 +113,16 @@ export function AboutContent() {
           <SectionHeading
             align="center"
             eyebrow="Who uses it"
-            title="Homeowners and professionals"
-            description="Clear roles. No repair packages for sale."
+            title="A marketplace built for both sides"
+            description="Clear expectations, transparent pricing, and zero middleman markups."
           />
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {roles.map((role) => (
               <article key={role.title} className="overflow-hidden rounded-[20px] bg-white soft-shadow">
                 <div className="h-44 bg-cover bg-center" style={{ backgroundImage: `url(${role.image})` }} />
                 <div className="p-5">
-                  <h3 className="text-[18px]">{role.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-copy">{role.text}</p>
+                  <h3 className="text-[18px] font-medium text-title">{role.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#757575]">{role.text}</p>
                 </div>
               </article>
             ))}

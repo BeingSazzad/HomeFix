@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/ui/logo";
 import { photos } from "@/lib/media";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
@@ -11,19 +12,17 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         />
         <div className="auth-wash absolute inset-0" />
         <div className="relative">
-          <Link href="/" className="font-display text-2xl font-bold !text-white">
-            LocalHomeFix
-          </Link>
+          <Logo variant="dark" size="lg" />
         </div>
         <div className="relative max-w-md">
-          <p className="font-display text-[12px] font-bold uppercase tracking-[0.18em] !text-white/70">
-            LocalHomeFix
-          </p>
-          <h1 className="mt-3 text-[36px] leading-tight !text-white">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 font-display text-[11px] font-semibold uppercase tracking-[0.14em] !text-white/80 backdrop-blur-md">
+            Direct & Transparent
+          </span>
+          <h2 className="mt-4 font-display text-[26px] sm:text-[28px] lg:text-[30px] font-medium leading-[1.2] tracking-tight !text-white">
             Browse free. Account only when you need to act.
-          </h1>
-          <p className="mt-4 text-[15px] leading-6 !text-white/80">
-            Sign up to post a job or apply as a pro. You pay the provider directly.
+          </h2>
+          <p className="mt-3 font-sans text-[14px] sm:text-[15px] leading-relaxed !text-white/80">
+            Sign up to post a job or apply as a pro. You pay your technician directly upon completion.
           </p>
         </div>
         <p className="relative text-sm !text-white/60">No repair payments collected here.</p>
@@ -31,12 +30,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       <div className="flex flex-col bg-surface px-5 py-10 md:px-10">
         <div className="mb-8 lg:hidden">
-          <Link href="/" className="font-display text-xl font-bold text-title">
-            LocalHomeFix
-          </Link>
+          <Logo size="md" />
         </div>
         <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-md">{children}</div>
+          <div className="w-full max-w-[500px]">{children}</div>
         </div>
       </div>
     </div>

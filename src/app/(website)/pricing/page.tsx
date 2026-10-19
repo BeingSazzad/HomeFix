@@ -11,7 +11,11 @@ export default function PublicPricingPage() {
         description="Homeowners free. Pros $19.99/mo after 3 free months."
         image={photos.banners.pricing}
       />
-      <PricingPlans eyebrow="Plans" title="Choose your path" />
+      <PricingPlans
+        eyebrow="Transparent Pricing"
+        title="Clear pricing for every repair."
+        description="Know your costs upfront. Zero middleman markup, zero hidden commissions."
+      />
     </>
   );
 }
