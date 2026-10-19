@@ -301,7 +301,7 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                   </div>
                 </div>
 
-                <div className="min-h-0 w-full min-w-0 flex-1 space-y-2 overflow-y-auto bg-surface/50 px-3 py-4 md:px-4">
+                <div className="min-h-0 w-full min-w-0 flex-1 space-y-3 overflow-y-auto bg-surface/40 p-4 md:p-5">
                   {active.messages.map((message) => {
                     const mine = message.sender === mySender;
                     return (
@@ -311,16 +311,22 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                       >
                         <div
                           className={cn(
-                            BUBBLE,
-                            mine ? "bg-primary text-white" : "border border-line bg-white text-copy",
+                            "inline-block w-fit max-w-[78%] px-4 py-2.5 text-left text-sm leading-relaxed [overflow-wrap:anywhere] shadow-xs",
+                            mine
+                              ? "rounded-2xl rounded-tr-xs bg-primary text-white"
+                              : "rounded-2xl rounded-tl-xs border border-line/80 bg-white text-title",
                           )}
                         >
-                          {message.body ? <p>{message.body}</p> : null}
+                          {message.body ? (
+                            <p className={cn("text-[14px] leading-relaxed", mine ? "text-white" : "text-title")}>
+                              {message.body}
+                            </p>
+                          ) : null}
                           {message.attachment ? (
                             <div
                               className={cn(
-                                "mt-2 max-w-[240px] overflow-hidden rounded-[8px]",
-                                mine ? "bg-white/15" : "bg-smoke",
+                                "mt-2 max-w-[240px] overflow-hidden rounded-[10px]",
+                                mine ? "bg-white/20" : "bg-smoke",
                               )}
                             >
                               {message.attachment.url ? (
@@ -331,20 +337,20 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                                   className="h-32 w-full object-cover"
                                 />
                               ) : null}
-                              <div className="flex items-center gap-2 px-2 py-1.5">
+                              <div className="flex items-center gap-2 px-2.5 py-1.5">
                                 <FileText className={cn("h-3.5 w-3.5 shrink-0", mine ? "text-white" : "text-primary")} />
                                 <div className="min-w-0">
                                   <p className={cn("truncate text-[12px] font-semibold", mine ? "text-white" : "text-title")}>
                                     {message.attachment.name}
                                   </p>
-                                  <p className={cn("text-[11px]", mine ? "text-white/70" : "text-muted")}>
+                                  <p className={cn("text-[11px]", mine ? "text-white/80" : "text-muted")}>
                                     {message.attachment.size}
                                   </p>
                                 </div>
                               </div>
                             </div>
                           ) : null}
-                          <p className={cn("mt-1 text-[11px] leading-none", mine ? "text-white/70" : "text-muted")}>
+                          <p className={cn("mt-1.5 text-[11px] leading-none", mine ? "text-white/80" : "text-muted")}>
                             {message.sentAt}
                             {mine ? ` · ${message.read ? "Seen" : "Sent"}` : ""}
                           </p>

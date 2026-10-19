@@ -204,7 +204,6 @@ html {
   }
 
   p {
-    color: var(--text);
     line-height: 1.55;
   }
 

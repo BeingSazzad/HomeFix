@@ -107,14 +107,8 @@ export function ProCard({
             <span className="font-display text-[15px] font-semibold text-title">
               From ${pro.startingPrice}
             </span>
-            <span className="inline-flex items-center gap-1.5 font-sans text-xs text-[#757575]">
-              <span
-                className={cn(
-                  "h-1.5 w-1.5 rounded-full",
-                  pro.availableThisWeek ? "bg-emerald-500" : "bg-amber-500",
-                )}
-              />
-              {pro.availableThisWeek ? "Open this week" : "Book ahead"}
+            <span className="font-sans text-xs font-medium text-primary group-hover:underline">
+              View profile →
             </span>
           </div>
         </div>
