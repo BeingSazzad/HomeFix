@@ -16,6 +16,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PageBanner } from "@/components/layout/page-banner";
+import { photos } from "@/lib/media";
 import { cn } from "@/lib/cn";
 
 export function AboutContent() {
@@ -23,6 +25,20 @@ export function AboutContent() {
 
   return (
     <div className="bg-white text-title min-h-screen">
+      {/* ========================================================================= */}
+      {/* STANDARD SITE BANNER WITH BACKGROUND IMAGE AND BREADCRUMBS                */}
+      {/* ========================================================================= */}
+      <PageBanner
+        eyebrow="About"
+        title="About LocalHomeFix"
+        description="Austin's direct home services platform connecting homeowners with vetted, licensed trade pros with zero middleman markup."
+        image={photos.banners.about}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "About Us" },
+        ]}
+      />
+
       {/* ========================================================================= */}
       {/* SECTION 1: HERO SHOWCASE (100% Consistent with Global Design System)      */}
       {/* ========================================================================= */}
@@ -41,10 +57,10 @@ export function AboutContent() {
 
           {/* Heading: Global Design System standard (font-geist, font-medium, Title Case, no all-caps) */}
           <div className="mt-3.5 text-center max-w-3xl mx-auto">
-            <h1 className="font-geist text-[32px] sm:text-[40px] md:text-[46px] font-medium leading-[1.14] tracking-[-1.5px] sm:tracking-[-2px] md:tracking-[-2.5px] !text-black">
+            <h2 className="font-geist text-[32px] sm:text-[40px] md:text-[46px] font-medium leading-[1.14] tracking-[-1.5px] sm:tracking-[-2px] md:tracking-[-2.5px] !text-black">
               Keeping Homes Running{" "}
               <span className="text-primary font-medium">Smoothly</span> with Expert Local Pros
-            </h1>
+            </h2>
             <p className="mt-4 max-w-2xl mx-auto font-['Inter_Display',Inter,sans-serif] text-[16px] sm:text-[18px] font-normal leading-[25px] tracking-[-0.18px] text-[#757575]">
               Austin&apos;s direct home services platform dedicated to master craftsmanship, upfront transparent pricing, and vetted local trade pros who treat your home with genuine care.
             </p>
@@ -287,8 +303,8 @@ export function AboutContent() {
               </div>
             </div>
 
-            {/* Right Column: 3 Numbered Feature Cards (Title Case, font-geist font-medium) */}
-            <div className="lg:col-span-7 flex flex-col gap-5">
+            {/* Right Column: 3 Numbered Feature Items (Clean, unboxed editorial list) */}
+            <div className="lg:col-span-7 flex flex-col divide-y divide-line/70">
               {[
                 {
                   number: "01",
@@ -308,23 +324,26 @@ export function AboutContent() {
                   desc: "Urgent leaks, electrical outages, or HVAC breakdowns can't wait. Our broadcast dispatch alerts on-duty Austin specialists for rapid dispatch—often on-site within hours.",
                   icon: Zap,
                 },
-              ].map((feature) => {
+              ].map((feature, idx) => {
                 return (
                   <div
                     key={feature.number}
-                    className="group relative flex flex-col sm:flex-row items-start gap-4 sm:gap-5 rounded-[22px] border border-line/80 bg-white p-5 sm:p-6 shadow-xs transition-all duration-300 hover:border-primary/40 hover:shadow-sm"
+                    className={cn(
+                      "flex items-start gap-4 sm:gap-5",
+                      idx === 0 ? "pb-6 sm:pb-7" : idx === 2 ? "pt-6 sm:pt-7" : "py-6 sm:py-7",
+                    )}
                   >
                     {/* Number Badge */}
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                      <span className="font-geist text-[15px] font-semibold">{feature.number}</span>
+                    <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <span className="font-geist text-[14px] sm:text-[15px] font-semibold">{feature.number}</span>
                     </div>
 
                     {/* Content */}
                     <div className="flex-1">
-                      <h3 className="font-geist text-[17px] sm:text-[18px] font-medium text-title tracking-tight group-hover:text-primary transition-colors">
+                      <h3 className="font-geist text-[17px] sm:text-[18px] font-medium text-title tracking-tight">
                         {feature.title}
                       </h3>
-                      <p className="mt-1.5 font-['Inter_Display',Inter,sans-serif] text-[14px] sm:text-[14.5px] leading-[1.6] text-[#666]">
+                      <p className="mt-1.5 font-['Inter_Display',Inter,sans-serif] text-[14px] sm:text-[15px] leading-[1.6] text-[#666]">
                         {feature.desc}
                       </p>
                     </div>
