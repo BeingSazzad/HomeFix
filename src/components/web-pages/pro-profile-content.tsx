@@ -206,7 +206,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
   return (
     <div className="min-h-screen bg-white pb-20">
       {/* 1. BREADCRUMBS BAR */}
-      <nav aria-label="Breadcrumb" className="border-b border-line/60 bg-surface/50 py-3">
+      <nav aria-label="Breadcrumb" className="border-b border-line/60 bg-surface/50 py-2.5">
         <div className="container-site flex items-center gap-2 text-xs text-muted">
           <Link href="/" className="transition hover:text-primary">
             Home
@@ -223,77 +223,76 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             {pro.trade}
           </Link>
           <span className="text-line">/</span>
-          <span className="truncate font-semibold text-title">{pro.businessName}</span>
+          <span className="truncate font-semibold text-title">{effectiveBusinessName}</span>
         </div>
       </nav>
 
-      {/* 2. TOP COVER BANNER */}
-      <section className="relative h-48 sm:h-56 md:h-64 w-full overflow-hidden bg-title">
+      {/* 2. REFINED COVER BANNER */}
+      <section className="relative h-40 sm:h-48 md:h-52 w-full overflow-hidden bg-title">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={cover}
           alt={pro.businessName}
-          className="h-full w-full object-cover object-center opacity-70 filter blur-[0.5px]"
+          className="h-full w-full object-cover object-center opacity-75"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
-        {/* Verified Banner Badge */}
-        <div className="absolute left-4 top-4 sm:left-6 sm:top-6 z-10 flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-primary shadow-sm backdrop-blur-md">
-            <ShieldCheck className="h-4 w-4 text-primary fill-primary/15" />
-            Verified &amp; Background Checked
+        {/* Clean Banner Badges */}
+        <div className="absolute left-4 top-4 sm:left-6 sm:top-5 z-10 flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-primary shadow-xs backdrop-blur-md">
+            <ShieldCheck className="h-3.5 w-3.5 text-primary fill-primary/15" />
+            Verified &amp; Licensed Pro
           </span>
-          {pro.availableThisWeek ? (
-            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-emerald-500/90 px-3 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-md">
+          {pro.availableThisWeek && (
+            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-emerald-600/90 px-3 py-1 text-xs font-semibold text-white shadow-xs backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
               Available this week
             </span>
-          ) : null}
+          )}
         </div>
       </section>
 
       {/* 3. PROFILE IDENTITY HEADER */}
       <section className="border-b border-line/60 bg-white">
         <div className="container-site relative pb-6 pt-0">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
             {/* Avatar & Profile Meta */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-5">
-              <div className="relative -mt-12 sm:-mt-16 shrink-0">
-                <span className="grid h-24 w-24 sm:h-28 sm:w-28 place-items-center rounded-[22px] border-4 border-white bg-gradient-to-br from-primary via-blue-600 to-indigo-700 font-display text-3xl sm:text-4xl font-bold text-white shadow-lg">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-5">
+              <div className="relative -mt-10 sm:-mt-14 shrink-0">
+                <span className="grid h-20 w-20 sm:h-24 sm:w-24 place-items-center rounded-2xl border-4 border-white bg-gradient-to-br from-primary via-blue-600 to-indigo-700 font-display text-2xl sm:text-3xl font-bold text-white shadow-md">
                   {initials(pro.name)}
                 </span>
                 <span
                   title="Screened & Verified Professional"
-                  className="absolute -bottom-1 -right-1 grid h-7 w-7 place-items-center rounded-full bg-white text-primary shadow-sm ring-2 ring-white"
+                  className="absolute -bottom-1 -right-1 grid h-6 w-6 place-items-center rounded-full bg-white text-primary shadow-xs ring-2 ring-white"
                 >
-                  <ShieldCheck className="h-4 w-4 fill-primary/15 text-primary" />
+                  <ShieldCheck className="h-3.5 w-3.5 fill-primary/15 text-primary" />
                 </span>
               </div>
 
-              <div className="space-y-1.5 pt-2 sm:pt-4">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <h1 className="font-display text-[26px] sm:text-[32px] md:text-[34px] font-bold tracking-tight text-title leading-tight">
-                    {effectiveBusinessName}
-                  </h1>
-                </div>
+              <div className="space-y-1 pt-1 sm:pt-2">
+                <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title leading-tight">
+                  {effectiveBusinessName}
+                </h1>
 
-                <div className="font-sans text-sm text-copy flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                {/* Clean Meta Row */}
+                <div className="font-sans text-xs sm:text-sm text-copy flex flex-wrap items-center gap-2">
                   <span className="font-semibold text-title">{pro.name}</span>
-                  <span className="text-muted">•</span>
-                  <span className="inline-flex items-center rounded-full bg-smoke px-2.5 py-0.5 text-xs font-semibold text-primary uppercase tracking-wide">
+                  <span className="text-muted/60">·</span>
+                  <span className="inline-flex items-center rounded-md bg-smoke px-2 py-0.5 text-xs font-semibold text-primary">
                     {pro.trade} Specialist
                   </span>
-                  <span className="text-muted">•</span>
+                  <span className="text-muted/60">·</span>
                   <button
                     type="button"
                     onClick={() => scrollToSection("sec-reviews")}
                     className="inline-flex items-center font-bold text-title hover:text-primary transition"
                   >
-                    <Star className="h-4 w-4 fill-amber-400 text-amber-500 mr-1" />
+                    <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500 mr-1" />
                     {pro.rating.toFixed(1)}
                     <span className="font-normal text-muted ml-1">({pro.reviewCount} reviews)</span>
                   </button>
-                  <span className="text-muted">•</span>
+                  <span className="text-muted/60">·</span>
                   <span className="inline-flex items-center text-muted">
                     <MapPin className="h-3.5 w-3.5 mr-1 shrink-0 text-muted" />
                     {pro.city}, {pro.state} (~{pro.radiusMiles} mi area)
@@ -303,14 +302,14 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
 
             {/* Quick Actions (Share & Save) */}
-            <div className="flex items-center gap-2.5 self-start md:self-end">
+            <div className="flex items-center gap-2 self-start md:self-end">
               <button
                 type="button"
                 onClick={onShare}
-                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-title shadow-xs hover:bg-smoke transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-1.5 text-xs font-semibold text-title shadow-xs hover:bg-smoke transition-colors"
                 title="Share Pro Profile"
               >
-                <Share2 className="h-4 w-4" />
+                <Share2 className="h-3.5 w-3.5" />
                 <span>{copied ? "Link Copied!" : "Share"}</span>
               </button>
 
@@ -319,28 +318,62 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   type="button"
                   onClick={onSave}
                   className={cn(
-                    "inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-title shadow-xs hover:bg-smoke transition-colors",
+                    "inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-1.5 text-xs font-semibold text-title shadow-xs hover:bg-smoke transition-colors",
                     saved && access.canSavePro && "text-error border-error/30 bg-red-50",
                   )}
                   title="Save to favorites"
                 >
-                  <Heart className={cn("h-4 w-4", saved && access.canSavePro && "fill-current text-error")} />
+                  <Heart className={cn("h-3.5 w-3.5", saved && access.canSavePro && "fill-current text-error")} />
                   <span>{saved && access.canSavePro ? "Saved" : "Save"}</span>
                 </button>
               ) : null}
             </div>
           </div>
+
+          {/* Quick Credential Badges Row */}
+          <div className="mt-5 pt-4 border-t border-line/60 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-title">
+            <div className="flex items-center gap-1.5">
+              <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
+              <span>
+                <strong>
+                  {pro.yearsInBusiness?.toString().includes("year") || pro.yearsInBusiness?.toString().includes("+")
+                    ? pro.yearsInBusiness
+                    : `${pro.yearsInBusiness} Years`}
+                </strong>{" "}
+                in business
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <Award className="h-3.5 w-3.5 text-primary shrink-0" />
+              <span>
+                <strong>{pro.jobsCompleted}+</strong> completed jobs
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
+              <span>
+                Responds <strong>{effectiveResponseTime.toLowerCase()}</strong>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-emerald-700">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+              <span>TDLR License &amp; $1M Insured</span>
+            </div>
+          </div>
         </div>
 
-        {/* 4. STICKY SUB-NAVIGATION TAB RIBBON (Sticks under main navbar at top-[74px]) */}
+        {/* 4. SORTED SUB-NAVIGATION TAB RIBBON */}
         <div className="sticky top-[74px] z-30 border-t border-line/70 bg-white/95 backdrop-blur-md shadow-xs">
           <div className="container-site flex items-center justify-between gap-4">
-            <div className="flex gap-3 sm:gap-8 overflow-x-auto py-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex gap-2 sm:gap-6 overflow-x-auto py-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               {[
-                { id: "sec-about", tabId: "about", label: "About" },
-                { id: "sec-services", tabId: "services", label: "Services" },
-                { id: "sec-projects", tabId: "projects", label: `Photos (${gallery.length})` },
+                { id: "sec-services", tabId: "services", label: "Services & Rates" },
+                { id: "sec-projects", tabId: "projects", label: `Recent Work (${gallery.length})` },
                 { id: "sec-reviews", tabId: "reviews", label: `Reviews (${allReviews.length})` },
+                { id: "sec-about", tabId: "about", label: "About & Credentials" },
                 { id: "sec-faqs", tabId: "faqs", label: "FAQs" },
               ].map((tab) => (
                 <button
@@ -351,7 +384,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                     scrollToSection(tab.id);
                   }}
                   className={cn(
-                    "shrink-0 px-2 py-3.5 text-sm font-medium transition-colors border-b-2 -mb-px whitespace-nowrap",
+                    "shrink-0 px-2 py-3 text-xs sm:text-sm font-medium transition-colors border-b-2 -mb-px whitespace-nowrap",
                     activeTab === tab.tabId
                       ? "border-primary text-primary font-semibold"
                       : "border-transparent text-muted hover:text-title",
@@ -365,89 +398,27 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
         </div>
       </section>
 
-      {/* 5. MAIN CONTENT (Editorial left column + Sticky action card right) */}
-      <div className="container-site mt-10 grid gap-12 lg:grid-cols-12 items-start">
-        {/* Left Column (8 cols): Flowing with clean scroll offsets */}
-        <div className="lg:col-span-8 space-y-12">
-          {/* SECTION: ABOUT */}
-          <section id="sec-about" className="scroll-mt-[135px] border-b border-line/60 pb-12 space-y-6">
-            <div>
-              <h2 className="font-display text-[22px] font-semibold text-title tracking-tight">
-                About {pro.name}
-              </h2>
-              <p className="mt-3 font-sans text-[15px] sm:text-[16px] leading-relaxed text-[#444]">
-                {effectiveBio}
-              </p>
-            </div>
-
-            {/* Key Highlights Strip */}
-            <div className="pt-2 flex flex-wrap items-center gap-y-3 gap-x-6 text-sm text-title">
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-primary shrink-0" />
-                <span>
-                  <strong>
-                    {pro.yearsInBusiness?.toString().includes("year") || pro.yearsInBusiness?.toString().includes("+")
-                      ? pro.yearsInBusiness
-                      : `${pro.yearsInBusiness} Years`}
-                  </strong>{" "}
-                  in business
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Award className="h-4 w-4 text-primary shrink-0" />
-                <span>
-                  <strong>{pro.jobsCompleted}+</strong> completed jobs
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary shrink-0" />
-                <span>
-                  Responds <strong>{effectiveResponseTime.toLowerCase()}</strong>
-                </span>
-              </div>
-            </div>
-
-            {/* Working Hours & Payment Notes */}
-            <div className="pt-4 grid gap-4 sm:grid-cols-2 text-xs border-t border-line/40">
-              <div>
-                <p className="font-semibold text-muted uppercase tracking-wider">Business Hours</p>
-                <p className="mt-1 text-title">
-                  <strong>Mon – Fri:</strong> {displayHours?.weekdays ?? "8:00 AM – 6:00 PM"} · <strong>Sat:</strong> {displayHours?.saturday ?? "9:00 AM – 3:00 PM"}
-                </p>
-                <p className="mt-0.5 text-primary font-medium">
-                  {pro.emergency || (isDemoPro && proProfile?.emergency)
-                    ? "24/7 Urgent Dispatch Available"
-                    : "Emergency on-call for urgent jobs"}
-                </p>
-              </div>
-
-              <div>
-                <p className="font-semibold text-muted uppercase tracking-wider">Accepted Direct Payments</p>
-                <p className="mt-1 text-title">
-                  {displayPayments ? displayPayments.join(", ") : "Credit/Debit Card, Zelle, Bank Transfer, Check, or Cash"}
-                </p>
-                <p className="mt-0.5 text-muted">Paid directly upon 100% completion ($0 platform fee)</p>
-              </div>
-            </div>
-          </section>
-
-          {/* SECTION: SERVICES */}
-          <section id="sec-services" className="scroll-mt-[135px] border-b border-line/60 pb-12 space-y-6">
-            {/* SPECIAL PROMOTIONAL OFFER BANNER */}
+      {/* 5. MAIN CONTENT (Sorted: Services -> Projects -> Reviews -> About -> FAQs) */}
+      <div className="container-site mt-8 sm:mt-10 grid gap-10 lg:grid-cols-12 items-start">
+        {/* Left Column (8 cols) */}
+        <div className="lg:col-span-8 space-y-10 sm:space-y-12">
+          {/* ============================================================ */}
+          {/* STEP 1 (FIRST): SERVICES & UPFRONT RATES                     */}
+          {/* ============================================================ */}
+          <section id="sec-services" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-5">
+            {/* Promotional Offer Banner (Clean & Subtle) */}
             {displaySpecialOffer && (
-              <div className="rounded-2xl border-2 border-emerald-300 bg-gradient-to-r from-emerald-50 via-white to-emerald-50/60 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="space-y-1">
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center rounded-md bg-emerald-600 px-2 py-0.5 text-xs font-bold text-white shadow-2xs">
+                    <span className="inline-flex items-center rounded-md bg-emerald-600 px-2 py-0.5 text-xs font-bold text-white">
                       {displaySpecialOffer.discount}
                     </span>
-                    <h3 className="font-display text-base font-bold text-emerald-950">
+                    <h3 className="font-display text-sm font-bold text-emerald-950">
                       {displaySpecialOffer.title}
                     </h3>
                   </div>
-                  <p className="text-xs text-emerald-900/80 leading-relaxed max-w-xl">
+                  <p className="text-xs text-emerald-900/80 leading-relaxed">
                     {displaySpecialOffer.terms}
                   </p>
                 </div>
@@ -466,24 +437,24 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
 
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <div>
-                <h2 className="font-display text-[22px] font-semibold text-title tracking-tight">
-                  Services
+                <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
+                  Services &amp; Upfront Rates
                 </h2>
-                <p className="mt-1 text-sm text-[#757575]">
-                  Specialized home services and repair solutions for {pro.city} and surrounding areas
+                <p className="mt-0.5 text-xs sm:text-sm text-muted">
+                  Itemized estimates agreed before work begins · No hidden dispatch fees
                 </p>
               </div>
-              <p className="text-sm font-semibold text-title">
-                Starting from <span className="font-display text-xl font-bold text-title">${effectiveStartingPrice}</span>
+              <p className="text-xs sm:text-sm font-semibold text-title">
+                Starting from <span className="font-display text-lg sm:text-xl font-bold text-title">${effectiveStartingPrice}</span>
               </p>
             </div>
 
             {/* Specialties Chips */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {specialties.map((item) => (
                 <span
                   key={item}
-                  className="rounded-full bg-surface border border-line px-3.5 py-1 text-xs font-medium text-title"
+                  className="rounded-full bg-surface border border-line/70 px-3 py-1 text-xs font-medium text-title"
                 >
                   {item}
                 </span>
@@ -500,8 +471,8 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   >
                     <div>
                       <div className="flex items-baseline justify-between gap-2">
-                        <h4 className="font-display text-[15px] font-bold text-title">{srv.name}</h4>
-                        <span className="font-display text-base font-bold text-primary shrink-0">
+                        <h4 className="font-display text-sm sm:text-[15px] font-bold text-title">{srv.name}</h4>
+                        <span className="font-display text-sm sm:text-base font-bold text-primary shrink-0">
                           ${srv.price}
                         </span>
                       </div>
@@ -516,7 +487,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                           href={`${quoteHref}&service=${encodeURIComponent(srv.name)}`}
                           className="font-semibold text-primary hover:underline"
                         >
-                          Request this service →
+                          Request service →
                         </Link>
                       )}
                     </div>
@@ -525,22 +496,22 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               </div>
             )}
 
-            {/* What's Included Checklist */}
+            {/* What's Included With Every Call */}
             <div className="pt-2">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
                 What&apos;s Included With Every Service Call
               </h3>
-              <div className="mt-3 grid gap-3 sm:grid-cols-2 text-sm text-[#333]">
+              <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2 text-xs sm:text-sm text-copy">
                 {(displayPerks ?? [
                   "Free upfront itemized quote",
                   "1-Year workmanship warranty",
-                  "Clear scope & itemized estimate",
+                  "Clear scope & transparent pricing",
                   "Jobsite cleanup & floor protection",
                   "OEM-certified replacement parts",
-                  "Direct contractor payment on completion",
+                  "Direct payment upon 100% completion",
                 ]).map((perk) => (
-                  <div key={perk} className="flex items-center gap-2.5">
-                    <Check className="h-4 w-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div key={perk} className="flex items-center gap-2">
+                    <Check className="h-3.5 w-3.5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>{perk}</span>
                   </div>
                 ))}
@@ -548,24 +519,26 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
           </section>
 
-          {/* SECTION: PROJECT PHOTOS */}
-          <section id="sec-projects" className="scroll-mt-[135px] border-b border-line/60 pb-12 space-y-5">
+          {/* ============================================================ */}
+          {/* STEP 2 (SECOND): RECENT WORK & PROJECT PHOTOS                */}
+          {/* ============================================================ */}
+          <section id="sec-projects" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="font-display text-[22px] font-semibold text-title tracking-tight">
-                  Recent Work &amp; Projects
+                <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
+                  Recent Work &amp; Photos
                 </h2>
-                <p className="mt-1 text-sm text-[#757575]">Completed jobs by {pro.businessName}</p>
+                <p className="mt-0.5 text-xs sm:text-sm text-muted">Completed residential jobs by {effectiveBusinessName}</p>
               </div>
               <span className="text-xs font-medium text-muted">{gallery.length} photos</span>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-3">
               {gallery.map((item, idx) => (
                 <div
                   key={idx}
                   onClick={() => setSelectedImage(item.image)}
-                  className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-smoke cursor-pointer shadow-xs"
+                  className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-smoke cursor-pointer shadow-xs border border-line/60"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -574,7 +547,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute bottom-3 left-3 right-3 text-white text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between">
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between">
                     <span className="truncate">{item.title}</span>
                     <ExternalLink className="h-3.5 w-3.5 shrink-0 ml-1" />
                   </div>
@@ -583,25 +556,27 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
           </section>
 
-          {/* SECTION: REVIEWS */}
-          <section id="sec-reviews" className="scroll-mt-[135px] border-b border-line/60 pb-12 space-y-6">
-            <div className="flex flex-wrap items-baseline justify-between gap-4">
+          {/* ============================================================ */}
+          {/* STEP 3 (THIRD): CUSTOMER REVIEWS                             */}
+          {/* ============================================================ */}
+          <section id="sec-reviews" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-5">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
               <div>
-                <h2 className="font-display text-[22px] font-semibold text-title tracking-tight">
+                <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
                   Customer Reviews
                 </h2>
-                <p className="mt-1 text-sm text-[#757575]">
+                <p className="mt-0.5 text-xs sm:text-sm text-muted">
                   Verified feedback from homeowners who hired {pro.name}
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="font-display text-2xl font-bold text-title">
+                <span className="font-display text-xl font-bold text-title">
                   {pro.rating.toFixed(1)}
                 </span>
                 <div className="flex items-center gap-0.5 text-amber-500">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-amber-500" />
+                    <Star key={i} className="h-3.5 w-3.5 fill-amber-500" />
                   ))}
                 </div>
                 <span className="text-xs text-muted">({pro.reviewCount} reviews)</span>
@@ -609,7 +584,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
 
             {/* Filter Pills */}
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-xs font-medium text-muted mr-1">Filter:</span>
               {reviewTags.map((tag) => (
                 <button
@@ -617,7 +592,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   type="button"
                   onClick={() => setSelectedReviewTag(tag.id)}
                   className={cn(
-                    "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                    "rounded-full px-3 py-0.5 text-xs font-medium transition-colors",
                     selectedReviewTag === tag.id
                       ? "bg-title text-white font-semibold"
                       : "bg-surface text-copy hover:bg-smoke border border-line/60",
@@ -629,9 +604,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
 
             {/* Reviews List */}
-            <div className="divide-y divide-line/60 pt-2">
+            <div className="divide-y divide-line/60 pt-1">
               {filteredReviews.map((rev) => (
-                <div key={rev.id} className="py-6 first:pt-2 space-y-2.5">
+                <div key={rev.id} className="py-5 first:pt-1 space-y-2">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span className="font-display text-sm font-bold text-title">
@@ -645,19 +620,19 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
 
                     <div className="flex items-center gap-0.5 text-amber-500">
                       {[...Array(rev.rating)].map((_, i) => (
-                        <Star key={i} className="h-3.5 w-3.5 fill-amber-500" />
+                        <Star key={i} className="h-3 w-3 fill-amber-500" />
                       ))}
                     </div>
                   </div>
 
-                  <p className="font-sans text-sm leading-relaxed text-[#444]">{rev.text}</p>
+                  <p className="font-sans text-xs sm:text-sm leading-relaxed text-[#444]">{rev.text}</p>
 
                   {rev.reply && (
-                    <div className="border-l-2 border-primary/30 pl-4 py-1 mt-3 space-y-0.5">
+                    <div className="border-l-2 border-primary/30 pl-3.5 py-1 mt-2.5 space-y-0.5">
                       <p className="text-xs font-semibold text-primary">
                         Response from {pro.businessName}
                       </p>
-                      <p className="text-xs text-[#555]">{rev.reply}</p>
+                      <p className="text-xs text-muted">{rev.reply}</p>
                     </div>
                   )}
                 </div>
@@ -665,19 +640,63 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
           </section>
 
-          {/* SECTION: FREQUENTLY ASKED QUESTIONS */}
-          <section id="sec-faqs" className="scroll-mt-[135px] space-y-5">
-            <h2 className="font-display text-[22px] font-semibold text-title tracking-tight">
+          {/* ============================================================ */}
+          {/* STEP 4 (FOURTH): ABOUT & BUSINESS CREDENTIALS                */}
+          {/* ============================================================ */}
+          <section id="sec-about" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-5">
+            <div>
+              <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
+                About &amp; Credentials
+              </h2>
+              <p className="mt-2 font-sans text-xs sm:text-sm leading-relaxed text-[#444]">
+                {effectiveBio}
+              </p>
+            </div>
+
+            {/* Working Hours & Payment Notes */}
+            <div className="grid gap-3 sm:grid-cols-2 text-xs pt-1">
+              <div className="rounded-xl border border-line/70 bg-surface/40 p-4 space-y-1">
+                <p className="font-semibold text-title uppercase tracking-wider text-[11px]">Business Hours</p>
+                <p className="text-copy">
+                  <strong>Mon – Fri:</strong> {displayHours?.weekdays ?? "8:00 AM – 6:00 PM"}
+                </p>
+                <p className="text-copy">
+                  <strong>Sat:</strong> {displayHours?.saturday ?? "9:00 AM – 3:00 PM"}
+                </p>
+                <p className="text-primary font-medium text-[11px] pt-0.5">
+                  {pro.emergency || (isDemoPro && proProfile?.emergency)
+                    ? "24/7 Urgent Dispatch Available"
+                    : "Emergency on-call for urgent jobs"}
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-line/70 bg-surface/40 p-4 space-y-1">
+                <p className="font-semibold text-title uppercase tracking-wider text-[11px]">Accepted Direct Payments</p>
+                <p className="text-copy leading-relaxed">
+                  {displayPayments ? displayPayments.join(", ") : "Credit/Debit Card, Zelle, Bank Transfer, Check, or Cash"}
+                </p>
+                <p className="text-muted text-[11px] pt-0.5">
+                  Paid directly on completion · Zero platform fees
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* ============================================================ */}
+          {/* STEP 5 (FIFTH): FREQUENTLY ASKED QUESTIONS                   */}
+          {/* ============================================================ */}
+          <section id="sec-faqs" className="scroll-mt-[135px] space-y-4">
+            <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
               Frequently Asked Questions
             </h2>
 
             <div className="divide-y divide-line/60">
               {faqs.map((faq, i) => (
-                <div key={i} className="py-4 first:pt-1 space-y-1">
-                  <h3 className="font-display text-[15px] font-semibold text-title">
+                <div key={i} className="py-3.5 first:pt-1 space-y-1">
+                  <h3 className="font-display text-sm sm:text-[15px] font-semibold text-title">
                     {faq.q}
                   </h3>
-                  <p className="font-sans text-sm text-[#555] leading-relaxed">
+                  <p className="font-sans text-xs sm:text-sm text-muted leading-relaxed">
                     {faq.a}
                   </p>
                 </div>
@@ -686,44 +705,46 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           </section>
         </div>
 
-        {/* Right Column (4 cols): THE STICKY ACTION CARD (Anchored at top-[145px]) */}
-        <aside className="lg:col-span-4 lg:sticky lg:top-[145px]">
-          <div className="rounded-[24px] border border-line/80 bg-white p-6 shadow-md space-y-5">
+        {/* Right Column (4 cols): SLEEK STICKY ACTION CARD */}
+        <aside className="lg:col-span-4 lg:sticky lg:top-[135px]">
+          <div className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-sm space-y-4">
             {/* Price & Overview */}
             <div>
-              <p className="font-display text-2xl font-bold text-title">
-                ${effectiveStartingPrice}{" "}
-                <span className="text-xs font-normal text-muted">starting rate</span>
-              </p>
-              <p className="mt-1 text-xs text-muted">
-                Final itemized price agreed before any work starts.
+              <div className="flex items-baseline gap-1.5">
+                <span className="font-display text-2xl sm:text-3xl font-bold text-title">
+                  ${effectiveStartingPrice}
+                </span>
+                <span className="text-xs text-muted font-medium">starting rate</span>
+              </div>
+              <p className="mt-1 text-xs text-muted leading-relaxed">
+                Itemized estimate agreed before any work starts.
               </p>
             </div>
 
             {/* Quick Guarantees */}
-            <div className="space-y-2 pt-2 border-t border-line/60 text-xs text-title">
+            <div className="space-y-2 pt-3 border-t border-line/60 text-xs text-title">
               <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-primary shrink-0" />
+                <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />
                 <span>Serving {pro.city} &amp; ~{pro.radiusMiles} miles</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary shrink-0" />
-                <span>Next open window: Tomorrow 10:00 AM – 12:00 PM</span>
+                <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
+                <span>Next open window: Tomorrow</span>
               </div>
               <div className="flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-emerald-600 shrink-0" />
+                <CreditCard className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                 <span>Pay directly on completion ($0 platform fee)</span>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
-                <span>$1,000 Workmanship &amp; Property Guarantee</span>
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                <span>1-Year Labor Warranty &amp; Resolution Support</span>
               </div>
             </div>
 
-            {/* CTAs */}
-            <div className="space-y-2.5 pt-2">
+            {/* Action Buttons */}
+            <div className="space-y-2 pt-2">
               {quoteHref ? (
-                <Button href={quoteHref} size="lg" className="w-full justify-center text-sm font-semibold rounded-full">
+                <Button href={quoteHref} size="lg" className="w-full justify-center text-xs sm:text-sm font-semibold rounded-xl">
                   Request a Free Quote ↗
                 </Button>
               ) : null}
@@ -733,20 +754,20 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   href={messageHref}
                   variant={quoteHref ? "ghost" : undefined}
                   size="lg"
-                  className="w-full justify-center text-sm font-semibold rounded-full"
+                  className="w-full justify-center text-xs sm:text-sm font-semibold rounded-xl border border-line/80"
                 >
                   Message Directly
                 </Button>
               ) : null}
 
               {access.audience === "pro" ? (
-                <Button href="/pro/jobs" size="lg" className="w-full justify-center text-sm rounded-full">
+                <Button href="/pro/jobs" size="lg" className="w-full justify-center text-xs sm:text-sm rounded-xl">
                   Go to Job Board
                 </Button>
               ) : null}
 
               {access.audience === "guest" ? (
-                <p className="text-center text-xs text-[#757575] pt-1">
+                <p className="text-center text-[11px] text-muted pt-1">
                   <Link href="/login" className="font-semibold text-primary underline">
                     Sign in
                   </Link>{" "}
@@ -760,9 +781,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
 
             {/* Reassurance Footer */}
-            <div className="border-t border-line/60 pt-4 text-center">
-              <p className="text-[11.5px] text-[#757575] leading-relaxed">
-                Direct contractor hiring. Homeowners pay pros directly with zero platform markup.
+            <div className="border-t border-line/60 pt-3 text-center">
+              <p className="text-[11px] text-muted leading-relaxed">
+                Direct contractor hiring. Zero middleman markup on parts or labor.
               </p>
             </div>
           </div>
@@ -772,7 +793,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
       {/* Image Lightbox Modal */}
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs animate-in fade-in"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative max-w-3xl overflow-hidden rounded-2xl bg-black">

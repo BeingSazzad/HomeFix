@@ -101,9 +101,9 @@ export function ProCard({
           </span>
         </div>
 
-        {/* Contractor Personal Name with Verified Shield */}
-        <h3 className="mt-3 font-display text-[18px] font-semibold text-title tracking-tight leading-snug transition-colors group-hover:text-primary flex items-center gap-1.5">
-          <span className="truncate">{pro.name}</span>
+        {/* Contractor Business Name with Verified Shield */}
+        <h3 className="mt-3 font-display text-[17px] font-semibold text-title tracking-tight leading-snug transition-colors group-hover:text-primary flex items-center gap-1.5">
+          <span className="truncate">{pro.businessName || pro.name}</span>
           <span title="Screened & Verified Professional" className="inline-flex shrink-0">
             <ShieldCheck
               className="h-4 w-4 text-primary fill-primary/15"
@@ -112,9 +112,11 @@ export function ProCard({
           </span>
         </h3>
 
-        {/* Location Row (under name) */}
-        <p className="mt-1 flex items-center gap-1 font-sans text-xs text-muted truncate">
-          <MapPin className="h-3.5 w-3.5 shrink-0 text-muted" />
+        {/* Pro Name & Location Row */}
+        <p className="mt-1 flex items-center gap-1.5 font-sans text-xs text-muted truncate">
+          <span>{pro.name}</span>
+          <span>·</span>
+          <MapPin className="h-3 w-3 shrink-0 text-muted" />
           <span>{pro.city}, {pro.state}</span>
         </p>
 
