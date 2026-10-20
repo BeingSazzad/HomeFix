@@ -1,37 +1,33 @@
 "use client";
 
-import { ClipboardList, FileCheck2, Star, Wallet, ArrowRight } from "lucide-react";
+import { ArrowRight, ClipboardPen, Handshake, Receipt, Scale } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 
 const steps = [
   {
     step: "01",
-    title: "Describe your job",
-    text: "Detail the repair, your preferred timing, and attach photos in under 2 minutes.",
-    icon: ClipboardList,
-    tag: "2 Min Form",
+    title: "Post your repair request",
+    text: "Share what needs fixing, select your preferred schedule, and add a few photos so contractors can scope the work accurately.",
+    icon: ClipboardPen,
   },
   {
     step: "02",
-    title: "Receive local bids",
-    text: "Verified Austin contractors review your details and send clear, itemized price estimates.",
-    icon: FileCheck2,
-    tag: "No Cold Calls",
+    title: "Receive itemized quotes",
+    text: "Vetted local specialists review your details and send clear price breakdowns with labor, parts, and estimated timelines.",
+    icon: Receipt,
   },
   {
     step: "03",
-    title: "Compare clear bids",
-    text: "Inspect labor, parts, estimated arrival times, and verified neighbor reviews in one place.",
-    icon: Star,
-    tag: "Zero Pressure",
+    title: "Compare & select your pro",
+    text: "Review estimates side-by-side, read verified neighbor reviews, and chat directly with contractors before making a decision.",
+    icon: Scale,
   },
   {
     step: "04",
-    title: "Hire & pay directly",
-    text: "Schedule your visit and pay your technician directly once you are 100% satisfied with the work.",
-    icon: Wallet,
-    tag: "$0 Platform Fee",
+    title: "Hire & pay on completion",
+    text: "Confirm your appointment, inspect the completed repair in person, and pay your contractor directly with zero middleman markups.",
+    icon: Handshake,
   },
 ];
 
@@ -43,8 +39,8 @@ export function HomeProcess() {
           <SectionHeading
             align="center"
             eyebrow="How it works"
-            title="From broken to fixed in 4 easy steps"
-            description="Get upfront bids, hire with complete confidence, and pay your pro directly upon completion."
+            title="How to get your repair done right"
+            description="Post your project for free, compare transparent quotes from vetted Austin contractors, and pay directly only when the work is complete."
           />
         </div>
 
@@ -66,11 +62,8 @@ export function HomeProcess() {
                     </span>
                   </div>
 
-                  <div className="mt-7">
-                    <span className="inline-block rounded-full bg-smoke px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
-                      {item.tag}
-                    </span>
-                    <h3 className="mt-3.5 font-display text-[19px] sm:text-[20px] font-medium tracking-tight leading-snug text-title">
+                  <div className="mt-6">
+                    <h3 className="font-display text-[19px] sm:text-[20px] font-semibold tracking-tight leading-snug text-title">
                       {item.title}
                     </h3>
                     <p className="mt-2.5 font-sans text-sm leading-[24px] text-[#757575]">
