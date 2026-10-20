@@ -9,7 +9,7 @@ const p = (id: string, w = 1200) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
 
 export const photos = {
-  hero: u("photo-1621905252507-b35492cc74b4", 2200),
+  hero: u("photo-1618221195710-dd6b41faaea6", 2200),
   heroInset: u("photo-1585704032915-c3400ca199e7", 900),
   trust: u("photo-1504328345606-18bbc8c9d7d1", 1400),
   trustAlt: u("photo-1581578731548-c64695cc6952", 900),
