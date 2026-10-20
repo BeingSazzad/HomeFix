@@ -8,14 +8,20 @@ export function PageBanner({
   description,
   image,
   align = "left",
+  breadcrumbs,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   description?: string;
   image?: string;
   align?: "left" | "center";
+  breadcrumbs?: { label: string; href?: string }[];
 }) {
   const centered = align === "center";
+  const crumbs = breadcrumbs ?? [
+    { label: "Home", href: "/" },
+    { label: eyebrow ?? title },
+  ];
 
   return (
     <section className="relative overflow-hidden bg-title text-white">
@@ -31,13 +37,24 @@ export function PageBanner({
           centered && "mx-auto max-w-3xl text-center",
         )}
       >
-        <p className="font-sans text-[12px] font-medium text-white/70">
-          <Link href="/" className="hover:text-white transition-colors">
-            Home
-          </Link>
-          <span className="mx-2 text-white/40">/</span>
-          <span className="text-white/90">{eyebrow}</span>
-        </p>
+        <nav aria-label="Breadcrumb" className="font-sans text-[12px] font-medium text-white/70">
+          <ol className="inline-flex items-center flex-wrap gap-1.5">
+            {crumbs.map((crumb, idx) => (
+              <li key={idx} className="inline-flex items-center">
+                {idx > 0 && <span className="mx-2 text-white/40">/</span>}
+                {crumb.href ? (
+                  <Link href={crumb.href} className="hover:text-white transition-colors">
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span className="text-white/90" aria-current="page">
+                    {crumb.label}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
         <h1
           className={cn(
             "mt-3.5 font-display text-[32px] font-medium leading-[1.1] tracking-[-1.8px] text-white sm:text-[40px] sm:tracking-[-2.2px] md:text-[48px] md:tracking-[-2.88px]",
