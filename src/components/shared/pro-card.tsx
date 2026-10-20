@@ -94,19 +94,15 @@ export function ProCard({
 
       {/* 2. Card Content Body */}
       <div className="flex flex-1 flex-col p-5">
-        {/* Category & Location Row */}
-        <div className="flex items-center justify-between gap-2 text-xs">
+        {/* Category Row */}
+        <div className="flex items-center gap-2 text-xs">
           <span className="inline-flex items-center rounded-md bg-smoke px-2.5 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider text-primary">
             {pro.trade}
-          </span>
-          <span className="inline-flex items-center gap-1 font-sans text-xs text-muted truncate">
-            <MapPin className="h-3.5 w-3.5 shrink-0 text-muted" />
-            {pro.city}, {pro.state}
           </span>
         </div>
 
         {/* Contractor Personal Name with Verified Shield */}
-        <h3 className="mt-3.5 font-display text-[18px] font-semibold text-title tracking-tight leading-snug transition-colors group-hover:text-primary flex items-center gap-1.5">
+        <h3 className="mt-3 font-display text-[18px] font-semibold text-title tracking-tight leading-snug transition-colors group-hover:text-primary flex items-center gap-1.5">
           <span className="truncate">{pro.name}</span>
           <span title="Screened & Verified Professional" className="inline-flex shrink-0">
             <ShieldCheck
@@ -116,12 +112,11 @@ export function ProCard({
           </span>
         </h3>
 
-        {/* Company / Business Name */}
-        {pro.businessName && pro.businessName !== pro.name ? (
-          <p className="mt-1 text-xs text-muted truncate">
-            {pro.businessName}
-          </p>
-        ) : null}
+        {/* Location Row (under name) */}
+        <p className="mt-1 flex items-center gap-1 font-sans text-xs text-muted truncate">
+          <MapPin className="h-3.5 w-3.5 shrink-0 text-muted" />
+          <span>{pro.city}, {pro.state}</span>
+        </p>
 
         {/* Rating & Reviews & Jobs Row */}
         <div className="mt-2.5 flex items-center gap-2 text-xs">
