@@ -99,9 +99,24 @@ export default function ProRegisterPage() {
       <h1 className="mt-3 font-display text-[22px] sm:text-[24px] font-semibold leading-snug tracking-tight text-title">
         Join as a professional
       </h1>
-      <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#757575]">
-        Apply for review. Membership is $19.99/mo after 3 free months.
+      <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#666]">
+        {step === 0 && "Connect directly with Austin homeowners. Keep 100% of your job earnings with zero per-lead fees."}
+        {step === 1 && "Tell homeowners about your trade specialty and craftsmanship experience in the Austin area."}
+        {step === 2 && "Set your local service territory and complete standard trade clearance. No credit card required."}
       </p>
+
+      {step === 0 && (
+        <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-2.5 text-[12px] font-medium text-[#555]">
+          <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-semibold">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            Free to apply
+          </span>
+          <span className="text-line">•</span>
+          <span>Zero lead fees</span>
+          <span className="text-line">•</span>
+          <span>Keep 100% of payouts</span>
+        </div>
+      )}
 
       <div className="mt-5">
         <Steps current={step} items={steps.map((title) => ({ title }))} size="small" />
@@ -215,6 +230,11 @@ export default function ProRegisterPage() {
           </>
         ) : null}
       </div>
+      {step === 2 && (
+        <div className="mt-4 rounded-xl border border-line/80 bg-surface/40 p-3 text-xs text-[#666] leading-relaxed">
+          <span className="font-semibold text-title">90-Day Free Pro Trial:</span> Approved contractors receive 3 full months of unlimited job bids with zero platform commissions. No credit card required to apply.
+        </div>
+      )}
       {error ? <p className="mt-4 text-sm text-error">{error}</p> : null}
       <div className="mt-6 flex flex-wrap gap-2">
         {step > 0 ? (
