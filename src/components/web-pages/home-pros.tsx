@@ -13,6 +13,13 @@ export function HomePros() {
   const scroller = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hasOverflow, setHasOverflow] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Mouse drag-to-scroll refs for high-performance zero-rerender tracking
+  const isMouseDown = useRef(false);
+  const startX = useRef(0);
+  const scrollStart = useRef(0);
+  const hasDragged = useRef(false);
 
   const updateScrollState = () => {
     const el = scroller.current;
@@ -30,9 +37,79 @@ export function HomePros() {
     return () => window.removeEventListener("resize", updateScrollState);
   }, [list.length]);
 
+  // Window-level mouseup to ensure drag cleanly ends even if mouse releases outside
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (isMouseDown.current) {
+        isMouseDown.current = false;
+        setIsDragging(false);
+        const el = scroller.current;
+        if (el) {
+          el.style.scrollBehavior = "smooth";
+        }
+      }
+    };
+
+    window.addEventListener("mouseup", handleGlobalMouseUp);
+    return () => window.removeEventListener("mouseup", handleGlobalMouseUp);
+  }, []);
+
+  function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+    const el = scroller.current;
+    if (!el) return;
+    // Only drag on left mouse button
+    if (e.button !== 0) return;
+
+    isMouseDown.current = true;
+    hasDragged.current = false;
+    startX.current = e.pageX - el.offsetLeft;
+    scrollStart.current = el.scrollLeft;
+    // Disable smooth-scrolling during drag for 1:1 direct responsiveness
+    el.style.scrollBehavior = "auto";
+  }
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!isMouseDown.current) return;
+    const el = scroller.current;
+    if (!el) return;
+
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const distance = (x - startX.current) * 1.25;
+
+    if (Math.abs(x - startX.current) > 5) {
+      if (!hasDragged.current) {
+        hasDragged.current = true;
+        setIsDragging(true);
+      }
+      el.scrollLeft = scrollStart.current - distance;
+    }
+  }
+
+  function handleMouseUp() {
+    if (isMouseDown.current) {
+      isMouseDown.current = false;
+      setIsDragging(false);
+      const el = scroller.current;
+      if (el) {
+        el.style.scrollBehavior = "smooth";
+      }
+    }
+  }
+
+  function handleClickCapture(e: React.MouseEvent) {
+    // If user dragged more than 5px, cancel card link clicks so dragging doesn't navigate
+    if (hasDragged.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      hasDragged.current = false;
+    }
+  }
+
   function scrollBy(dir: -1 | 1) {
     const el = scroller.current;
     if (!el) return;
+    el.style.scrollBehavior = "smooth";
     const maxScroll = el.scrollWidth - el.clientWidth;
     const step = el.clientWidth > 960 ? 310 * 2 : 310;
 
@@ -49,6 +126,7 @@ export function HomePros() {
   function scrollToIndex(index: number) {
     const el = scroller.current;
     if (!el) return;
+    el.style.scrollBehavior = "smooth";
     el.scrollTo({ left: index * 310, behavior: "smooth" });
   }
 
@@ -87,14 +165,24 @@ export function HomePros() {
         </div>
 
         <div className="relative mt-8 sm:mt-10">
-          {/* Scrollable track with touch & wheel support */}
+          {/* Scrollable track with touch, wheel & mouse-drag support */}
           <div
             ref={scroller}
             onScroll={updateScrollState}
-            className="-mx-1 flex gap-5 overflow-x-auto scroll-smooth px-1 pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onClickCapture={handleClickCapture}
+            className={cn(
+              "-mx-1 flex gap-5 overflow-x-auto scroll-smooth px-1 pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none",
+              isDragging ? "cursor-grabbing" : "cursor-grab"
+            )}
           >
             {list.map((pro) => (
-              <ProCard key={pro.id} pro={pro} className="w-[270px] shrink-0 sm:w-[290px]" />
+              <div key={pro.id} className="pointer-events-auto">
+                <ProCard pro={pro} className="w-[270px] shrink-0 sm:w-[290px]" />
+              </div>
             ))}
           </div>
 
