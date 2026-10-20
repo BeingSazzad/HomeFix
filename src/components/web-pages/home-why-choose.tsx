@@ -48,8 +48,8 @@ export function HomeWhyChoose() {
             {/* Large primary photo */}
             <div className="mt-7 sm:mt-9 relative h-[320px] sm:h-[400px] w-full overflow-hidden rounded-[24px] sm:rounded-[28px] border border-line/70 shadow-sm group">
               <Image
-                src="https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&w=1400&q=80"
-                alt="Master carpenter working on residential woodwork"
+                src="/images/why-choose/craftsman.jpg"
+                alt="Professional residential carpenter installing custom cabinetry"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -66,8 +66,8 @@ export function HomeWhyChoose() {
             <div className="grid grid-cols-2 gap-4 sm:gap-6">
               <div className="relative h-[180px] sm:h-[240px] overflow-hidden rounded-[20px] sm:rounded-[24px] border border-line/70 shadow-sm group">
                 <Image
-                  src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=800&q=80"
-                  alt="Professional interior painting and surface repair"
+                  src="/images/why-choose/painter.jpg"
+                  alt="Professional painter applying precision interior paint"
                   fill
                   sizes="(max-width: 640px) 50vw, 25vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -75,8 +75,8 @@ export function HomeWhyChoose() {
               </div>
               <div className="relative h-[180px] sm:h-[240px] overflow-hidden rounded-[20px] sm:rounded-[24px] border border-line/70 shadow-sm group">
                 <Image
-                  src="https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=800&q=80"
-                  alt="Plumbing fixtures and pipe maintenance specialist"
+                  src="/images/why-choose/plumber.jpg"
+                  alt="Licensed plumbing technician installing kitchen sink fixtures"
                   fill
                   sizes="(max-width: 640px) 50vw, 25vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
