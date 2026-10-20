@@ -706,38 +706,70 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
 
         {/* Right Column (4 cols): ELEVATED STICKY ACTION CARD */}
         <aside className="lg:col-span-4 lg:sticky lg:top-[135px]">
-          <div className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-sm space-y-4">
-            {/* Price & Overview */}
+          <div className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-md space-y-5">
+            {/* Price & Upfront Guarantee Header */}
             <div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="font-display text-2xl sm:text-3xl font-bold text-title">
-                  ${effectiveStartingPrice}
+              <div className="flex items-baseline justify-between gap-2">
+                <div className="flex items-baseline gap-1.5">
+                  <span className="font-display text-3xl font-bold text-title tracking-tight">
+                    ${effectiveStartingPrice}
+                  </span>
+                  <span className="text-xs font-medium text-muted">starting estimate</span>
+                </div>
+                <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200/70">
+                  Upfront Pricing
                 </span>
-                <span className="text-xs text-muted font-medium">starting rate</span>
               </div>
               <p className="mt-1 text-xs text-muted leading-relaxed">
-                Upfront itemized estimate agreed before work begins.
+                Itemized estimate agreed before any work begins.
               </p>
             </div>
 
-            {/* Essential Highlights (Concise, no repetitive bullet noise) */}
-            <div className="space-y-2 pt-3 border-t border-line/60 text-xs text-title">
-              <div className="flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />
-                <span>Serving {pro.city} &amp; {pro.radiusMiles}-mile radius</span>
+            {/* Structured 2x2 Specs Grid: Clear Visual Hierarchy (Label vs Value) */}
+            <div className="grid grid-cols-2 gap-2.5 pt-3 border-t border-line/60">
+              <div className="rounded-xl border border-line/60 bg-surface/50 p-2.5 space-y-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-muted flex items-center gap-1">
+                  <MapPin className="h-3 w-3 text-primary shrink-0" />
+                  Service Area
+                </p>
+                <p className="text-xs font-semibold text-title truncate" title={`${pro.city} (~${pro.radiusMiles} mi)`}>
+                  {pro.city} (~{pro.radiusMiles} mi)
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
-                <span>Next available: Tomorrow</span>
+
+              <div className="rounded-xl border border-line/60 bg-surface/50 p-2.5 space-y-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-muted flex items-center gap-1">
+                  <Clock className="h-3 w-3 text-primary shrink-0" />
+                  Availability
+                </p>
+                <p className="text-xs font-semibold text-title truncate">
+                  {pro.availableThisWeek ? "This Week" : "Book 3–5 Days"}
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                <span>1-Year Workmanship Warranty</span>
+
+              <div className="rounded-xl border border-line/60 bg-surface/50 p-2.5 space-y-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-muted flex items-center gap-1">
+                  <ShieldCheck className="h-3 w-3 text-emerald-600 shrink-0" />
+                  Warranty
+                </p>
+                <p className="text-xs font-semibold text-emerald-800 truncate">
+                  1-Year Labor
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-line/60 bg-surface/50 p-2.5 space-y-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-muted flex items-center gap-1">
+                  <CreditCard className="h-3 w-3 text-emerald-600 shrink-0" />
+                  Direct Pay
+                </p>
+                <p className="text-xs font-semibold text-emerald-800 truncate">
+                  Pay on Finish
+                </p>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-2 pt-2">
+            <div className="space-y-2 pt-1">
               {quoteHref ? (
                 <Button
                   href={quoteHref}
@@ -761,9 +793,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               ) : null}
             </div>
 
-            {/* Clean Trust Footnote */}
+            {/* Single, Reassuring Trust Footnote */}
             <p className="pt-2 text-center text-[11px] text-muted border-t border-line/50">
-              Direct contractor hiring · Zero booking fees
+              Direct contractor hiring · Zero booking markup
             </p>
           </div>
         </aside>
