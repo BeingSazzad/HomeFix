@@ -2,31 +2,23 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Award,
   Calendar,
   Check,
   CheckCircle2,
-  ChevronRight,
   Clock,
   CreditCard,
-  Droplets,
   ExternalLink,
-  Hammer,
   Heart,
-  Home,
   MapPin,
   MessageSquare,
-  Paintbrush,
   Share2,
   ShieldCheck,
+  Sparkles,
   Star,
-  Trees,
-  Wind,
-  Wrench,
   X,
-  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
@@ -54,10 +46,11 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
   const { access } = useRoleAccess();
   const saved = useAppSelector((state) => state.features.favorites.includes(pro.id));
   const seedReviews = useAppSelector((state) =>
-    state.features.reviews.filter((item) => item.proId === pro.id),
+    state.features.reviews.filter((item) => item.proId === pro.id)
   );
 
-  const [activeTab, setActiveTab] = useState<"about" | "services" | "projects" | "reviews" | "faqs">("about");
+  const [activeTab, setActiveTab] = useState<"services" | "projects" | "reviews" | "about" | "faqs">("services");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("all");
   const [selectedReviewTag, setSelectedReviewTag] = useState("all");
   const [copied, setCopied] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -74,7 +67,6 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
   const displayServices = isDemoPro && proProfile?.services?.length ? proProfile.services : null;
   const displayHours = isDemoPro && proProfile?.businessHours ? proProfile.businessHours : null;
   const displayPayments = isDemoPro && proProfile?.acceptedPayments?.length ? proProfile.acceptedPayments : null;
-  const displayPerks = isDemoPro && proProfile?.includedPerks?.length ? proProfile.includedPerks : null;
 
   const cover = photos.services[pro.categorySlug] ?? photos.banner;
   const gallery = isDemoPro && proProfile?.portfolio?.length
@@ -87,13 +79,15 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
   const specialties = serviceLines[pro.categorySlug] ?? [pro.trade, "Diagnostics", "Repairs", "Maintenance"];
   const profilePath = `/browse-pros/${pro.id}`;
 
-  const quoteHref = access.audience === "homeowner" ? `/account/post-job?invite=${pro.id}` : `/signup?next=/account/post-job?invite=${pro.id}`;
+  const quoteHref = access.audience === "homeowner"
+    ? `/account/post-job?invite=${pro.id}`
+    : `/signup?next=/account/post-job?invite=${pro.id}`;
   const messageHref =
     access.audience === "homeowner"
       ? `/account/messages?dm=${pro.id}`
       : access.audience === "guest"
-        ? signupHref(`/account/messages?dm=${pro.id}`)
-        : null;
+      ? signupHref(`/account/messages?dm=${pro.id}`)
+      : null;
 
   function onSave() {
     if (access.audience === "guest") {
@@ -119,7 +113,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
     }
   }
 
-  // Realistic verified reviews for this pro
+  // Realistic verified reviews
   const defaultReviews = [
     {
       id: "rev-1",
@@ -174,7 +168,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
     selectedReviewTag === "all"
       ? allReviews
       : allReviews.filter(
-          (r) => r.tag === selectedReviewTag || r.text.toLowerCase().includes(selectedReviewTag),
+          (r) => r.tag === selectedReviewTag || r.text.toLowerCase().includes(selectedReviewTag)
         );
 
   const reviewTags = [
@@ -184,29 +178,38 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
     { id: "clean-work", label: "Clean Work" },
   ];
 
+  // Service list with category filter
+  const servicesList = useMemo(() => {
+    if (!displayServices || displayServices.length === 0) return [];
+    if (selectedCategoryFilter === "all") return displayServices;
+    return displayServices.filter((s) =>
+      s.name.toLowerCase().includes(selectedCategoryFilter.toLowerCase())
+    );
+  }, [displayServices, selectedCategoryFilter]);
+
   const faqs = [
     {
-      q: "How does your pricing and payment work?",
-      a: `We provide clear, upfront itemized quotes with no hidden fees. Once you accept our bid and the work is completed to your 100% satisfaction, you pay us directly via Card, Zelle, Check, or Cash. LocalHomeFix charges $0 platform fees.`,
+      q: "How does pricing and payment work?",
+      a: "You receive a clear, upfront itemized estimate before any work begins. Once the job is completed to your satisfaction, you pay the contractor directly via Card, Zelle, Check, or Cash with zero platform markups.",
     },
     {
       q: "Do you offer free estimates or diagnostics?",
-      a: `Yes! For most standard service calls within our ${pro.radiusMiles}-mile service coverage area, we provide upfront estimates. If in-depth diagnostic teardown is needed, the diagnostic fee is credited directly toward the repair cost if you approve the quote.`,
+      a: `For standard repairs within our ${pro.radiusMiles}-mile service area, we provide transparent upfront estimates. If a comprehensive diagnostic teardown is needed, the diagnostic fee is credited directly toward your repair cost upon approval.`,
     },
     {
       q: "Are you licensed and insured in Texas?",
-      a: `Yes. We hold an active Texas State Trade License (TDLR verified) and carry a comprehensive $1,000,000 General Liability policy. All credentials are fully vetted by LocalHomeFix.`,
+      a: "Yes. Active Texas State Trade License (TDLR verified) and $1,000,000 General Liability coverage. All credentials are fully verified by LocalHomeFix.",
     },
     {
-      q: "What warranty or guarantee do you provide?",
-      a: `We back all our workmanship with a 1-year labor warranty. Any replacement hardware or parts installed carry their full manufacturer warranty.`,
+      q: "What warranty do you provide?",
+      a: "We back all workmanship with a 1-year labor warranty. All replacement hardware and parts carry their full manufacturer warranty.",
     },
   ];
 
   return (
     <div className="min-h-screen bg-white pb-20">
       {/* 1. BREADCRUMBS BAR */}
-      <nav aria-label="Breadcrumb" className="border-b border-line/60 bg-surface/50 py-2.5">
+      <nav aria-label="Breadcrumb" className="border-b border-line/60 bg-surface/40 py-2">
         <div className="container-site flex items-center gap-2 text-xs text-muted">
           <Link href="/" className="transition hover:text-primary">
             Home
@@ -227,29 +230,15 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
         </div>
       </nav>
 
-      {/* 2. REFINED COVER BANNER */}
-      <section className="relative h-40 sm:h-48 md:h-52 w-full overflow-hidden bg-title">
+      {/* 2. REFINED COMPACT COVER HERO */}
+      <section className="relative h-28 sm:h-36 md:h-40 w-full overflow-hidden bg-gradient-to-r from-title via-slate-900 to-primary">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={cover}
           alt={pro.businessName}
-          className="h-full w-full object-cover object-center opacity-75"
+          className="h-full w-full object-cover object-center opacity-30 mix-blend-overlay"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-        {/* Clean Banner Badges */}
-        <div className="absolute left-4 top-4 sm:left-6 sm:top-5 z-10 flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-primary shadow-xs backdrop-blur-md">
-            <ShieldCheck className="h-3.5 w-3.5 text-primary fill-primary/15" />
-            Verified &amp; Licensed Pro
-          </span>
-          {pro.availableThisWeek && (
-            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-emerald-600/90 px-3 py-1 text-xs font-semibold text-white shadow-xs backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-              Available this week
-            </span>
-          )}
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
       </section>
 
       {/* 3. PROFILE IDENTITY HEADER */}
@@ -258,28 +247,34 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
             {/* Avatar & Profile Meta */}
             <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-5">
-              <div className="relative -mt-10 sm:-mt-14 shrink-0">
-                <span className="grid h-20 w-20 sm:h-24 sm:w-24 place-items-center rounded-2xl border-4 border-white bg-gradient-to-br from-primary via-blue-600 to-indigo-700 font-display text-2xl sm:text-3xl font-bold text-white shadow-md">
+              <div className="relative -mt-10 sm:-mt-12 shrink-0">
+                <span className="grid h-20 w-20 sm:h-24 sm:w-24 place-items-center rounded-2xl border-4 border-white bg-gradient-to-br from-primary to-blue-700 font-display text-2xl sm:text-3xl font-bold text-white shadow-md">
                   {initials(pro.name)}
                 </span>
                 <span
                   title="Screened & Verified Professional"
-                  className="absolute -bottom-1 -right-1 grid h-6 w-6 place-items-center rounded-full bg-white text-primary shadow-xs ring-2 ring-white"
+                  className="absolute -bottom-1 -right-1 grid h-6 w-6 place-items-center rounded-full bg-emerald-600 text-white shadow-xs ring-2 ring-white"
                 >
-                  <ShieldCheck className="h-3.5 w-3.5 fill-primary/15 text-primary" />
+                  <ShieldCheck className="h-3.5 w-3.5" />
                 </span>
               </div>
 
               <div className="space-y-1 pt-1 sm:pt-2">
-                <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title leading-tight">
-                  {effectiveBusinessName}
-                </h1>
+                <div className="flex items-center gap-2.5">
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title leading-tight">
+                    {effectiveBusinessName}
+                  </h1>
+                  <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200">
+                    <CheckCircle2 className="h-3 w-3" />
+                    Verified Pro
+                  </span>
+                </div>
 
-                {/* Clean Meta Row */}
+                {/* Clean, Non-repetitive Meta Line */}
                 <div className="font-sans text-xs sm:text-sm text-copy flex flex-wrap items-center gap-2">
                   <span className="font-semibold text-title">{pro.name}</span>
                   <span className="text-muted/60">·</span>
-                  <span className="inline-flex items-center rounded-md bg-smoke px-2 py-0.5 text-xs font-semibold text-primary">
+                  <span className="font-medium text-primary">
                     {pro.trade} Specialist
                   </span>
                   <span className="text-muted/60">·</span>
@@ -295,7 +290,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   <span className="text-muted/60">·</span>
                   <span className="inline-flex items-center text-muted">
                     <MapPin className="h-3.5 w-3.5 mr-1 shrink-0 text-muted" />
-                    {pro.city}, {pro.state} (~{pro.radiusMiles} mi area)
+                    {pro.city}, {pro.state} (~{pro.radiusMiles} mi radius)
                   </span>
                 </div>
               </div>
@@ -319,7 +314,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   onClick={onSave}
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-1.5 text-xs font-semibold text-title shadow-xs hover:bg-smoke transition-colors",
-                    saved && access.canSavePro && "text-error border-error/30 bg-red-50",
+                    saved && access.canSavePro && "text-error border-error/30 bg-red-50"
                   )}
                   title="Save to favorites"
                 >
@@ -330,17 +325,12 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
           </div>
 
-          {/* Quick Credential Badges Row */}
+          {/* Unified Credentials Stat Strip (No Clutter, Clean Metrics) */}
           <div className="mt-5 pt-4 border-t border-line/60 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-title">
             <div className="flex items-center gap-1.5">
               <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
               <span>
-                <strong>
-                  {pro.yearsInBusiness?.toString().includes("year") || pro.yearsInBusiness?.toString().includes("+")
-                    ? pro.yearsInBusiness
-                    : `${pro.yearsInBusiness} Years`}
-                </strong>{" "}
-                in business
+                <strong>{pro.yearsInBusiness}</strong> in business
               </span>
             </div>
 
@@ -360,12 +350,12 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
 
             <div className="flex items-center gap-1.5 text-emerald-700">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-              <span>TDLR License &amp; $1M Insured</span>
+              <span>TDLR Licensed &amp; $1M Insured</span>
             </div>
           </div>
         </div>
 
-        {/* 4. SORTED SUB-NAVIGATION TAB RIBBON */}
+        {/* 4. SUB-NAVIGATION TAB RIBBON */}
         <div className="sticky top-[74px] z-30 border-t border-line/70 bg-white/95 backdrop-blur-md shadow-xs">
           <div className="container-site flex items-center justify-between gap-4">
             <div className="flex gap-2 sm:gap-6 overflow-x-auto py-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
@@ -387,7 +377,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                     "shrink-0 px-2 py-3 text-xs sm:text-sm font-medium transition-colors border-b-2 -mb-px whitespace-nowrap",
                     activeTab === tab.tabId
                       ? "border-primary text-primary font-semibold"
-                      : "border-transparent text-muted hover:text-title",
+                      : "border-transparent text-muted hover:text-title"
                   )}
                 >
                   {tab.label}
@@ -398,38 +388,38 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
         </div>
       </section>
 
-      {/* 5. MAIN CONTENT (Sorted: Services -> Projects -> Reviews -> About -> FAQs) */}
+      {/* 5. MAIN CONTENT LAYOUT */}
       <div className="container-site mt-8 sm:mt-10 grid gap-10 lg:grid-cols-12 items-start">
         {/* Left Column (8 cols) */}
         <div className="lg:col-span-8 space-y-10 sm:space-y-12">
           {/* ============================================================ */}
-          {/* STEP 1 (FIRST): SERVICES & UPFRONT RATES                     */}
+          {/* SECTION 1: SERVICES & UPFRONT RATES                         */}
           {/* ============================================================ */}
-          <section id="sec-services" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-5">
+          <section id="sec-services" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-6">
             {/* Promotional Offer Banner (Clean & Subtle) */}
             {displaySpecialOffer && (
-              <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center rounded-md bg-emerald-600 px-2 py-0.5 text-xs font-bold text-white">
-                      {displaySpecialOffer.discount}
-                    </span>
+              <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white font-bold text-xs">
+                    {displaySpecialOffer.discount}
+                  </div>
+                  <div>
                     <h3 className="font-display text-sm font-bold text-emerald-950">
                       {displaySpecialOffer.title}
                     </h3>
+                    <p className="text-xs text-emerald-800/80 leading-relaxed">
+                      First-time residential customers · Applied directly to initial quote
+                    </p>
                   </div>
-                  <p className="text-xs text-emerald-900/80 leading-relaxed">
-                    {displaySpecialOffer.terms}
-                  </p>
                 </div>
 
                 {quoteHref && (
                   <Button
                     href={quoteHref}
                     size="sm"
-                    className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shrink-0 self-start sm:self-auto"
+                    className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shrink-0 self-start sm:self-auto"
                   >
-                    Claim Offer &amp; Quote
+                    Claim Offer
                   </Button>
                 )}
               </div>
@@ -441,7 +431,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   Services &amp; Upfront Rates
                 </h2>
                 <p className="mt-0.5 text-xs sm:text-sm text-muted">
-                  Itemized estimates agreed before work begins · No hidden dispatch fees
+                  Guaranteed upfront pricing agreed before work begins · No hidden travel fees
                 </p>
               </div>
               <p className="text-xs sm:text-sm font-semibold text-title">
@@ -449,78 +439,82 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               </p>
             </div>
 
-            {/* Specialties Chips */}
+            {/* Specialties / Service Categories Filter */}
             <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              <button
+                type="button"
+                onClick={() => setSelectedCategoryFilter("all")}
+                className={cn(
+                  "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                  selectedCategoryFilter === "all"
+                    ? "bg-title text-white font-semibold"
+                    : "bg-surface border border-line/70 text-copy hover:bg-smoke"
+                )}
+              >
+                All Services
+              </button>
               {specialties.map((item) => (
-                <span
+                <button
                   key={item}
-                  className="rounded-full bg-surface border border-line/70 px-3 py-1 text-xs font-medium text-title"
+                  type="button"
+                  onClick={() => setSelectedCategoryFilter(item)}
+                  className={cn(
+                    "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                    selectedCategoryFilter === item
+                      ? "bg-title text-white font-semibold"
+                      : "bg-surface border border-line/70 text-copy hover:bg-smoke"
+                  )}
                 >
                   {item}
-                </span>
+                </button>
               ))}
             </div>
 
-            {/* ITEMIZED SERVICES OFFERINGS GRID */}
-            {displayServices && displayServices.length > 0 && (
-              <div className="grid gap-3 sm:grid-cols-2 pt-1">
-                {displayServices.map((srv) => (
+            {/* Itemized Services Grid */}
+            {servicesList.length > 0 ? (
+              <div className="grid gap-3.5 sm:grid-cols-2 pt-1">
+                {servicesList.map((srv) => (
                   <div
                     key={srv.id}
-                    className="rounded-xl border border-line/80 bg-white p-4 shadow-xs hover:border-primary/40 transition flex flex-col justify-between"
+                    className="group rounded-2xl border border-line/80 bg-white p-4 sm:p-5 shadow-2xs hover:border-primary/40 hover:shadow-xs transition flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-baseline justify-between gap-2">
-                        <h4 className="font-display text-sm sm:text-[15px] font-bold text-title">{srv.name}</h4>
+                        <h3 className="font-display text-sm sm:text-[15px] font-bold text-title group-hover:text-primary transition-colors">
+                          {srv.name}
+                        </h3>
                         <span className="font-display text-sm sm:text-base font-bold text-primary shrink-0">
                           ${srv.price}
                         </span>
                       </div>
-                      <p className="mt-1 text-xs text-muted leading-relaxed">
-                        {srv.description || "Standard diagnostics, repair, and parts verification."}
+                      <p className="mt-1.5 text-xs text-muted leading-relaxed line-clamp-2">
+                        {srv.description || "Standard inspection, repairs, and verified parts installation."}
                       </p>
                     </div>
-                    <div className="mt-3 pt-2.5 border-t border-line/60 flex items-center justify-between text-[11px] text-muted">
+
+                    <div className="mt-3.5 pt-2.5 border-t border-line/50 flex items-center justify-between text-[11px] text-muted">
                       <span>Rate: {srv.unit}</span>
                       {quoteHref && (
                         <Link
                           href={`${quoteHref}&service=${encodeURIComponent(srv.name)}`}
-                          className="font-semibold text-primary hover:underline"
+                          className="font-semibold text-primary hover:underline inline-flex items-center gap-0.5"
                         >
-                          Request service →
+                          Request quote →
                         </Link>
                       )}
                     </div>
                   </div>
                 ))}
               </div>
-            )}
-
-            {/* What's Included With Every Call */}
-            <div className="pt-2">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
-                What&apos;s Included With Every Service Call
-              </h3>
-              <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2 text-xs sm:text-sm text-copy">
-                {(displayPerks ?? [
-                  "Free upfront itemized quote",
-                  "1-Year workmanship warranty",
-                  "Clear scope & transparent pricing",
-                  "Jobsite cleanup & floor protection",
-                  "OEM-certified replacement parts",
-                  "Direct payment upon 100% completion",
-                ]).map((perk) => (
-                  <div key={perk} className="flex items-center gap-2">
-                    <Check className="h-3.5 w-3.5 text-emerald-600 shrink-0 stroke-[2.5]" />
-                    <span>{perk}</span>
-                  </div>
-                ))}
+            ) : (
+              <div className="rounded-xl border border-line/60 bg-surface/30 p-6 text-center text-xs text-muted">
+                No specific services match this filter. Select &ldquo;All Services&rdquo; to view full offerings.
               </div>
-            </div>
+            )}
           </section>
 
           {/* ============================================================ */}
-          {/* STEP 2 (SECOND): RECENT WORK & PROJECT PHOTOS                */}
+          {/* SECTION 2: RECENT WORK & PROJECT PHOTOS                     */}
           {/* ============================================================ */}
           <section id="sec-projects" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-4">
             <div className="flex items-center justify-between">
@@ -528,7 +522,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
                   Recent Work &amp; Photos
                 </h2>
-                <p className="mt-0.5 text-xs sm:text-sm text-muted">Completed residential jobs by {effectiveBusinessName}</p>
+                <p className="mt-0.5 text-xs sm:text-sm text-muted">
+                  Completed residential projects by {effectiveBusinessName}
+                </p>
               </div>
               <span className="text-xs font-medium text-muted">{gallery.length} photos</span>
             </div>
@@ -538,7 +534,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 <div
                   key={idx}
                   onClick={() => setSelectedImage(item.image)}
-                  className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-smoke cursor-pointer shadow-xs border border-line/60"
+                  className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-smoke cursor-pointer shadow-2xs border border-line/60"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -557,7 +553,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           </section>
 
           {/* ============================================================ */}
-          {/* STEP 3 (THIRD): CUSTOMER REVIEWS                             */}
+          {/* SECTION 3: VERIFIED CUSTOMER REVIEWS                        */}
           {/* ============================================================ */}
           <section id="sec-reviews" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-5">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
@@ -566,7 +562,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   Customer Reviews
                 </h2>
                 <p className="mt-0.5 text-xs sm:text-sm text-muted">
-                  Verified feedback from homeowners who hired {pro.name}
+                  Feedback from verified homeowners in Austin
                 </p>
               </div>
 
@@ -595,7 +591,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                     "rounded-full px-3 py-0.5 text-xs font-medium transition-colors",
                     selectedReviewTag === tag.id
                       ? "bg-title text-white font-semibold"
-                      : "bg-surface text-copy hover:bg-smoke border border-line/60",
+                      : "bg-surface text-copy hover:bg-smoke border border-line/60"
                   )}
                 >
                   {tag.label}
@@ -625,12 +621,12 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                     </div>
                   </div>
 
-                  <p className="font-sans text-xs sm:text-sm leading-relaxed text-[#444]">{rev.text}</p>
+                  <p className="font-sans text-xs sm:text-sm leading-relaxed text-copy">{rev.text}</p>
 
                   {rev.reply && (
                     <div className="border-l-2 border-primary/30 pl-3.5 py-1 mt-2.5 space-y-0.5">
                       <p className="text-xs font-semibold text-primary">
-                        Response from {pro.businessName}
+                        Response from {effectiveBusinessName}
                       </p>
                       <p className="text-xs text-muted">{rev.reply}</p>
                     </div>
@@ -641,49 +637,53 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           </section>
 
           {/* ============================================================ */}
-          {/* STEP 4 (FOURTH): ABOUT & BUSINESS CREDENTIALS                */}
+          {/* SECTION 4: ABOUT & CREDENTIALS                              */}
           {/* ============================================================ */}
           <section id="sec-about" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-5">
             <div>
               <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
                 About &amp; Credentials
               </h2>
-              <p className="mt-2 font-sans text-xs sm:text-sm leading-relaxed text-[#444]">
+              <p className="mt-2 font-sans text-xs sm:text-sm leading-relaxed text-copy">
                 {effectiveBio}
               </p>
             </div>
 
-            {/* Working Hours & Payment Notes */}
+            {/* Clean Key Info Strip (No giant grey boxes) */}
             <div className="grid gap-3 sm:grid-cols-2 text-xs pt-1">
-              <div className="rounded-xl border border-line/70 bg-surface/40 p-4 space-y-1">
-                <p className="font-semibold text-title uppercase tracking-wider text-[11px]">Business Hours</p>
-                <p className="text-copy">
-                  <strong>Mon – Fri:</strong> {displayHours?.weekdays ?? "8:00 AM – 6:00 PM"}
+              <div className="rounded-2xl border border-line/70 bg-white p-4 space-y-1.5 shadow-2xs">
+                <p className="font-semibold text-title text-xs flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5 text-primary" />
+                  Business Hours
                 </p>
-                <p className="text-copy">
-                  <strong>Sat:</strong> {displayHours?.saturday ?? "9:00 AM – 3:00 PM"}
+                <p className="text-copy text-xs">
+                  <strong>Mon – Fri:</strong> {displayHours?.weekdays ?? "7:30 AM – 6:00 PM"}
                 </p>
-                <p className="text-primary font-medium text-[11px] pt-0.5">
-                  {pro.emergency || (isDemoPro && proProfile?.emergency)
-                    ? "24/7 Urgent Dispatch Available"
-                    : "Emergency on-call for urgent jobs"}
+                <p className="text-copy text-xs">
+                  <strong>Sat:</strong> {displayHours?.saturday ?? "8:00 AM – 4:00 PM"}
+                </p>
+                <p className="text-primary font-medium text-[11px] pt-1">
+                  24/7 emergency dispatch for urgent leaks
                 </p>
               </div>
 
-              <div className="rounded-xl border border-line/70 bg-surface/40 p-4 space-y-1">
-                <p className="font-semibold text-title uppercase tracking-wider text-[11px]">Accepted Direct Payments</p>
-                <p className="text-copy leading-relaxed">
-                  {displayPayments ? displayPayments.join(", ") : "Credit/Debit Card, Zelle, Bank Transfer, Check, or Cash"}
+              <div className="rounded-2xl border border-line/70 bg-white p-4 space-y-1.5 shadow-2xs">
+                <p className="font-semibold text-title text-xs flex items-center gap-1.5">
+                  <CreditCard className="h-3.5 w-3.5 text-emerald-600" />
+                  Accepted Payment Methods
                 </p>
-                <p className="text-muted text-[11px] pt-0.5">
-                  Paid directly on completion · Zero platform fees
+                <p className="text-copy text-xs leading-relaxed">
+                  {displayPayments ? displayPayments.join(", ") : "Credit/Debit Card, Zelle, Bank ACH, Check, Cash"}
+                </p>
+                <p className="text-muted text-[11px] pt-1">
+                  Paid directly upon 100% completed inspection
                 </p>
               </div>
             </div>
           </section>
 
           {/* ============================================================ */}
-          {/* STEP 5 (FIFTH): FREQUENTLY ASKED QUESTIONS                   */}
+          {/* SECTION 5: FREQUENTLY ASKED QUESTIONS                       */}
           {/* ============================================================ */}
           <section id="sec-faqs" className="scroll-mt-[135px] space-y-4">
             <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
@@ -705,7 +705,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           </section>
         </div>
 
-        {/* Right Column (4 cols): SLEEK STICKY ACTION CARD */}
+        {/* Right Column (4 cols): ELEVATED STICKY ACTION CARD */}
         <aside className="lg:col-span-4 lg:sticky lg:top-[135px]">
           <div className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-sm space-y-4">
             {/* Price & Overview */}
@@ -717,34 +717,34 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 <span className="text-xs text-muted font-medium">starting rate</span>
               </div>
               <p className="mt-1 text-xs text-muted leading-relaxed">
-                Itemized estimate agreed before any work starts.
+                Upfront itemized estimate agreed before work begins.
               </p>
             </div>
 
-            {/* Quick Guarantees */}
+            {/* Essential Highlights (Concise, no repetitive bullet noise) */}
             <div className="space-y-2 pt-3 border-t border-line/60 text-xs text-title">
               <div className="flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />
-                <span>Serving {pro.city} &amp; ~{pro.radiusMiles} miles</span>
+                <span>Serving {pro.city} &amp; {pro.radiusMiles}-mile radius</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
-                <span>Next open window: Tomorrow</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CreditCard className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                <span>Pay directly on completion ($0 platform fee)</span>
+                <span>Next available: Tomorrow</span>
               </div>
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                <span>1-Year Labor Warranty &amp; Resolution Support</span>
+                <span>1-Year Workmanship Warranty</span>
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="space-y-2 pt-2">
               {quoteHref ? (
-                <Button href={quoteHref} size="lg" className="w-full justify-center text-xs sm:text-sm font-semibold rounded-xl">
+                <Button
+                  href={quoteHref}
+                  size="lg"
+                  className="w-full justify-center text-xs sm:text-sm font-semibold rounded-xl shadow-xs"
+                >
                   Request a Free Quote ↗
                 </Button>
               ) : null}
@@ -752,48 +752,28 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               {messageHref ? (
                 <Button
                   href={messageHref}
-                  variant={quoteHref ? "ghost" : undefined}
+                  variant="ghost"
                   size="lg"
-                  className="w-full justify-center text-xs sm:text-sm font-semibold rounded-xl border border-line/80"
+                  className="w-full justify-center text-xs sm:text-sm font-semibold rounded-xl"
                 >
+                  <MessageSquare className="h-3.5 w-3.5 mr-1.5" />
                   Message Directly
                 </Button>
               ) : null}
-
-              {access.audience === "pro" ? (
-                <Button href="/pro/jobs" size="lg" className="w-full justify-center text-xs sm:text-sm rounded-xl">
-                  Go to Job Board
-                </Button>
-              ) : null}
-
-              {access.audience === "guest" ? (
-                <p className="text-center text-[11px] text-muted pt-1">
-                  <Link href="/login" className="font-semibold text-primary underline">
-                    Sign in
-                  </Link>{" "}
-                  or{" "}
-                  <Link href="/signup" className="font-semibold text-primary underline">
-                    create an account
-                  </Link>{" "}
-                  to request a quote.
-                </p>
-              ) : null}
             </div>
 
-            {/* Reassurance Footer */}
-            <div className="border-t border-line/60 pt-3 text-center">
-              <p className="text-[11px] text-muted leading-relaxed">
-                Direct contractor hiring. Zero middleman markup on parts or labor.
-              </p>
-            </div>
+            {/* Clean Trust Footnote */}
+            <p className="pt-2 text-center text-[11px] text-muted border-t border-line/50">
+              Direct contractor hiring · Zero booking fees
+            </p>
           </div>
         </aside>
       </div>
 
-      {/* Image Lightbox Modal */}
+      {/* Lightbox Modal */}
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs animate-in fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative max-w-3xl overflow-hidden rounded-2xl bg-black">
