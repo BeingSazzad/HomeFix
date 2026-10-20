@@ -10,10 +10,11 @@ import { PasswordField } from "@/components/ui/password-field";
 import { AuthLinks } from "@/components/web-pages/auth-links";
 import { cn } from "@/lib/cn";
 import { loginAs } from "@/redux/slices/authSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export function LoginForm() {
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
   const router = useRouter();
   const search = useSearchParams();
   const nextPath = search.get("next");
@@ -24,19 +25,21 @@ export function LoginForm() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    if (user) {
+      if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {
+        router.replace(nextPath);
+      } else {
+        router.replace(user.role === "pro" ? "/pro" : "/account");
+      }
+    }
+  }, [user, nextPath, router]);
+
+  useEffect(() => {
     if (roleParam === "pro" || roleParam === "homeowner") setRole(roleParam);
   }, [roleParam]);
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Enter a valid email address.");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
     setError("");
     dispatch(loginAs(role));
     if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {

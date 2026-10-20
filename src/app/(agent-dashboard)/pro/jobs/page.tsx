@@ -29,16 +29,18 @@ export default function ProJobsPage() {
   });
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-[28px]">Available jobs</h1>
-          <p className="mt-1 text-sm text-copy">Quote stays locked until clearance and active membership.</p>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-line/70 pb-4 pt-1">
+        <div className="flex items-center gap-2.5">
+          <h1 className="font-display text-[22px] sm:text-[26px] font-semibold text-title tracking-tight">
+            Available Jobs
+          </h1>
+          <span className="inline-flex items-center rounded-full bg-smoke px-2.5 py-0.5 text-xs font-semibold text-primary border border-primary/20">
+            {jobs.length}
+          </span>
         </div>
       </div>
-      <div className="mt-4">
-        <ProAccessStrip />
-      </div>
+      <ProAccessStrip />
 
       {!access.canSeeJobBoard ? (
         <div className="mt-8">

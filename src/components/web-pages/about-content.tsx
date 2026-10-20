@@ -8,8 +8,8 @@ import { photos } from "@/lib/media";
 
 const checks = [
   {
-    title: "100% Free for homeowners",
-    desc: "Browse profiles, post requests, and compare quotes with zero fees",
+    title: "Free request & quote comparison",
+    desc: "Browse profiles, post requests, and compare bids without platform fees",
   },
   {
     title: "Verified credentials & licensing",
@@ -21,12 +21,12 @@ const checks = [
   },
   {
     title: "Direct contractor payment",
-    desc: "Pay your technician directly upon completion with zero platform markup",
+    desc: "Pay your technician for the agreed repair directly with zero middleman markup",
   },
 ];
 
 const stats = [
-  { value: "$0", label: "Homeowner platform fee", icon: BadgeDollarSign },
+  { value: "$0", label: "Extra platform markup", icon: BadgeDollarSign },
   { value: "$19.99", label: "Flat pro membership / mo", icon: CreditCard },
   { value: "3 mo", label: "Free trial for approved pros", icon: CalendarDays },
 ];
@@ -44,7 +44,7 @@ const roles = [
   },
   {
     title: "For Independent Pros",
-    text: "Win local Austin repair jobs without paying per-lead fees. Keep 100% of your earnings with zero job commissions.",
+    text: "Win local repair jobs without paying per-lead fees. Keep 100% of your earnings with zero job commissions.",
     image: photos.hero,
   },
 ];
@@ -53,10 +53,13 @@ export function AboutContent() {
   return (
     <>
       <PageBanner
-        eyebrow="About LocalHomeFix"
-        title="Built to make home repair fair and honest"
-        description="We connect Austin homeowners with vetted independent contractors—without charging lead markups or selling private contact details."
+        title="About LocalHomeFix"
+        description="Direct connection to vetted local trade pros. Zero middleman markup."
         image={photos.banners.about}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "About Us" },
+        ]}
       />
 
       <section className="bg-white py-12 md:py-16">
@@ -97,9 +100,9 @@ export function AboutContent() {
               className="absolute -bottom-6 right-0 hidden h-44 w-40 overflow-hidden rounded-[20px] border-8 border-white bg-cover bg-center lg:block"
               style={{ backgroundImage: `url(${photos.trustAlt})` }}
             />
-            <div className="absolute left-5 top-5 rounded-[10px] bg-primary px-4 py-3 text-white">
-              <p className="font-display text-[32px] font-bold leading-none text-white">$0</p>
-              <p className="mt-1 text-sm font-semibold text-white">homeowner fee</p>
+            <div className="absolute left-5 top-5 rounded-[12px] bg-primary px-4 py-2.5 text-white shadow-md">
+              <p className="font-display text-[26px] font-bold leading-none text-white">$0</p>
+              <p className="mt-1 text-xs font-semibold text-white/90">Platform markup</p>
             </div>
           </div>
         </div>

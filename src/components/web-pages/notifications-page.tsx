@@ -14,19 +14,29 @@ export function NotificationsPage({ role }: { role: "homeowner" | "pro" }) {
   const unread = notes.filter((item) => !item.read).length;
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <h1 className="text-[24px] md:text-[28px]">Notifications</h1>
-          <p className="mt-0.5 text-sm text-copy">{unread ? `${unread} unread` : "All caught up"}</p>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-line/70 pb-4 pt-1">
+        <div className="flex items-center gap-2.5">
+          <h1 className="font-display text-[22px] sm:text-[26px] font-semibold text-title tracking-tight">
+            Notifications
+          </h1>
+          {unread > 0 ? (
+            <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary border border-primary/20">
+              {unread} unread
+            </span>
+          ) : (
+            <span className="inline-flex items-center rounded-full bg-smoke px-2.5 py-0.5 text-xs font-semibold text-muted border border-line">
+              All caught up
+            </span>
+          )}
         </div>
-        {unread ? (
+        {unread > 0 ? (
           <button
             type="button"
             onClick={() => dispatch(markAllNotificationsRead(role))}
-            className="font-display text-sm font-bold text-primary hover:underline"
+            className="font-display text-xs font-semibold text-primary hover:underline self-start sm:self-auto"
           >
-            Mark all read
+            Mark all as read
           </button>
         ) : null}
       </div>

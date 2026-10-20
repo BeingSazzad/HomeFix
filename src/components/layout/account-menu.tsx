@@ -2,17 +2,32 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, KeyRound, LogOut, UserRound } from "lucide-react";
+import {
+  Bookmark,
+  Briefcase,
+  ChevronDown,
+  ClipboardList,
+  CreditCard,
+  KeyRound,
+  LayoutDashboard,
+  LogOut,
+  MessageSquare,
+  PlusCircle,
+  Repeat,
+  ShieldCheck,
+  Star,
+  UserRound,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { cn } from "@/lib/cn";
-import { logout } from "@/redux/slices/authSlice";
+import { loginAs, logout } from "@/redux/slices/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import type { User } from "@/types";
 
 function roleLabel(role: User["role"]) {
-  if (role === "pro") return "Professional";
-  if (role === "admin") return "Admin";
+  if (role === "pro") return "Verified Pro";
+  if (role === "admin") return "Administrator";
   return "Homeowner";
 }
 
@@ -23,25 +38,9 @@ export function AccountMenu({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  const profileHref = user.role === "pro" ? "/pro/profile" : "/account/profile";
-  const passwordHref = user.role === "pro" ? "/pro/password" : "/account/password";
-
-  const links =
-    user.role === "pro"
-      ? [
-          { href: "/pro", label: "Dashboard" },
-          { href: "/pro/jobs", label: "Available jobs" },
-          { href: "/pro/messages", label: "Messages" },
-          { href: "/pro/notifications", label: "Notifications" },
-          { href: "/pro/pricing", label: "Membership" },
-        ]
-      : [
-          { href: "/account", label: "My requests" },
-          { href: "/account/post-job", label: "Post a request" },
-          { href: "/account/messages", label: "Messages" },
-          { href: "/account/saved", label: "Saved pros" },
-          { href: "/account/notifications", label: "Notifications" },
-        ];
+  const isPro = user.role === "pro";
+  const profileHref = isPro ? "/pro/profile" : "/account/profile";
+  const dashboardHref = isPro ? "/pro" : "/account";
 
   useEffect(() => {
     setOpen(false);
@@ -62,19 +61,26 @@ export function AccountMenu({ user }: { user: User }) {
     };
   }, []);
 
+  function handleRoleSwitch() {
+    const targetRole = isPro ? "homeowner" : "pro";
+    dispatch(loginAs(targetRole));
+    setOpen(false);
+    router.push(targetRole === "pro" ? "/pro" : "/account");
+  }
+
   return (
     <div className="relative" ref={rootRef}>
       <button
         type="button"
-        className="flex items-center gap-2 rounded-[10px] py-1 pl-1 pr-2 transition-colors hover:bg-smoke"
+        className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2.5 transition-colors hover:bg-smoke border border-line/60"
         aria-expanded={open}
         aria-haspopup="menu"
         onClick={() => setOpen((value) => !value)}
       >
-        <UserAvatar user={user} />
+        <UserAvatar user={user} size="sm" />
         <span className="hidden text-left xl:block">
           <span className="block font-display text-sm font-bold leading-tight text-title">{user.name}</span>
-          <span className="block text-xs text-muted">{roleLabel(user.role)}</span>
+          <span className="block text-[11px] font-medium text-muted">{roleLabel(user.role)}</span>
         </span>
         <ChevronDown className={cn("h-4 w-4 text-muted transition-transform", open && "rotate-180")} />
       </button>
@@ -82,62 +88,126 @@ export function AccountMenu({ user }: { user: User }) {
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-[calc(100%+10px)] z-50 w-72 overflow-hidden rounded-[14px] border border-line bg-white soft-shadow"
+          className="absolute right-0 top-[calc(100%+10px)] z-50 w-72 overflow-hidden rounded-[18px] border border-line bg-white shadow-xl animate-in fade-in"
         >
-          <div className="flex items-center gap-3 border-b border-line px-4 py-4">
-            <UserAvatar user={user} />
+          {/* User Identity Header */}
+          <div className="flex items-center gap-3 border-b border-line/70 bg-surface/50 px-4 py-3.5">
+            <UserAvatar user={user} size="md" />
             <div className="min-w-0">
               <p className="truncate font-display text-sm font-bold text-title">{user.name}</p>
               <p className="truncate text-xs text-muted">{user.email}</p>
+              <span className="mt-0.5 inline-block rounded-full bg-primary/10 px-2 py-0.2 text-[10px] font-semibold text-primary">
+                {roleLabel(user.role)}
+              </span>
             </div>
           </div>
 
-          <div className="p-2">
-            {links.map((item) => (
+          {/* Role-specific Navigation Links */}
+          <div className="p-2 space-y-0.5">
+            <Link
+              href={dashboardHref}
+              role="menuitem"
+              className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 font-display text-xs sm:text-sm font-medium text-title hover:bg-smoke transition-colors"
+            >
+              <LayoutDashboard className="h-4 w-4 text-primary" />
+              {isPro ? "Pro Dashboard" : "My Requests"}
+            </Link>
+
+            {!isPro ? (
+              <>
+                <Link
+                  href="/account/post-job"
+                  role="menuitem"
+                  className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 font-display text-xs sm:text-sm font-medium text-title hover:bg-smoke transition-colors"
+                >
+                  <PlusCircle className="h-4 w-4 text-primary" />
+                  Post a Request
+                </Link>
+                <Link
+                  href="/account/messages"
+                  role="menuitem"
+                  className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 font-display text-xs sm:text-sm font-medium text-title hover:bg-smoke transition-colors"
+                >
+                  <MessageSquare className="h-4 w-4 text-primary" />
+                  Messages
+                </Link>
+                <Link
+                  href="/account/saved"
+                  role="menuitem"
+                  className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 font-display text-xs sm:text-sm font-medium text-title hover:bg-smoke transition-colors"
+                >
+                  <Bookmark className="h-4 w-4 text-primary" />
+                  Saved Pros
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/pro/jobs"
+                  role="menuitem"
+                  className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 font-display text-xs sm:text-sm font-medium text-title hover:bg-smoke transition-colors"
+                >
+                  <Briefcase className="h-4 w-4 text-primary" />
+                  Available Jobs
+                </Link>
+                <Link
+                  href="/pro/messages"
+                  role="menuitem"
+                  className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 font-display text-xs sm:text-sm font-medium text-title hover:bg-smoke transition-colors"
+                >
+                  <MessageSquare className="h-4 w-4 text-primary" />
+                  Client Messages
+                </Link>
+                <Link
+                  href="/pro/reviews"
+                  role="menuitem"
+                  className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 font-display text-xs sm:text-sm font-medium text-title hover:bg-smoke transition-colors"
+                >
+                  <Star className="h-4 w-4 text-amber-500" />
+                  Customer Reviews
+                </Link>
+              </>
+            )}
+
+            <div className="border-t border-line/60 my-1 pt-1">
               <Link
-                key={item.href}
-                href={item.href}
+                href={profileHref}
                 role="menuitem"
-                className={cn(
-                  "block rounded-[10px] px-3 py-2.5 font-display text-sm font-medium text-title hover:bg-smoke",
-                  pathname === item.href && "bg-smoke text-primary",
-                )}
+                className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 font-display text-xs sm:text-sm font-medium text-title hover:bg-smoke transition-colors"
               >
-                {item.label}
+                <UserRound className="h-4 w-4 text-muted" />
+                {isPro ? "Business Profile" : "Profile & Addresses"}
               </Link>
-            ))}
+            </div>
           </div>
 
-          <div className="border-t border-line p-2">
-            <Link
-              href={profileHref}
-              role="menuitem"
-              className="flex items-center gap-2.5 rounded-[10px] px-3 py-2.5 font-display text-sm font-medium text-title hover:bg-smoke"
+          {/* Demo Role Switcher */}
+          <div className="border-t border-line/70 bg-smoke/40 p-2">
+            <button
+              type="button"
+              onClick={handleRoleSwitch}
+              className="flex w-full items-center justify-between rounded-[10px] px-3 py-2 text-left font-display text-xs font-semibold text-primary hover:bg-white hover:shadow-xs transition"
             >
-              <UserRound className="h-4 w-4 text-primary" />
-              Profile
-            </Link>
-            <Link
-              href={passwordHref}
-              role="menuitem"
-              className="flex items-center gap-2.5 rounded-[10px] px-3 py-2.5 font-display text-sm font-medium text-title hover:bg-smoke"
-            >
-              <KeyRound className="h-4 w-4 text-primary" />
-              Change password
-            </Link>
+              <span className="flex items-center gap-2">
+                <Repeat className="h-3.5 w-3.5" />
+                {isPro ? "Switch to Homeowner" : "Switch to Pro View"}
+              </span>
+              <span className="text-[10px] text-muted font-normal">Demo</span>
+            </button>
           </div>
 
-          <div className="border-t border-line p-2">
+          {/* Log Out */}
+          <div className="border-t border-line/70 p-2">
             <button
               type="button"
               role="menuitem"
-              className="flex w-full items-center gap-2.5 rounded-[10px] px-3 py-2.5 text-left font-display text-sm font-medium text-title hover:bg-smoke"
+              className="flex w-full items-center gap-2.5 rounded-[10px] px-3 py-2 text-left font-display text-xs sm:text-sm font-medium text-error hover:bg-red-50 transition-colors"
               onClick={() => {
                 dispatch(logout());
                 router.push("/");
               }}
             >
-              <LogOut className="h-4 w-4 text-error" />
+              <LogOut className="h-4 w-4" />
               Log out
             </button>
           </div>

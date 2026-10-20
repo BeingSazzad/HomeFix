@@ -173,7 +173,7 @@ export function HomePros() {
               <div
                 key={pro.id}
                 className={cn(
-                  "shrink-0",
+                  "shrink-0 flex h-full",
                   isDragging && "pointer-events-none select-none"
                 )}
               >

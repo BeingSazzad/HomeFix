@@ -6,9 +6,12 @@ import { Button } from "@/components/ui/button";
 import { categories } from "@/Mockdata";
 
 import { SectionHeading } from "@/components/ui/section-heading";
+import { useAppSelector } from "@/redux/hooks";
+import { postJobHref } from "@/lib/role-access";
 
 export function ServicesCatalog() {
   const router = useRouter();
+  const user = useAppSelector((state) => state.auth.user);
 
   return (
     <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
@@ -18,7 +21,7 @@ export function ServicesCatalog() {
             align="center"
             eyebrow="Browse Pros"
             title="All home services"
-            description="Pick a trade to browse reviewed pros nearby with transparent pricing and verified licenses."
+            description="Pick a trade to browse reviewed pros nearby with verified work history and direct messaging."
           />
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -32,7 +35,7 @@ export function ServicesCatalog() {
         </div>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <Button href="/browse-pros">Browse all pros</Button>
-          <Button href="/signup?next=%2Faccount%2Fpost-job" variant="ghost">
+          <Button href={postJobHref(user)} variant="ghost">
             Post a request
           </Button>
         </div>

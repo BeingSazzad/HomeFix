@@ -5,13 +5,13 @@ import Image from "next/image";
 const stats = [
   {
     value: "$0",
-    label: "Platform Markup",
-    desc: "Zero fees added to your repair bill",
+    label: "Extra Platform Charges",
+    desc: "Pay only for the agreed repair work — zero middleman markup",
   },
   {
     value: "100%",
     label: "Direct to Pro",
-    desc: "Full payment goes to your technician",
+    desc: "Full repair payment goes directly to your technician",
   },
   {
     value: "0",
@@ -48,7 +48,7 @@ export function HomeWhyChoose() {
             {/* Large primary photo */}
             <div className="mt-7 sm:mt-9 relative h-[320px] sm:h-[400px] w-full overflow-hidden rounded-[24px] sm:rounded-[28px] border border-line/70 shadow-sm group">
               <Image
-                src="/images/why-choose/craftsman.jpg"
+                src="/images/why-choose/pro-craftsman.jpg"
                 alt="Professional residential carpenter installing custom cabinetry"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -66,7 +66,7 @@ export function HomeWhyChoose() {
             <div className="grid grid-cols-2 gap-4 sm:gap-6">
               <div className="relative h-[180px] sm:h-[240px] overflow-hidden rounded-[20px] sm:rounded-[24px] border border-line/70 shadow-sm group">
                 <Image
-                  src="/images/why-choose/painter.jpg"
+                  src="/images/why-choose/pro-painter.jpg"
                   alt="Professional painter applying precision interior paint"
                   fill
                   sizes="(max-width: 640px) 50vw, 25vw"
@@ -75,7 +75,7 @@ export function HomeWhyChoose() {
               </div>
               <div className="relative h-[180px] sm:h-[240px] overflow-hidden rounded-[20px] sm:rounded-[24px] border border-line/70 shadow-sm group">
                 <Image
-                  src="/images/why-choose/plumber.jpg"
+                  src="/images/why-choose/pro-plumber.jpg"
                   alt="Licensed plumbing technician installing kitchen sink fixtures"
                   fill
                   sizes="(max-width: 640px) 50vw, 25vw"

@@ -23,6 +23,7 @@ export function SignupForm() {
   const nextPath = search.get("next");
   const needsAccountForRequest = Boolean(nextPath?.includes("/account/post-job"));
   const draft = useAppSelector((state) => state.intake.draft);
+  const user = useAppSelector((state) => state.auth.user);
 
   const [role, setRole] = useState<"homeowner" | "pro">("homeowner");
   const [step, setStep] = useState<"details" | "otp">("details");
@@ -38,6 +39,16 @@ export function SignupForm() {
   const inputs = useRef<Array<HTMLInputElement | null>>([]);
 
   useEffect(() => {
+    if (user) {
+      if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {
+        router.replace(nextPath);
+      } else {
+        router.replace(user.role === "pro" ? "/pro" : "/account");
+      }
+    }
+  }, [user, nextPath, router]);
+
+  useEffect(() => {
     if (step === "otp") inputs.current[0]?.focus();
   }, [step]);
 
@@ -50,10 +61,10 @@ export function SignupForm() {
       loginAs({
         role: "homeowner",
         profile: {
-          name: name.trim(),
-          email: email.trim(),
-          phone: phone.trim(),
-          zip: zip.trim(),
+          name: name.trim() || "Alex Mercer",
+          email: email.trim() || "alex@example.com",
+          phone: phone.trim() || "(512) 555-0199",
+          zip: zip.trim() || "78701",
           city: "Austin",
           state: "TX",
         },
@@ -70,47 +81,12 @@ export function SignupForm() {
 
   function submitDetails(event: React.FormEvent) {
     event.preventDefault();
-    if (name.trim().length < 2) {
-      setError("Enter your full name.");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Enter a valid email address.");
-      return;
-    }
-    if (phone.replace(/\D/g, "").length < 10) {
-      setError("Enter a valid mobile phone (10+ digits).");
-      return;
-    }
-    if (!/^\d{5}$/.test(zip.trim())) {
-      setError("Enter a valid 5-digit ZIP.");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
-    if (password !== confirm) {
-      setError("Passwords do not match.");
-      return;
-    }
     setError("");
-    setResent(false);
-    setOtp(Array(OTP_LEN).fill(""));
-    setStep("otp");
+    finishSignup();
   }
 
   function submitOtp(event: React.FormEvent) {
     event.preventDefault();
-    const code = otp.join("");
-    if (code.length !== OTP_LEN) {
-      setError("Enter the 6-digit code.");
-      return;
-    }
-    if (code !== DEMO_OTP) {
-      setError("Invalid code. Demo OTP is 123456.");
-      return;
-    }
     setError("");
     finishSignup();
   }

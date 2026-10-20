@@ -18,6 +18,8 @@ import { ProcessGrid } from "@/components/ui/process-grid";
 import { FaqSection } from "@/components/web-pages/faq-section";
 import { photos } from "@/lib/media";
 import { cn } from "@/lib/cn";
+import { useAppSelector } from "@/redux/hooks";
+import { postJobHref } from "@/lib/role-access";
 
 type TabKey = "homeowner" | "pro";
 
@@ -78,7 +80,7 @@ const journeys: Record<
       {
         n: "01",
         title: "Submit simple application",
-        text: "Share your business details, trade licenses, and service areas in Austin.",
+        text: "Share your business details, trade licenses, and local service coverage areas.",
         icon: UserPlus,
       },
       {
@@ -101,13 +103,15 @@ const journeys: Record<
       },
     ],
     cta: { href: "/pro-register", label: "Apply as a pro ↗" },
-    secondary: { href: "/pricing", label: "See pricing breakdown" },
+    secondary: { href: "/#pricing", label: "See pricing breakdown" },
   },
 };
 
 export function HowItWorksContent() {
   const [tab, setTab] = useState<TabKey>("homeowner");
+  const user = useAppSelector((state) => state.auth.user);
   const journey = journeys[tab];
+  const ctaHref = tab === "homeowner" ? postJobHref(user) : journey.cta.href;
 
   return (
     <div>
@@ -154,7 +158,7 @@ export function HowItWorksContent() {
               description={journey.summary}
               items={journey.steps}
               cta={{
-                href: journey.cta.href,
+                href: ctaHref,
                 title: journey.cta.label,
                 text: journey.secondary?.label
                   ? `Or ${journey.secondary.label.toLowerCase()}.`
@@ -165,7 +169,7 @@ export function HowItWorksContent() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Button href={journey.cta.href}>{journey.cta.label}</Button>
+            <Button href={ctaHref}>{journey.cta.label}</Button>
             {journey.secondary ? (
               <Button href={journey.secondary.href} variant="ghost">
                 {journey.secondary.label}

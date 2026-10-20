@@ -24,7 +24,7 @@ const metrics = [
   {
     value: "4.9★",
     label: "Average customer rating",
-    subtext: "Based on 12,400+ Austin reviews",
+    subtext: "Based on 12,400+ verified neighbor reviews",
     icon: Star,
   },
 ];

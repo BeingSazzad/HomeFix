@@ -36,6 +36,8 @@ export interface ReviewItem {
 export interface InvoiceItem {
   id: string;
   date: string;
+  period?: string;
+  description?: string;
   amount: string;
   status: "paid" | "upcoming" | "failed";
 }
@@ -54,12 +56,70 @@ interface FeaturesState {
   phoneVerified: boolean;
   membershipPaused: boolean;
   membershipCancelled: boolean;
+  subscriptionPlan: "trial" | "monthly" | "annual";
+  billingCycle: "monthly" | "annual";
+  renewalDate: string;
+  paymentMethod: {
+    brand: string;
+    last4: string;
+    exp: string;
+  } | null;
   trialDaysLeft: number;
   invoices: InvoiceItem[];
   applicationDraft: Record<string, string>;
   applicationStatus: "draft" | "submitted" | "needs_info" | "rejected" | "cleared";
   rejectionReason: string;
   contactUnlocked: boolean;
+  proProfile: ProProfileData;
+}
+
+export interface ProServiceItem {
+  id: string;
+  name: string;
+  price: number;
+  unit: string;
+  description: string;
+}
+
+export interface ProSpecialOffer {
+  active: boolean;
+  title: string;
+  discount: string;
+  terms: string;
+}
+
+export interface ProProfileData {
+  businessName: string;
+  contactName: string;
+  trade: string;
+  categorySlug: string;
+  tagline: string;
+  bio: string;
+  phone: string;
+  email: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  radiusMiles: number;
+  startingPrice: number;
+  yearsInBusiness: string;
+  responseTime: string;
+  emergency: boolean;
+  businessHours: {
+    weekdays: string;
+    saturday: string;
+    sunday: string;
+  };
+  acceptedPayments: string[];
+  services: ProServiceItem[];
+  specialOffer: ProSpecialOffer;
+  includedPerks: string[];
+  licenseNumber: string;
+  licenseState: string;
+  insuranceCarrier: string;
+  insuranceCoverage: string;
+  portfolio: { title: string; image: string }[];
 }
 
 const seedNotifications: AppNotification[] = [
@@ -153,17 +213,145 @@ const initialState: FeaturesState = {
   phoneVerified: false,
   membershipPaused: false,
   membershipCancelled: false,
+  subscriptionPlan: "trial",
+  billingCycle: "monthly",
+  renewalDate: "Jan 10, 2027",
+  paymentMethod: {
+    brand: "Visa",
+    last4: "4242",
+    exp: "08/29",
+  },
   trialDaysLeft: 67,
   invoices: [
-    { id: "inv-1", date: "Sep 10, 2026", amount: "$0.00", status: "paid" },
-    { id: "inv-2", date: "Oct 10, 2026", amount: "$0.00", status: "paid" },
-    { id: "inv-3", date: "Jan 10, 2027", amount: "$19.99", status: "upcoming" },
+    {
+      id: "inv-1",
+      date: "Sep 10, 2026",
+      period: "Sep 10 – Oct 10, 2026",
+      description: "Pro 3-Month Free Trial (Month 1)",
+      amount: "$0.00",
+      status: "paid",
+    },
+    {
+      id: "inv-2",
+      date: "Oct 10, 2026",
+      period: "Oct 10 – Nov 10, 2026",
+      description: "Pro 3-Month Free Trial (Month 2)",
+      amount: "$0.00",
+      status: "paid",
+    },
+    {
+      id: "inv-3",
+      date: "Jan 10, 2027",
+      period: "Jan 10 – Feb 10, 2027",
+      description: "Pro Monthly Membership (Scheduled Renewal)",
+      amount: "$19.99",
+      status: "upcoming",
+    },
   ],
   applicationDraft: {},
   /** Demo pro starts cleared so job-board gates focus on membership. New applications reset to submitted. */
   applicationStatus: "cleared",
   rejectionReason: "",
-  contactUnlocked: false,
+  contactUnlocked: true,
+  proProfile: {
+    businessName: "Ortega Plumbing & Gas",
+    contactName: "Luis Ortega",
+    trade: "Plumbing",
+    categorySlug: "plumbing",
+    tagline: "Licensed master plumber serving residential Austin & Central Texas",
+    bio: "Over 10 years of trusted plumbing diagnostics, emergency leak remediation, tankless water heater installations, and drain restoration. We provide itemized pricing upfront with zero platform fees.",
+    phone: "(512) 555-0198",
+    email: "luis@ortegaplumbing.com",
+    street: "2201 South Lamar Blvd",
+    city: "Austin",
+    state: "TX",
+    zip: "78704",
+    radiusMiles: 25,
+    startingPrice: 95,
+    yearsInBusiness: "10+ years",
+    responseTime: "Usually under 1 hour",
+    emergency: true,
+    businessHours: {
+      weekdays: "7:30 AM – 6:00 PM",
+      saturday: "8:00 AM – 4:00 PM",
+      sunday: "Emergency Only",
+    },
+    acceptedPayments: [
+      "Credit/Debit Card",
+      "Zelle",
+      "Bank Transfer (ACH)",
+      "Check",
+      "Cash",
+    ],
+    specialOffer: {
+      active: true,
+      title: "$25 Off First Diagnostic Call",
+      discount: "$25 OFF",
+      terms: "Valid for all first-time residential homeowners across Travis & Williamson counties. Mention LocalHomeFix on booking.",
+    },
+    services: [
+      {
+        id: "srv-1",
+        name: "Leak Detection & Emergency Pipe Repair",
+        price: 95,
+        unit: "starting rate",
+        description: "Electronic water line detection and non-invasive pipe repairs.",
+      },
+      {
+        id: "srv-2",
+        name: "Water Heater Flush, Repair & Replacement",
+        price: 140,
+        unit: "flush & diag",
+        description: "Standard tank & tankless servicing, element replacement, and anode rods.",
+      },
+      {
+        id: "srv-3",
+        name: "Drain Clearing & Hydro-Jetting",
+        price: 89,
+        unit: "starting rate",
+        description: "Kitchen sinks, bathroom lines, and main sewer branch snake clearing.",
+      },
+      {
+        id: "srv-4",
+        name: "Fixture, Toilet & Faucet Installation",
+        price: 110,
+        unit: "per fixture",
+        description: "OEM fixture mounting, supply hookups, and leak-tested seal guarantee.",
+      },
+      {
+        id: "srv-5",
+        name: "Garbage Disposal Repair & Replacement",
+        price: 85,
+        unit: "starting rate",
+        description: "Humming or jammed disposals, seal gaskets, and new unit installs.",
+      },
+    ],
+    includedPerks: [
+      "Free upfront itemized quote",
+      "1-Year workmanship & leak warranty",
+      "Floor protection & clean boot covers",
+      "OEM certified plumbing parts",
+      "Direct payment on 100% completion ($0 platform fee)",
+    ],
+    licenseNumber: "TX-M-42981 (Master Plumber)",
+    licenseState: "TX",
+    insuranceCarrier: "Next Insurance Company",
+    insuranceCoverage: "$1,000,000 General Liability",
+    portfolio: [
+      {
+        title: "Kitchen supply line repair",
+        image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        title: "Under-sink drain reseal",
+        image: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        title: "Vanity fixture install",
+        image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=800&q=80",
+      },
+    ],
+  },
 };
 
 const featuresSlice = createSlice({
@@ -276,6 +464,56 @@ const featuresSlice = createSlice({
     lockContact(state) {
       state.contactUnlocked = false;
     },
+    setSubscriptionPlan(
+      state,
+      action: PayloadAction<{
+        plan: "trial" | "monthly" | "annual";
+        billingCycle?: "monthly" | "annual";
+        renewalDate?: string;
+      }>,
+    ) {
+      state.subscriptionPlan = action.payload.plan;
+      if (action.payload.billingCycle) state.billingCycle = action.payload.billingCycle;
+      if (action.payload.renewalDate) state.renewalDate = action.payload.renewalDate;
+      state.membershipPaused = false;
+      state.membershipCancelled = false;
+      state.contactUnlocked = true;
+
+      const upcoming = state.invoices.find((i) => i.status === "upcoming");
+      if (upcoming) {
+        if (action.payload.plan === "annual") {
+          upcoming.amount = "$179.88";
+          upcoming.description = "Pro Annual Membership ($14.99/mo · Billed Yearly)";
+        } else if (action.payload.plan === "monthly") {
+          upcoming.amount = "$19.99";
+          upcoming.description = "Pro Monthly Membership ($19.99/mo)";
+        }
+      }
+    },
+    updatePaymentMethod(
+      state,
+      action: PayloadAction<{
+        brand: string;
+        last4: string;
+        exp: string;
+      }>,
+    ) {
+      state.paymentMethod = action.payload;
+    },
+    updateProProfile(state, action: PayloadAction<Partial<ProProfileData>>) {
+      state.proProfile = {
+        ...state.proProfile,
+        ...action.payload,
+        businessHours: {
+          ...state.proProfile.businessHours,
+          ...(action.payload.businessHours ?? {}),
+        },
+        specialOffer: {
+          ...state.proProfile.specialOffer,
+          ...(action.payload.specialOffer ?? {}),
+        },
+      };
+    },
   },
 });
 
@@ -305,6 +543,9 @@ export const {
   setApplicationRejected,
   unlockContact,
   lockContact,
+  setSubscriptionPlan,
+  updatePaymentMethod,
+  updateProProfile,
 } = featuresSlice.actions;
 
 export default featuresSlice.reducer;

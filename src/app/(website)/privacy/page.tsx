@@ -5,7 +5,7 @@ import { photos } from "@/lib/media";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — LocalHomeFix",
-  description: "Learn how LocalHomeFix protects and handles user data, screening records, and marketplace activity in Greater Austin, TX.",
+  description: "Learn how LocalHomeFix protects and handles user data, screening records, and marketplace activity.",
 };
 
 const sections: LegalSection[] = [

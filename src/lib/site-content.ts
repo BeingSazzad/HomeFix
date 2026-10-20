@@ -1,7 +1,7 @@
 export const faqs = [
   {
     q: "Do I need an account to browse contractors?",
-    a: "No. You can freely explore verified Austin contractor profiles, read authentic customer reviews, and check past project photos without creating an account. You only need a free account when you're ready to post a job and receive competitive bids.",
+    a: "No. You can freely explore verified local contractor profiles, read authentic customer reviews, and check past project photos without creating an account. You only need a free account when you're ready to post a job and receive competitive bids.",
   },
   {
     q: "Is it free to get quotes, and am I obligated to hire?",
@@ -9,7 +9,7 @@ export const faqs = [
   },
   {
     q: "Are contractors licensed, insured, and background-checked?",
-    a: "Yes. Trade specialists (electricians, plumbers, HVAC technicians) must hold active Texas state licenses and commercial liability insurance. All independent pros pass identity verification and criminal background screening before joining.",
+    a: "Yes. Trade specialists (electricians, plumbers, HVAC technicians) must hold active state trade licenses and commercial liability insurance. All independent pros pass identity verification and criminal background screening before joining.",
   },
   {
     q: "How do payments work?",
@@ -17,7 +17,7 @@ export const faqs = [
   },
   {
     q: "What happens if I'm not satisfied or an issue arises?",
-    a: "Contractors provide clear itemized scopes and standard workmanship warranties on their repairs. If questions or discrepancies occur, our Austin support team is available to help mediate and ensure a fair resolution.",
+    a: "Contractors provide clear itemized scopes and standard workmanship warranties on their repairs. If questions or discrepancies occur, our customer support team is available to help mediate and ensure a fair resolution.",
   },
   {
     q: "Can I get same-day or emergency repair services?",
@@ -33,7 +33,7 @@ export const faqs = [
   },
   {
     q: "Which areas do you currently serve?",
-    a: "We currently serve greater Austin, TX, including Round Rock, Cedar Park, Pflugerville, Westlake, Bee Cave, Buda, Kyle, and Lakeway.",
+    a: "We connect homeowners with certified independent trade contractors across metropolitan and regional communities nationwide.",
   },
 ];
 
@@ -86,8 +86,8 @@ export const plans: PlanItem[] = [
     featured: true,
     features: [
       { text: "Keep 100% of your earnings ($0 job cut)", icon: "percent" },
-      { text: "Quote unlimited Austin homeowner requests", icon: "briefcase" },
-      { text: "Verified Austin Pro badge on pro listings", icon: "shield" },
+      { text: "Quote unlimited local homeowner requests", icon: "briefcase" },
+      { text: "Verified Pro badge on pro listings", icon: "shield" },
       { text: "Direct homeowner chat & scheduling", icon: "message" },
       { text: "Zero bidding fees or pay-per-lead costs", icon: "zap" },
     ],
@@ -106,7 +106,7 @@ export const plans: PlanItem[] = [
       { text: "All Pro Monthly features included", icon: "check" },
       { text: "Priority search placement in pro search", icon: "award" },
       { text: "Featured contractor profile badge", icon: "badgeCheck" },
-      { text: "Dedicated local Austin support line", icon: "phone" },
+      { text: "Dedicated priority support line", icon: "phone" },
       { text: "Quarterly job request analytics", icon: "trending" },
     ],
   },

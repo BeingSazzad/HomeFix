@@ -31,7 +31,7 @@ export function HomeServices() {
           <SectionHeading
             eyebrow="Specialties"
             title="Popular home repair services"
-            description="Explore transparent pricing, estimated timelines, and screened pros in every category."
+            description="Explore trusted local specialists, verified reviews, and screened pros in every category."
           />
           <Button href="/services" variant="ghost" className="hidden shrink-0 sm:inline-flex">
             View all services ↗

@@ -8,6 +8,7 @@ export type JobStatus =
   | "quotes_in"
   | "hired"
   | "scheduled"
+  | "en_route"
   | "in_progress"
   | "awaiting_confirm"
   | "completed"
@@ -137,9 +138,13 @@ export interface Booking {
   agreedPrice: number;
   scheduledDate: string;
   scheduledTime: string;
+  arrivalWindow?: string;
   scopeSnapshot: string;
   status: BookingStatus;
   notes?: string;
+  paymentMethod?: "zelle" | "card" | "cash" | "check" | "bank_transfer";
+  paymentReceiptNumber?: string;
+  paidAt?: string;
 }
 
 export interface ChangeRequest {
@@ -155,6 +160,9 @@ export interface JobCompletion {
   jobId: string;
   proMarkedAt?: string;
   homeownerConfirmedAt?: string;
+  completionNotes?: string;
+  paymentMethod?: "zelle" | "card" | "cash" | "check" | "bank_transfer";
+  receiptNumber?: string;
 }
 
 export interface ChatMessage {

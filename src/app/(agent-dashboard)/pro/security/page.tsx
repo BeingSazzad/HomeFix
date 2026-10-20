@@ -1,5 +1,5 @@
-import { SecuritySettings } from "@/components/web-pages/security-settings";
+import { redirect } from "next/navigation";
 
 export default function ProSecurityPage() {
-  return <SecuritySettings role="pro" />;
+  redirect("/pro/password");
 }

@@ -9,6 +9,7 @@ const tones: Record<JobStatus, "blue" | "green" | "amber" | "slate" | "orange"> 
   quotes_in: "blue",
   hired: "orange",
   scheduled: "amber",
+  en_route: "orange",
   in_progress: "amber",
   awaiting_confirm: "amber",
   completed: "green",

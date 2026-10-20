@@ -56,6 +56,12 @@ export function signupHref(next?: string) {
   return `/signup?next=${encodeURIComponent(next)}`;
 }
 
+export function postJobHref(user: User | null) {
+  if (!user) return "/signup?next=%2Faccount%2Fpost-job";
+  if (user.role === "pro") return "/pro/jobs";
+  return "/account/post-job";
+}
+
 export function resolveRoleAccess(user: User | null, pro?: Partial<ProGate>): RoleAccess {
   const audience = audienceFromUser(user);
 

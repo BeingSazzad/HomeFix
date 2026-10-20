@@ -21,7 +21,7 @@ const details = [
   {
     icon: MapPin,
     title: "Service area",
-    text: "Austin, TX and nearby ZIP codes",
+    text: "Nationwide local communities",
   },
 ];
 

@@ -3,22 +3,31 @@ import { Logo } from "@/components/ui/logo";
 
 const groups = [
   {
-    title: "For homeowners",
+    title: "Popular Services",
     links: [
-      { href: "/browse-pros", label: "Find a Pro" },
-      { href: "/services", label: "Services" },
-      { href: "/how-it-works", label: "How it works" },
-      { href: "/faq", label: "FAQ" },
-      { href: "/signup?next=%2Faccount%2Fpost-job", label: "Create an account" },
+      { href: "/browse-pros?category=plumbing", label: "Plumbing Repair" },
+      { href: "/browse-pros?category=electrical", label: "Electrical" },
+      { href: "/browse-pros?category=hvac", label: "HVAC & Cooling" },
+      { href: "/browse-pros?category=handyman", label: "Handyman Services" },
+      { href: "/browse-pros?category=painting", label: "Painting" },
     ],
   },
   {
-    title: "For professionals",
+    title: "For Homeowners",
     links: [
-      { href: "/pro-register", label: "Apply as a pro" },
-      { href: "/pricing", label: "Membership" },
-      { href: "/browse-jobs", label: "Job board access" },
-      { href: "/login?role=pro&next=/pro/jobs", label: "Pro login" },
+      { href: "/browse-pros", label: "Find a Pro" },
+      { href: "/services", label: "All Services" },
+      { href: "/how-it-works", label: "How it works" },
+      { href: "/faq", label: "FAQ" },
+    ],
+  },
+  {
+    title: "For Contractors",
+    links: [
+      { href: "/pro-register", label: "Join Pro Network" },
+      { href: "/pro/jobs", label: "Available Jobs Board" },
+      { href: "/pro/pricing", label: "Pro Membership" },
+      { href: "/pro", label: "Contractor Portal" },
     ],
   },
   {
@@ -77,11 +86,11 @@ const socials = [
 export function Footer() {
   return (
     <footer className="bg-title text-white">
-      <div className="container-site grid gap-10 border-b border-white/10 py-16 md:grid-cols-2 lg:grid-cols-[1.2fr_repeat(3,0.7fr)]">
+      <div className="container-site grid gap-10 border-b border-white/10 py-16 md:grid-cols-2 lg:grid-cols-[1.2fr_repeat(4,0.7fr)]">
         <div>
           <Logo variant="dark" size="lg" />
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/75">
-            Austin&apos;s direct home repair network. Compare itemized quotes from background-checked local specialists, message privately, and pay directly upon job completion.
+            Your trusted local home repair network. Compare itemized quotes from background-checked local specialists, message privately, and pay directly upon job completion.
           </p>
           <div className="mt-6 flex gap-2">
             {socials.map((item) => (

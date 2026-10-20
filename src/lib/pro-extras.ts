@@ -77,6 +77,7 @@ export const trackerSteps = [
       "quotes_in",
       "hired",
       "scheduled",
+      "en_route",
       "in_progress",
       "awaiting_confirm",
       "completed",
@@ -90,6 +91,7 @@ export const trackerSteps = [
       "quotes_in",
       "hired",
       "scheduled",
+      "en_route",
       "in_progress",
       "awaiting_confirm",
       "completed",
@@ -98,17 +100,17 @@ export const trackerSteps = [
   {
     key: "discussion",
     label: "Offers",
-    statuses: ["quotes_in", "hired", "scheduled", "in_progress", "awaiting_confirm", "completed"],
+    statuses: ["quotes_in", "hired", "scheduled", "en_route", "in_progress", "awaiting_confirm", "completed"],
   },
   {
     key: "hired",
     label: "Booked",
-    statuses: ["hired", "scheduled", "in_progress", "awaiting_confirm", "completed"],
+    statuses: ["hired", "scheduled", "en_route", "in_progress", "awaiting_confirm", "completed"],
   },
   {
     key: "progress",
     label: "In progress",
-    statuses: ["in_progress", "awaiting_confirm", "completed"],
+    statuses: ["en_route", "in_progress", "awaiting_confirm", "completed"],
   },
   { key: "completed", label: "Completed", statuses: ["completed"] },
 ] as const;

@@ -51,16 +51,18 @@ export default function VerificationPage() {
   const [files, setFiles] = useState<Record<string, string>>({});
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end justify-between gap-3">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-line/70 pb-4 pt-1">
         <div>
-          <h1 className="text-[28px]">Verification</h1>
-          <p className="mt-1 text-sm text-copy">
-            Screening and marketplace clearance are separate. Public listings start after Cleared.
+          <h1 className="font-display text-[22px] sm:text-[26px] font-semibold text-title tracking-tight">
+            Verification Center
+          </h1>
+          <p className="mt-1 text-sm text-muted">
+            Identity checks, licenses, and insurance compliance.
           </p>
         </div>
-        <Button href="/pro/application" size="sm" variant="ghost">
-          Application status
+        <Button href="/pro/application" size="sm" variant="ghost" className="rounded-full self-start sm:self-auto text-xs">
+          Application Status
         </Button>
       </div>
       <div className="mt-6 grid gap-3">

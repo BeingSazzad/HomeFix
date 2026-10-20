@@ -3,6 +3,8 @@
 import { ArrowRight, ClipboardPen, Handshake, Receipt, Scale } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/redux/hooks";
+import { postJobHref } from "@/lib/role-access";
 
 const steps = [
   {
@@ -32,6 +34,8 @@ const steps = [
 ];
 
 export function HomeProcess() {
+  const user = useAppSelector((state) => state.auth.user);
+
   return (
     <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
@@ -40,7 +44,7 @@ export function HomeProcess() {
             align="center"
             eyebrow="How it works"
             title="How to get your repair done right"
-            description="Post your project for free, compare transparent quotes from vetted Austin contractors, and pay directly only when the work is complete."
+            description="Post your project for free, compare transparent quotes from vetted local specialists, and pay directly only when the work is complete."
           />
         </div>
 
@@ -82,7 +86,7 @@ export function HomeProcess() {
         </div>
 
         <div className="mt-14 sm:mt-16 flex justify-center">
-          <Button href="/signup?next=%2Faccount%2Fpost-job" size="lg">
+          <Button href={postJobHref(user)} size="lg">
             Post your request free ↗
           </Button>
         </div>

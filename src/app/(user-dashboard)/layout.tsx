@@ -12,9 +12,7 @@ const items = [
   { href: "/account/post-job", label: "Post a request" },
   { href: "/account/messages", label: "Messages" },
   { href: "/account/saved", label: "Saved pros" },
-  { href: "/account/notifications", label: "Notifications" },
   { href: "/account/profile", label: "Profile" },
-  { href: "/account/security", label: "Security" },
   { href: "/account/password", label: "Password" },
 ];
 
@@ -43,7 +41,7 @@ export default function UserDashboardLayout({
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       <Navbar />
-      <div className="container-site flex flex-1 flex-col items-stretch gap-4 py-4 pb-6 md:flex-row md:items-start md:gap-6 md:py-5">
+      <div className="container-site flex flex-1 flex-col items-stretch gap-6 pt-6 pb-12 md:flex-row md:items-start md:gap-8 md:pt-8 md:pb-16">
         <DashboardSidebar items={items} />
         <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col">{children}</div>
       </div>

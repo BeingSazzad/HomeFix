@@ -7,7 +7,7 @@ export function PageBanner({
   title,
   description,
   image,
-  align = "left",
+  align = "center",
   breadcrumbs,
 }: {
   eyebrow?: string;
@@ -29,7 +29,8 @@ export function PageBanner({
         className="absolute inset-0 bg-cover bg-[center_25%]"
         style={{ backgroundImage: `url(${image ?? photos.banner})` }}
       />
-      <div className="banner-wash absolute inset-0" />
+      <div className="absolute inset-0 bg-black/50" />
+      <div className="banner-wash absolute inset-0 opacity-80" />
       <div className="pointer-events-none absolute -right-10 bottom-0 h-48 w-48 rounded-full bg-primary/20 blur-3xl" />
       <div
         className={cn(
@@ -37,8 +38,14 @@ export function PageBanner({
           centered && "mx-auto max-w-3xl text-center",
         )}
       >
-        <nav aria-label="Breadcrumb" className="font-sans text-[12px] font-medium text-white/70">
-          <ol className="inline-flex items-center flex-wrap gap-1.5">
+        <nav
+          aria-label="Breadcrumb"
+          className={cn(
+            "font-sans text-[12px] font-medium text-white/70",
+            centered && "flex justify-center",
+          )}
+        >
+          <ol className={cn("inline-flex items-center flex-wrap gap-1.5", centered && "justify-center")}>
             {crumbs.map((crumb, idx) => (
               <li key={idx} className="inline-flex items-center">
                 {idx > 0 && <span className="mx-2 text-white/40">/</span>}
@@ -57,8 +64,8 @@ export function PageBanner({
         </nav>
         <h1
           className={cn(
-            "mt-3.5 font-display text-[32px] font-medium leading-[1.1] tracking-[-1.8px] text-white sm:text-[40px] sm:tracking-[-2.2px] md:text-[48px] md:tracking-[-2.88px]",
-            centered ? "mx-auto max-w-3xl" : "max-w-3xl",
+            "mt-3.5 font-display text-[30px] font-semibold leading-[1.15] tracking-tight text-white sm:text-[38px] md:text-[44px]",
+            centered ? "mx-auto max-w-2xl text-center" : "max-w-2xl",
           )}
         >
           {title}
@@ -66,8 +73,8 @@ export function PageBanner({
         {description ? (
           <p
             className={cn(
-              "mt-3 max-w-xl font-sans text-[16px] font-normal leading-[24px] tracking-[-0.14px] text-white/80 md:text-[18px] md:leading-[26px] md:tracking-[-0.18px]",
-              centered && "mx-auto",
+              "mt-3 max-w-lg font-sans text-sm sm:text-base leading-relaxed text-white/85",
+              centered && "mx-auto text-center",
             )}
           >
             {description}

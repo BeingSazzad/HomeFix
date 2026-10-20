@@ -7,7 +7,8 @@ import { cn } from "@/lib/cn";
 import { faqs as defaultFaqs } from "@/lib/site-content";
 
 export function FaqSection({
-  title = "We’ve got answers.",
+  eyebrow = "FAQ",
+  title = "Questions? We’ve got answers.",
   description = "Can’t find what you’re looking for? Our team is happy to help.",
   items = defaultFaqs,
   className,
@@ -25,16 +26,16 @@ export function FaqSection({
       <div className="container-site grid items-start gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
         {/* Left Column: Movers-style bold uppercase display & custom pill button */}
         <div className="lg:sticky lg:top-28">
-          <div className="inline-flex items-center gap-2 font-geist text-[13.5px] sm:text-[14px] font-medium tracking-tight text-title">
+          <div className="inline-flex items-center gap-2 font-geist text-[13px] sm:text-[13.5px] font-semibold uppercase tracking-wider text-primary">
             <span
               aria-hidden="true"
-              className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border-[1.75px] border-primary"
+              className="inline-block h-2 w-2 shrink-0 rounded-full bg-primary"
             />
-            <span>Have questions?</span>
+            <span>{eyebrow}</span>
           </div>
 
-          <h2 className="mt-5 font-display text-[34px] sm:text-[42px] md:text-[48px] font-medium uppercase leading-[1.08] tracking-[-0.05em] text-title">
-            We’ve got<br />answers.
+          <h2 className="mt-4 font-display text-[32px] sm:text-[40px] md:text-[46px] font-medium uppercase leading-[1.08] tracking-[-0.04em] text-title">
+            Questions?<br />We’ve got answers.
           </h2>
 
           <p className="mt-4 max-w-sm font-sans text-[15px] sm:text-[16px] leading-relaxed text-[#757575]">

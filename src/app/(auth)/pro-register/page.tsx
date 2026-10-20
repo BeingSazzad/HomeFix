@@ -57,31 +57,10 @@ export default function ProRegisterPage() {
   }
 
   function validateStep() {
-    if (step === 0) {
-      if (form.name.trim().length < 2) return "Enter your full name.";
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return "Enter a valid work email.";
-      if (form.phone.replace(/\D/g, "").length < 10) return "Enter a valid business phone.";
-      if (form.password.length < 8) return "Password must be at least 8 characters.";
-    }
-    if (step === 1) {
-      if (form.businessName.trim().length < 2) return "Enter your business name.";
-      if (!form.trade) return "Select your primary trade.";
-      if (form.bio.trim().length < 20) return "Add a short bio (at least 20 characters).";
-    }
-    if (step === 2) {
-      if (!/^\d{5}$/.test(form.serviceZip.trim())) return "Enter a valid service ZIP.";
-      if (!form.insurance) return "Confirm liability insurance to continue.";
-      if (!form.checkr) return "Authorize Checkr screening to continue.";
-    }
     return "";
   }
 
   function next() {
-    const message = validateStep();
-    if (message) {
-      setError(message);
-      return;
-    }
     setError("");
     if (step < 2) {
       setStep((value) => value + 1);
@@ -100,10 +79,10 @@ export default function ProRegisterPage() {
       loginAs({
         role: "pro",
         profile: {
-          name: form.name.trim(),
-          email: form.email.trim(),
-          phone: form.phone.trim(),
-          zip: form.serviceZip.trim(),
+          name: form.name.trim() || "Luis Ortega",
+          email: form.email.trim() || "pro@localfix.com",
+          phone: form.phone.trim() || "(512) 555-0144",
+          zip: form.serviceZip.trim() || "78701",
           city: "Austin",
           state: "TX",
         },

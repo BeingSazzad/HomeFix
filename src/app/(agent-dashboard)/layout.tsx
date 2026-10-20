@@ -10,13 +10,11 @@ const items = [
   { href: "/pro", label: "Overview" },
   { href: "/pro/jobs", label: "Available jobs" },
   { href: "/pro/messages", label: "Messages" },
-  { href: "/pro/notifications", label: "Notifications" },
   { href: "/pro/application", label: "Application" },
   { href: "/pro/verification", label: "Verification" },
   { href: "/pro/reviews", label: "Reviews" },
-  { href: "/pro/pricing", label: "Membership" },
+  { href: "/pro/pricing", label: "Subscription" },
   { href: "/pro/profile", label: "Profile" },
-  { href: "/pro/security", label: "Security" },
   { href: "/pro/password", label: "Password" },
 ];
 
@@ -40,7 +38,7 @@ export default function AgentDashboardLayout({
   return (
     <div className="flex min-h-screen flex-col bg-surface">
       <Navbar />
-      <div className="container-site flex flex-1 flex-col items-stretch gap-4 py-4 pb-6 md:flex-row md:items-start md:gap-6 md:py-5">
+      <div className="container-site flex flex-1 flex-col items-stretch gap-6 pt-6 pb-12 md:flex-row md:items-start md:gap-8 md:pt-8 md:pb-16">
         <DashboardSidebar items={items} />
         <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col">{children}</div>
       </div>

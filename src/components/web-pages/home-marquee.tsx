@@ -21,7 +21,7 @@ export function HomeMarquee() {
   return (
     <div
       aria-label="Popular home repair services ticker"
-      className="relative w-full overflow-hidden border-y border-white/20 bg-gradient-to-r from-[#0a42aa] via-[#0d56d6] via-45% to-[#0178be] py-3 text-white shadow-xs"
+      className="relative flex h-14 sm:h-16 w-full items-center overflow-hidden border-y border-white/20 bg-gradient-to-r from-[#0a42aa] via-[#0d56d6] via-45% to-[#0178be] text-white shadow-xs"
     >
       {/* Edge gradient masks for seamless overflow fade */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#0a42aa] to-transparent sm:w-28" />
@@ -33,13 +33,13 @@ export function HomeMarquee() {
           <div key={`set-1-${i}`} className="flex items-center shrink-0">
             <Link
               href={item.href}
-              className="px-4 font-display text-[14px] sm:text-[15px] font-medium tracking-tight text-white/95 transition-all hover:text-white hover:scale-105 sm:px-6"
+              className="px-5 sm:px-7 font-display text-[16px] sm:text-[17px] font-semibold tracking-tight text-white/95 transition-all hover:text-white hover:scale-105 inline-flex items-center"
             >
               {item.label}
             </Link>
             {/* Crisp white glowing dot separator */}
             <span
-              className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.9)]"
+              className="inline-block h-2 w-2 shrink-0 rounded-full bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.8)]"
               aria-hidden="true"
             />
           </div>
@@ -49,13 +49,13 @@ export function HomeMarquee() {
           <div key={`set-2-${i}`} className="flex items-center shrink-0">
             <Link
               href={item.href}
-              className="px-4 font-display text-[14px] sm:text-[15px] font-medium tracking-tight text-white/95 transition-all hover:text-white hover:scale-105 sm:px-6"
+              className="px-5 sm:px-7 font-display text-[16px] sm:text-[17px] font-semibold tracking-tight text-white/95 transition-all hover:text-white hover:scale-105 inline-flex items-center"
             >
               {item.label}
             </Link>
             {/* Crisp white glowing dot separator */}
             <span
-              className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.9)]"
+              className="inline-block h-2 w-2 shrink-0 rounded-full bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.8)]"
               aria-hidden="true"
             />
           </div>

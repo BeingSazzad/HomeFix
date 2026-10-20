@@ -37,7 +37,7 @@ const initialState: MarketplaceState = {
   bookings: {},
   changeRequests: [],
   completions: {},
-  membershipActive: false,
+  membershipActive: true,
   verification: {
     identity: "idle",
     screening: "idle",
@@ -95,7 +95,7 @@ const marketplaceSlice = createSlice({
           state.bookings = saved.bookings ?? {};
           state.changeRequests = saved.changeRequests ?? [];
           state.completions = saved.completions ?? {};
-          state.membershipActive = Boolean(saved.membershipActive);
+          state.membershipActive = saved.membershipActive !== undefined ? Boolean(saved.membershipActive) : true;
           state.verification = saved.verification ?? state.verification;
         }
       } catch {
@@ -127,7 +127,7 @@ const marketplaceSlice = createSlice({
         categorySlug: payload.categorySlug,
         description: payload.description,
         zip: payload.zip,
-        city: payload.city || "Austin",
+        city: payload.city || "Local Area",
         state: payload.state || "TX",
         urgency: payload.urgency,
         budget: payload.budget || undefined,
@@ -262,6 +262,7 @@ const marketplaceSlice = createSlice({
         agreedPrice: number;
         scheduledDate: string;
         scheduledTime: string;
+        arrivalWindow?: string;
         scopeSnapshot: string;
         notes?: string;
       }>,
@@ -274,6 +275,7 @@ const marketplaceSlice = createSlice({
         agreedPrice: p.agreedPrice,
         scheduledDate: p.scheduledDate,
         scheduledTime: p.scheduledTime,
+        arrivalWindow: p.arrivalWindow || (p.scheduledTime.includes("–") ? p.scheduledTime : undefined),
         scopeSnapshot: p.scopeSnapshot,
         status: "confirmed",
         notes: p.notes,
@@ -282,12 +284,21 @@ const marketplaceSlice = createSlice({
     },
     requestReschedule(
       state,
-      action: PayloadAction<{ jobId: string; scheduledDate: string; scheduledTime: string; notes?: string }>,
+      action: PayloadAction<{
+        jobId: string;
+        scheduledDate: string;
+        scheduledTime: string;
+        arrivalWindow?: string;
+        notes?: string;
+      }>,
     ) {
       const booking = state.bookings[action.payload.jobId];
       if (!booking) return;
       booking.scheduledDate = action.payload.scheduledDate;
       booking.scheduledTime = action.payload.scheduledTime;
+      if (action.payload.arrivalWindow) {
+        booking.arrivalWindow = action.payload.arrivalWindow;
+      }
       booking.notes = action.payload.notes ?? booking.notes;
       booking.status = "confirmed";
       persist(state);
@@ -319,20 +330,43 @@ const marketplaceSlice = createSlice({
       }
       persist(state);
     },
-    proMarkComplete(state, action: PayloadAction<{ jobId: string }>) {
+    proMarkComplete(
+      state,
+      action: PayloadAction<{ jobId: string; completionNotes?: string }>,
+    ) {
       state.completions[action.payload.jobId] = {
         ...(state.completions[action.payload.jobId] ?? { jobId: action.payload.jobId }),
         jobId: action.payload.jobId,
         proMarkedAt: new Date().toISOString(),
+        completionNotes: action.payload.completionNotes,
       };
       persist(state);
     },
-    homeownerConfirmComplete(state, action: PayloadAction<{ jobId: string }>) {
+    homeownerConfirmComplete(
+      state,
+      action: PayloadAction<{
+        jobId: string;
+        paymentMethod?: "zelle" | "card" | "cash" | "check" | "bank_transfer";
+        receiptNumber?: string;
+      }>,
+    ) {
+      const receiptNo = action.payload.receiptNumber || `LHF-REC-${Math.floor(100000 + Math.random() * 900000)}`;
+      const pMethod = action.payload.paymentMethod || "zelle";
+      
       state.completions[action.payload.jobId] = {
         ...(state.completions[action.payload.jobId] ?? { jobId: action.payload.jobId }),
         jobId: action.payload.jobId,
         homeownerConfirmedAt: new Date().toISOString(),
+        paymentMethod: pMethod,
+        receiptNumber: receiptNo,
       };
+
+      const booking = state.bookings[action.payload.jobId];
+      if (booking) {
+        booking.paymentMethod = pMethod;
+        booking.paymentReceiptNumber = receiptNo;
+        booking.paidAt = new Date().toISOString().slice(0, 10);
+      }
       persist(state);
     },
     startMembership(state) {

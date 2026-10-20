@@ -3,8 +3,12 @@
 import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
+import { useAppSelector } from "@/redux/hooks";
+import { postJobHref } from "@/lib/role-access";
 
 export function HomeCta() {
+  const user = useAppSelector((state) => state.auth.user);
+
   return (
     <section className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
@@ -27,15 +31,15 @@ export function HomeCta() {
             </h2>
 
             <p className="mt-3 font-sans text-sm sm:text-base leading-relaxed text-white/80">
-              Post your repair for free, compare itemized quotes from vetted Austin contractors, and pay only when the job is done right.
+              Post your repair for free, compare itemized quotes from vetted local contractors, and pay only when the job is done right.
             </p>
 
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Button href="/signup?next=%2Faccount%2Fpost-job" variant="white" size="lg" className="font-semibold">
+              <Button href={postJobHref(user)} variant="white" size="lg" className="font-semibold">
                 Post your request free ↗
               </Button>
-              <Button href="/pro-register" variant="onDark" size="lg" className="font-semibold">
-                Apply as a pro ↗
+              <Button href="/browse-pros" variant="onDark" size="lg" className="font-semibold">
+                Browse local pros ↗
               </Button>
             </div>
           </div>

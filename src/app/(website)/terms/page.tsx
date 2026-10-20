@@ -5,7 +5,7 @@ import { photos } from "@/lib/media";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions — LocalHomeFix",
-  description: "Review our Terms of Service governing homeowner requests, contractor agreements, and marketplace policies in Greater Austin, TX.",
+  description: "Review our Terms of Service governing homeowner requests, contractor agreements, and marketplace policies.",
 };
 
 const sections: LegalSection[] = [
@@ -37,7 +37,7 @@ const sections: LegalSection[] = [
   {
     title: "Changes",
     body: "Material changes are posted with a new effective date. Questions go through the Contact page.",
-    note: "Substantial updates are timestamped and communicated on this page. Direct inquiries to our Austin support team.",
+    note: "Substantial updates are timestamped and communicated on this page. Direct inquiries to our customer support team.",
   },
 ];
 
@@ -46,7 +46,7 @@ export default function TermsPage() {
     <>
       <PageBanner
         title="Terms & Conditions"
-        description="Clear rules, responsibilities, and standards for Austin homeowners and independent service professionals."
+        description="Clear rules, responsibilities, and standards for homeowners and independent service professionals."
         image={photos.banners.legal}
         breadcrumbs={[
           { label: "Home", href: "/" },

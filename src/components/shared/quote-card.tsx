@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Field, TextField } from "@/components/ui/field";
+import { Field, NativeSelect, TextField } from "@/components/ui/field";
 import { getPro, offerStatusLabels } from "@/Mockdata";
 import {
   confirmBooking,
@@ -57,7 +57,7 @@ export function QuoteCard({
   const closed = quote.status === "rejected" || quote.status === "withdrawn" || quote.status === "expired";
   const [showBooking, setShowBooking] = useState(false);
   const [bookDate, setBookDate] = useState("");
-  const [bookTime, setBookTime] = useState("09:00");
+  const [arrivalWindow, setArrivalWindow] = useState("10:00 AM – 12:00 PM (Late Morning)");
   const [msg, setMsg] = useState("");
 
   const price =
@@ -78,14 +78,14 @@ export function QuoteCard({
     dispatch(
       addNotification({
         title: "Offer accepted",
-        body: `You hired ${pro?.businessName ?? "the pro"}. Confirm a date to lock the booking.`,
+        body: `You hired ${pro?.name ?? pro?.businessName ?? "the pro"}. Confirm your appointment arrival window below.`,
         href: `/account/jobs/${quote.jobId}`,
         createdAt: "Just now",
         role: "homeowner",
       }),
     );
     setShowBooking(true);
-    setMsg("Offer accepted — select a date and time below to lock in your appointment.");
+    setMsg("Offer accepted — select a date and 2-hour arrival window to lock your appointment.");
   }
 
   function decline() {
@@ -95,7 +95,7 @@ export function QuoteCard({
 
   function lockBooking() {
     if (!bookDate) {
-      setMsg("Please choose a date.");
+      setMsg("Please choose an appointment date.");
       return;
     }
     dispatch(
@@ -105,7 +105,8 @@ export function QuoteCard({
         proId: quote.proId,
         agreedPrice: quote.amount,
         scheduledDate: bookDate,
-        scheduledTime: bookTime,
+        scheduledTime: arrivalWindow,
+        arrivalWindow,
         scopeSnapshot: quote.scope,
       }),
     );
@@ -113,7 +114,7 @@ export function QuoteCard({
     dispatch(
       addNotification({
         title: "Booking confirmed",
-        body: `${bookDate} at ${bookTime} · $${quote.amount}. Pay the pro directly when work is done.`,
+        body: `${bookDate} (${arrivalWindow}) · $${quote.amount}. Direct contractor payment on completion.`,
         href: `/account/jobs/${quote.jobId}`,
         createdAt: "Just now",
         role: "homeowner",
@@ -138,13 +139,16 @@ export function QuoteCard({
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div className="flex items-start gap-3 min-w-0">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 font-display text-base font-bold text-primary">
-            {pro?.businessName ? pro.businessName.charAt(0) : "P"}
+            {pro?.name ? pro.name.charAt(0) : pro?.businessName ? pro.businessName.charAt(0) : "P"}
           </div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="font-display text-lg font-semibold leading-tight text-title truncate">
-                {pro?.businessName ?? "Provider"}
+                {pro?.name ?? pro?.businessName ?? "Provider"}
               </h3>
+              {pro?.businessName && pro.businessName !== pro.name ? (
+                <span className="text-xs text-muted truncate">({pro.businessName})</span>
+              ) : null}
               {pro?.clearance === "cleared" && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
                   <ShieldCheck className="h-3 w-3" />
@@ -337,25 +341,41 @@ export function QuoteCard({
 
       {/* Booking Form (Triggers immediately upon Accept) */}
       {(hired || showBooking) && !booking ? (
-        <div className="mt-5 space-y-3 rounded-xl border border-primary/25 bg-smoke/70 p-4">
-          <div className="flex items-center gap-2 text-sm font-semibold text-title">
-            <Calendar className="h-4 w-4 text-primary" />
-            Confirm appointment schedule
+        <div className="mt-5 space-y-3.5 rounded-xl border border-primary/30 bg-smoke/70 p-4 sm:p-5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 text-sm font-semibold text-title">
+              <Calendar className="h-4 w-4 text-primary" />
+              Confirm appointment schedule
+            </div>
+            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200 flex items-center gap-1">
+              <ShieldCheck className="h-3 w-3" /> $1,000 Guarantee
+            </span>
           </div>
-          <p className="text-xs text-muted">
-            Lock in your preferred date and arrival time. You pay your pro directly upon completion—LocalHomeFix never takes middleman fees.
+          <p className="text-xs text-muted leading-relaxed">
+            Select an arrival window. Contractors confirm exact arrival within this 2-hour timeframe. Direct settlement on 100% completion with zero platform markup.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Date">
+            <Field label="Appointment Date">
               <TextField type="date" value={bookDate} onChange={(e) => setBookDate(e.target.value)} />
             </Field>
-            <Field label="Time">
-              <TextField type="time" value={bookTime} onChange={(e) => setBookTime(e.target.value)} />
+            <Field label="2-Hour Arrival Window">
+              <NativeSelect
+                value={arrivalWindow}
+                onChange={(e) => setArrivalWindow(e.target.value)}
+              >
+                <option value="8:00 AM – 10:00 AM (Early Morning)">8:00 AM – 10:00 AM (Early Morning)</option>
+                <option value="10:00 AM – 12:00 PM (Late Morning)">10:00 AM – 12:00 PM (Late Morning)</option>
+                <option value="1:00 PM – 3:00 PM (Early Afternoon)">1:00 PM – 3:00 PM (Early Afternoon)</option>
+                <option value="3:00 PM – 5:00 PM (Late Afternoon)">3:00 PM – 5:00 PM (Late Afternoon)</option>
+                <option value="Flexible (Anytime during business hours)">Flexible (Anytime during business hours)</option>
+              </NativeSelect>
             </Field>
           </div>
-          <Button type="button" size="sm" onClick={lockBooking}>
-            Confirm schedule
-          </Button>
+          <div className="pt-1 flex items-center gap-3">
+            <Button type="button" size="sm" onClick={lockBooking} className="rounded-full">
+              Confirm Schedule &amp; Lock Booking
+            </Button>
+          </div>
         </div>
       ) : null}
 

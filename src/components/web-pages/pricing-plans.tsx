@@ -65,7 +65,7 @@ export function PricingPlans({
   const { access, membershipActive } = useRoleAccess();
 
   return (
-    <section className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
+    <section id="pricing" className="bg-white py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
         <div className="flex flex-col items-center text-center">
           <SectionHeading align="center" eyebrow={eyebrow} title={title} description={description} />

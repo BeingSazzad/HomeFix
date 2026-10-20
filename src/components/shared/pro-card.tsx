@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Heart, MapPin, ShieldCheck } from "lucide-react";
-import { ProRatingBlock } from "@/components/shared/pro-rating-block";
+import {
+  ArrowRight,
+  Heart,
+  MapPin,
+  ShieldCheck,
+  Star,
+} from "lucide-react";
 import { photos } from "@/lib/media";
 import { signupHref } from "@/lib/role-access";
 import { toggleFavorite } from "@/redux/slices/featuresSlice";
@@ -23,6 +28,8 @@ export function ProCard({
   const router = useRouter();
   const pathname = usePathname();
   const { access } = useRoleAccess();
+  const user = useAppSelector((state) => state.auth.user);
+  const isOwner = user?.role === "pro" && (pro.id === "pro-1" || pro.name.toLowerCase() === (user.name || "").toLowerCase());
   const saved = useAppSelector((state) => state.features.favorites.includes(pro.id));
   const image = photos.services[pro.categorySlug];
   const href = `/browse-pros/${pro.id}`;
@@ -42,15 +49,27 @@ export function ProCard({
     <Link
       href={href}
       className={cn(
-        "group flex h-full min-w-0 w-full flex-col overflow-hidden rounded-[22px] border border-line/80 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md",
+        "group flex h-full min-w-0 w-full flex-col overflow-hidden rounded-[20px] border border-line/80 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md",
         className,
       )}
     >
-      <div className="relative h-44 overflow-hidden bg-smoke">
+      {/* 1. Photo Banner */}
+      <div className="relative h-44 w-full overflow-hidden bg-smoke">
         <span
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
           style={{ backgroundImage: `url(${image})` }}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10" />
+
+        {/* Top-left Owner Storefront Badge */}
+        {isOwner && (
+          <span className="absolute left-3.5 top-3.5 z-10 inline-flex items-center gap-1.5 rounded-full bg-primary/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-xs backdrop-blur-xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Your Storefront
+          </span>
+        )}
+
+        {/* Top-right favorite button */}
         <button
           type="button"
           aria-label={saved ? "Remove from saved" : "Save professional"}
@@ -63,19 +82,33 @@ export function ProCard({
           }
           disabled={access.audience === "pro"}
           className={cn(
-            "absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white shadow-xs",
-            saved && access.canSavePro ? "text-error" : "text-muted",
+            "absolute right-3.5 top-3.5 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/95 backdrop-blur-md shadow-xs border border-white/60 transition-transform hover:scale-105 active:scale-95",
+            saved && access.canSavePro ? "text-error" : "text-muted hover:text-title",
             access.audience === "pro" && "opacity-50",
           )}
           onClick={onSave}
         >
-          <Heart className={cn("h-3.5 w-3.5", saved && access.canSavePro && "fill-current")} />
+          <Heart className={cn("h-4 w-4", saved && access.canSavePro && "fill-current")} />
         </button>
       </div>
+
+      {/* 2. Card Content Body */}
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-display text-[18px] sm:text-[19px] font-medium tracking-tight leading-snug text-title transition-colors group-hover:text-primary min-h-[46px] line-clamp-2">
-          <span>{pro.businessName}</span>
-          <span title="Screened & Verified Professional" className="inline-block ml-1.5 -mt-0.5 align-middle">
+        {/* Category & Location Row */}
+        <div className="flex items-center justify-between gap-2 text-xs">
+          <span className="inline-flex items-center rounded-md bg-smoke px-2.5 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider text-primary">
+            {pro.trade}
+          </span>
+          <span className="inline-flex items-center gap-1 font-sans text-xs text-muted truncate">
+            <MapPin className="h-3.5 w-3.5 shrink-0 text-muted" />
+            {pro.city}, {pro.state}
+          </span>
+        </div>
+
+        {/* Contractor Personal Name with Verified Shield */}
+        <h3 className="mt-3.5 font-display text-[18px] font-semibold text-title tracking-tight leading-snug transition-colors group-hover:text-primary flex items-center gap-1.5">
+          <span className="truncate">{pro.name}</span>
+          <span title="Screened & Verified Professional" className="inline-flex shrink-0">
             <ShieldCheck
               className="h-4 w-4 text-primary fill-primary/15"
               aria-label="Verified Pro"
@@ -83,32 +116,38 @@ export function ProCard({
           </span>
         </h3>
 
-        <div className="mt-3 flex items-center gap-2">
-          <span className="inline-flex items-center rounded-full bg-smoke px-2.5 py-0.5 font-sans text-[11px] font-semibold uppercase tracking-wider text-primary">
-            {pro.trade}
-          </span>
-          <span className="flex items-center gap-1 font-sans text-xs text-[#757575]">
-            <MapPin className="h-3.5 w-3.5 shrink-0 text-[#757575]" />
-            {pro.city}, {pro.state}
-          </span>
+        {/* Company / Business Name */}
+        {pro.businessName && pro.businessName !== pro.name ? (
+          <p className="mt-1 text-xs text-muted truncate">
+            {pro.businessName}
+          </p>
+        ) : null}
+
+        {/* Rating & Reviews & Jobs Row */}
+        <div className="mt-2.5 flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-1 font-semibold text-title">
+            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
+            <span>{pro.rating.toFixed(1)}</span>
+          </div>
+          <span className="text-muted">({pro.reviewCount})</span>
+          <span className="h-1 w-1 rounded-full bg-muted/40" />
+          <span className="font-medium text-copy">{pro.jobsCompleted} jobs</span>
         </div>
 
-        {/* DEMO DATA: Swappable rating block. Hidden when reviewCount === 0 */}
-        <div className="mt-3">
-          <ProRatingBlock
-            rating={pro.rating}
-            reviewCount={pro.reviewCount}
-            size="sm"
-          />
-        </div>
-
-        <div className="mt-5 border-t border-line/60 pt-3.5">
+        {/* 3. Card Footer with Rock-Solid Alignment (mt-auto) */}
+        <div className="mt-5 pt-4 border-t border-line/70">
           <div className="flex items-center justify-between">
-            <span className="font-display text-[15px] font-semibold text-title">
-              From ${pro.startingPrice}
-            </span>
-            <span className="font-sans text-xs font-medium text-primary group-hover:underline">
-              View profile →
+            <div>
+              <span className="block text-[11px] font-medium text-muted leading-none">
+                From
+              </span>
+              <span className="mt-1.5 block font-display text-[17px] font-bold text-title leading-none">
+                ${pro.startingPrice}
+              </span>
+            </div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-smoke px-3.5 py-1.5 text-xs font-semibold text-primary transition-all duration-200 group-hover:bg-primary group-hover:text-white group-hover:shadow-xs">
+              {isOwner ? "Preview storefront" : "View profile"}
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </span>
           </div>
         </div>

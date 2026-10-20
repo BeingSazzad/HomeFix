@@ -29,13 +29,15 @@ export default function ProApplicationPage() {
   const draft = useAppSelector((state) => state.features.applicationDraft);
 
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-[28px]">Application</h1>
-        <p className="mt-1 text-sm text-copy">
+    <div className="space-y-6">
+      <div className="border-b border-line/70 pb-4 pt-1">
+        <h1 className="font-display text-[22px] sm:text-[26px] font-semibold text-title tracking-tight">
+          Contractor Application
+        </h1>
+        <p className="mt-1 text-sm text-muted">
           {status === "cleared"
-            ? "Cleared — start membership to quote."
-            : "Waiting on review before the job board opens."}
+            ? "Cleared — membership unlocked for quotes."
+            : "Reviewing credentials before job board access."}
         </p>
       </div>
       <Suspense fallback={null}>

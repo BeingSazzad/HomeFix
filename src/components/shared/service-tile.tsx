@@ -51,13 +51,10 @@ export function ServiceTile({
       {/* High-end gradient wash: soft top, rich dark bottom */}
       <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/15 transition-opacity group-hover:from-black/90" />
 
-      {/* Top Bar: Service Icon & Typical Price */}
+      {/* Top Bar: Service Icon */}
       <div className="relative z-10 flex items-center justify-between gap-2">
         <span className="grid h-9 w-9 place-items-center rounded-xl bg-white/20 text-white backdrop-blur-md transition-colors group-hover:bg-primary group-hover:text-white">
           <Icon className="h-4 w-4" aria-hidden="true" />
-        </span>
-        <span className="inline-flex items-center rounded-full border border-white/25 bg-black/30 px-2.5 py-1 text-[11px] font-semibold text-white/95 backdrop-blur-md">
-          {category.typicalRange}
         </span>
       </div>
 
