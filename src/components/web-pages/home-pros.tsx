@@ -64,10 +64,7 @@ export function HomePros() {
           />
 
           {/* Ergonomic Header Navigation Cluster: Zero Card Overlap */}
-          <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-end">
-            <span className="font-sans text-xs font-medium text-[#757575] mr-1.5">
-              <span className="font-semibold text-title">{activeIndex + 1}</span> of {list.length} featured
-            </span>
+          <div className="flex items-center gap-2 shrink-0 self-start sm:self-end">
             <button
               type="button"
               aria-label="Previous professionals"
