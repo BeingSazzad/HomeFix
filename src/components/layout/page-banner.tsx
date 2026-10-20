@@ -1,14 +1,11 @@
-import Link from "next/link";
 import { cn } from "@/lib/cn";
-import { photos } from "@/lib/media";
 
 export function PageBanner({
   eyebrow,
   title,
   description,
-  image,
   align = "center",
-  breadcrumbs,
+  className,
 }: {
   eyebrow?: string;
   title: string;
@@ -16,65 +13,42 @@ export function PageBanner({
   image?: string;
   align?: "left" | "center";
   breadcrumbs?: { label: string; href?: string }[];
+  className?: string;
 }) {
   const centered = align === "center";
-  const crumbs = breadcrumbs ?? [
-    { label: "Home", href: "/" },
-    { label: eyebrow ?? title },
-  ];
 
   return (
-    <section className="relative overflow-hidden bg-title text-white">
-      <div
-        className="absolute inset-0 bg-cover bg-[center_25%]"
-        style={{ backgroundImage: `url(${image ?? photos.banner})` }}
-      />
-      <div className="absolute inset-0 bg-black/50" />
-      <div className="banner-wash absolute inset-0 opacity-80" />
-      <div className="pointer-events-none absolute -right-10 bottom-0 h-48 w-48 rounded-full bg-primary/20 blur-3xl" />
-      <div
-        className={cn(
-          "container-site relative py-12 md:py-16",
-          centered && "mx-auto max-w-3xl text-center",
-        )}
-      >
-        <nav
-          aria-label="Breadcrumb"
-          className={cn(
-            "font-sans text-[12px] font-medium text-white/70",
-            centered && "flex justify-center",
-          )}
-        >
-          <ol className={cn("inline-flex items-center flex-wrap gap-1.5", centered && "justify-center")}>
-            {crumbs.map((crumb, idx) => (
-              <li key={idx} className="inline-flex items-center">
-                {idx > 0 && <span className="mx-2 text-white/40">/</span>}
-                {crumb.href ? (
-                  <Link href={crumb.href} className="hover:text-white transition-colors">
-                    {crumb.label}
-                  </Link>
-                ) : (
-                  <span className="text-white/90" aria-current="page">
-                    {crumb.label}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ol>
-        </nav>
+    <section className={cn("bg-white border-b border-line/60 pt-10 sm:pt-14 pb-10 sm:pb-14", className)}>
+      <div className="container-site">
+        {/* Eyebrow with Global Design System Blue Ring Indicator */}
+        {eyebrow ? (
+          <div className={cn("mb-3 sm:mb-3.5", centered ? "flex justify-center" : "flex justify-start")}>
+            <div className="inline-flex items-center gap-2 font-geist text-[13.5px] sm:text-[14px] font-medium tracking-tight text-title">
+              <span
+                aria-hidden="true"
+                className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border-[1.75px] border-primary"
+              />
+              <span>{eyebrow}</span>
+            </div>
+          </div>
+        ) : null}
+
+        {/* Heading: Global Design System Standard (font-geist, font-medium, Title Case) */}
         <h1
           className={cn(
-            "mt-3.5 font-display text-[30px] font-semibold leading-[1.15] tracking-tight text-white sm:text-[38px] md:text-[44px]",
-            centered ? "mx-auto max-w-2xl text-center" : "max-w-2xl",
+            "font-geist text-[30px] sm:text-[38px] md:text-[44px] font-medium leading-[1.14] tracking-[-1.5px] sm:tracking-[-2px] !text-black",
+            centered ? "mx-auto max-w-3xl text-center" : "max-w-3xl",
           )}
         >
           {title}
         </h1>
+
+        {/* Subtitle / Description */}
         {description ? (
           <p
             className={cn(
-              "mt-3 max-w-lg font-sans text-sm sm:text-base leading-relaxed text-white/85",
-              centered && "mx-auto text-center",
+              "mt-3.5 max-w-2xl font-['Inter_Display',Inter,sans-serif] text-[16px] sm:text-[17px] font-normal leading-[25px] tracking-[-0.18px] text-[#757575]",
+              centered ? "mx-auto text-center" : "text-left",
             )}
           >
             {description}

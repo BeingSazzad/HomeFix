@@ -336,36 +336,6 @@ export function AboutContent() {
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* SECTION 4: REAL NUMBERS & COMMUNITY IMPACT STATS                         */}
-      {/* ========================================================================= */}
-      <section className="py-12 sm:py-16 bg-white border-b border-line/60">
-        <div className="container-site">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              { value: "$0", label: "Extra platform markup", sub: "Pay only for actual repair work" },
-              { value: "100%", label: "Direct to technician", sub: "Zero middleman fee cuts" },
-              { value: "< 15 min", label: "Average pro response", sub: "Fast local contractor response" },
-              { value: "4.9 / 5", label: "Austin satisfaction score", sub: "Based on 1,400+ verified repairs" },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col rounded-[20px] border border-line/70 bg-surface/30 p-5 sm:p-6"
-              >
-                <p className="font-geist text-[30px] sm:text-[36px] font-medium text-title tracking-tight leading-none">
-                  {stat.value}
-                </p>
-                <p className="mt-2.5 font-geist text-[14px] sm:text-[14.5px] font-medium text-title leading-snug">
-                  {stat.label}
-                </p>
-                <p className="mt-1 font-sans text-[12px] text-[#757575] leading-normal">
-                  {stat.sub}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ========================================================================= */}
       {/* SECTION 5: OUR CORE PILLARS (Clean Bento Grid)                           */}
