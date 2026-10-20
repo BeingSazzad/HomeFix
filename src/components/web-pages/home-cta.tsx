@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, CheckCircle2 } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
 
@@ -37,21 +37,6 @@ export function HomeCta() {
               <Button href="/pro-register" variant="onDark" size="lg" className="font-semibold">
                 Apply as a pro ↗
               </Button>
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-y-2 gap-x-5 text-xs text-white/70">
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-primary-hover" />
-                100% Free for homeowners
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-primary-hover" />
-                No credit card required
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-primary-hover" />
-                Zero spam phone calls
-              </span>
             </div>
           </div>
         </div>

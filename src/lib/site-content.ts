@@ -1,27 +1,31 @@
 export const faqs = [
   {
     q: "Do I need an account to browse contractors?",
-    a: "No. Anyone can search verified local contractors, view ratings, and check past project photos for free. You only need a free account when you're ready to post a job and receive competitive quotes.",
+    a: "No. You can freely explore verified Austin contractor profiles, read authentic customer reviews, and check past project photos without creating an account. You only need a free account when you're ready to post a job and receive competitive bids.",
   },
   {
-    q: "How does LocalHomeFix make money?",
-    a: "Homeowners pay $0. We don't take booking fees, retainers, or percentages of your invoice. Independent contractors pay a simple $19.99/month membership after a 3-month free trial to quote unlimited local jobs.",
+    q: "Is it free to get quotes, and am I obligated to hire?",
+    a: "Getting quotes is 100% free with zero obligation. You can post your repair request, compare itemized quotes side-by-side from background-checked local specialists, and only hire if you find a pro that matches your budget and schedule.",
   },
   {
-    q: "Will I get spammed with sales calls?",
-    a: "Never. Unlike lead-generation sites that sell your number to 10 companies, we keep your personal phone and email private. Pros review your request and send itemized quotes directly through your secure account.",
+    q: "Are contractors licensed, insured, and background-checked?",
+    a: "Yes. Trade specialists (electricians, plumbers, HVAC technicians) must hold active Texas state licenses and commercial liability insurance. All independent pros pass identity verification and criminal background screening before joining.",
   },
   {
     q: "How do payments work?",
-    a: "You agree on the price and pay your contractor directly via card, check, cash, or digital transfer when the job is completed to your satisfaction. We never hold your money or charge middleman checkout fees.",
+    a: "You agree on the price and pay your contractor directly after the job is completed to your satisfaction—via credit card, check, cash, or digital transfer. LocalHomeFix never holds your funds or charges middleman checkout surcharges.",
   },
   {
-    q: "What does the Verified badge mean?",
-    a: "Every verified contractor has submitted proof of state trade licensing, active business registration, and passed our background review before being cleared to receive customer requests.",
+    q: "What happens if I'm not satisfied or an issue arises?",
+    a: "Contractors provide clear itemized scopes and standard workmanship warranties on their repairs. If questions or discrepancies occur, our Austin support team is available to help mediate and ensure a fair resolution.",
   },
   {
-    q: "How quickly do contractors respond?",
-    a: "Most requests receive their first 2 to 3 itemized quotes within 15 to 45 minutes during business hours.",
+    q: "Can I get same-day or emergency repair services?",
+    a: "Yes. Many of our local pros offer emergency callouts for burst pipes, electrical shorts, and sudden AC failures. When posting your request, simply select 'Urgent / ASAP' to notify on-duty technicians immediately.",
+  },
+  {
+    q: "How quickly do contractors respond to requests?",
+    a: "Most standard repair requests receive their first 2 to 3 itemized quotes within 15 to 45 minutes during normal business hours.",
   },
   {
     q: "What if I'm not sure which trade to pick?",
@@ -29,7 +33,7 @@ export const faqs = [
   },
   {
     q: "Which areas do you currently serve?",
-    a: "We currently serve greater Austin, TX, including Round Rock, Cedar Park, Pflugerville, Westlake, Bee Cave, Buda, and Lakeway.",
+    a: "We currently serve greater Austin, TX, including Round Rock, Cedar Park, Pflugerville, Westlake, Bee Cave, Buda, Kyle, and Lakeway.",
   },
 ];
 
