@@ -5,7 +5,6 @@ import { ServiceTile } from "@/components/shared/service-tile";
 import { Button } from "@/components/ui/button";
 import { categories } from "@/Mockdata";
 
-import { SectionHeading } from "@/components/ui/section-heading";
 import { useAppSelector } from "@/redux/hooks";
 import { postJobHref } from "@/lib/role-access";
 
@@ -16,15 +15,7 @@ export function ServicesCatalog() {
   return (
     <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
-        <div className="mx-auto max-w-2xl text-center">
-          <SectionHeading
-            align="center"
-            eyebrow="Browse Pros"
-            title="All home services"
-            description="Pick a trade to browse reviewed pros nearby with verified work history and direct messaging."
-          />
-        </div>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
             <ServiceTile
               key={category.id}
