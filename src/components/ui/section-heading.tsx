@@ -19,14 +19,21 @@ export function SectionHeading({
     <div className={cn(align === "center" && "mx-auto max-w-4xl text-center", className)}>
       {eyebrow ? (
         <div className={cn("mb-3 sm:mb-3.5", align === "center" && "flex justify-center")}>
-          <p
+          <div
             className={cn(
-              "font-geist text-[13px] sm:text-[14px] font-medium tracking-normal",
-              light ? "text-white/75" : "text-[#757575]",
+              "inline-flex items-center gap-2 font-geist text-[13.5px] sm:text-[14px] font-medium tracking-tight",
+              light ? "text-white/90" : "text-title",
             )}
           >
-            {eyebrow}
-          </p>
+            <span
+              aria-hidden="true"
+              className={cn(
+                "inline-block h-2.5 w-2.5 shrink-0 rounded-full border-[1.75px]",
+                light ? "border-white" : "border-primary",
+              )}
+            />
+            <span>{eyebrow}</span>
+          </div>
         </div>
       ) : null}
       <h2

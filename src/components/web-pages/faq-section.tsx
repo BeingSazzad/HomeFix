@@ -25,10 +25,13 @@ export function FaqSection({
       <div className="container-site grid items-start gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
         {/* Left Column: Movers-style bold uppercase display & custom pill button */}
         <div className="lg:sticky lg:top-28">
-          <span className="inline-flex items-center gap-2 rounded-full border border-line/90 bg-white px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-title/80 shadow-2xs">
-            <span className="h-2 w-2 rounded-full bg-primary" />
-            Have questions?
-          </span>
+          <div className="inline-flex items-center gap-2 font-geist text-[13.5px] sm:text-[14px] font-medium tracking-tight text-title">
+            <span
+              aria-hidden="true"
+              className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border-[1.75px] border-primary"
+            />
+            <span>Have questions?</span>
+          </div>
 
           <h2 className="mt-5 font-display text-[34px] sm:text-[42px] md:text-[48px] font-medium uppercase leading-[1.08] tracking-[-0.05em] text-title">
             We’ve got<br />answers.

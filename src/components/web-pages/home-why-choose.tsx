@@ -31,14 +31,12 @@ export function HomeWhyChoose() {
           <div className="lg:col-span-6 flex flex-col justify-between">
             <div>
               {/* Eyebrow with blue ring indicator */}
-              <div className="inline-flex items-center gap-2">
-                <span className="relative flex h-2.5 w-2.5 items-center justify-center">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-primary/30 animate-ping" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full border border-primary bg-primary" />
-                </span>
-                <span className="font-display text-[13px] font-semibold tracking-wide text-title">
-                  Why Choose LocalHomeFix
-                </span>
+              <div className="inline-flex items-center gap-2 font-geist text-[13.5px] sm:text-[14px] font-medium tracking-tight text-title">
+                <span
+                  aria-hidden="true"
+                  className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border-[1.75px] border-primary"
+                />
+                <span>Why Choose LocalHomeFix</span>
               </div>
 
               {/* Headline */}

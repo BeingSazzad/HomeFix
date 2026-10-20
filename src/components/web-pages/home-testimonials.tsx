@@ -55,6 +55,7 @@ export function HomeTestimonials({
         <div className="mx-auto max-w-2xl text-center">
           <SectionHeading
             align="center"
+            eyebrow="Reviews & Stories"
             title="Home repair is about trust"
             description="Hear from homeowners we've helped. Their stories prove our promise of a stress-free experience."
           />

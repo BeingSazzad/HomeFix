@@ -19,9 +19,13 @@ export function HomeAbout() {
     <section className="relative overflow-x-clip bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site relative z-[1] grid items-center gap-10 pb-4 lg:grid-cols-2 lg:gap-14">
         <div>
-          <p className="font-geist text-[13px] sm:text-[14px] font-medium text-[#757575]">
-            Our Approach
-          </p>
+          <div className="inline-flex items-center gap-2 font-geist text-[13.5px] sm:text-[14px] font-medium tracking-tight text-title">
+            <span
+              aria-hidden="true"
+              className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border-[1.75px] border-primary"
+            />
+            <span>Our Approach</span>
+          </div>
 
           <h2 className="mt-3.5 font-geist text-[32px] font-medium leading-[1.15] tracking-[-1.5px] sm:text-[40px] sm:leading-[46px] sm:tracking-[-2px] md:text-[48px] md:leading-[54px] md:tracking-[-2.88px] !text-black">
             Quality Home Repairs, Without Extra Fees

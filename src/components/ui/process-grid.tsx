@@ -34,11 +34,13 @@ export function ProcessGrid({
           introClassName,
         )}
       >
-        <span className="inline-flex w-fit items-center gap-2 rounded-full bg-primary px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-white">
-          <span className="h-1.5 w-1.5 rounded-full bg-white/80" />
-          {badge}
-          <span className="h-1.5 w-1.5 rounded-full bg-white/80" />
-        </span>
+        <div className="inline-flex items-center gap-2 font-geist text-[13.5px] sm:text-[14px] font-medium tracking-tight text-title">
+          <span
+            aria-hidden="true"
+            className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border-[1.75px] border-primary"
+          />
+          <span>{badge}</span>
+        </div>
         <h2 className="mt-4 text-[28px] leading-tight text-title md:text-[34px]">{title}</h2>
         <p className="mt-3 text-[15px] leading-6 text-copy">{description}</p>
       </div>
