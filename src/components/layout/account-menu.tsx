@@ -6,15 +6,11 @@ import {
   Bookmark,
   Briefcase,
   ChevronDown,
-  ClipboardList,
-  CreditCard,
-  KeyRound,
   LayoutDashboard,
   LogOut,
   MessageSquare,
   PlusCircle,
   Repeat,
-  ShieldCheck,
   Star,
   UserRound,
 } from "lucide-react";
@@ -36,15 +32,16 @@ export function AccountMenu({ user }: { user: User }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
   const rootRef = useRef<HTMLDivElement>(null);
 
   const isPro = user.role === "pro";
   const profileHref = isPro ? "/pro/profile" : "/account/profile";
   const dashboardHref = isPro ? "/pro" : "/account";
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     function onPointer(event: MouseEvent) {

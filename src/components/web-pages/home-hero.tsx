@@ -5,19 +5,15 @@ import { useMemo, useState } from "react";
 import {
   ArrowUpRight,
   Briefcase,
-  ClipboardList,
   MapPin,
   Repeat,
   Search,
-  Star,
   TriangleAlert,
   Wrench,
   RotateCcw,
-  HelpCircle,
-  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Field, NativeSelect, TextArea, TextField } from "@/components/ui/field";
+import { NativeSelect, TextArea, TextField } from "@/components/ui/field";
 import { EmergencyBanner } from "@/components/shared/emergency-banner";
 import { photos } from "@/lib/media";
 import { categories } from "@/Mockdata";
@@ -27,12 +23,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { postJobHref } from "@/lib/role-access";
 import { cn } from "@/lib/cn";
 
-// DEMO DATA: Trust faces placeholder for social proof
-const trustFaces = [
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80",
-  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&h=80&q=80",
-];
+
 
 const EMERGENCY_PATTERNS = [
   "gas leak",
@@ -141,19 +132,6 @@ export function HomeHero() {
 
     setError("");
     const draft = buildDraft(problem.trim(), categorySlug, zip.trim());
-    setPreview(draft);
-    dispatch(saveDraft(draft));
-  }
-
-  function handleNotSure() {
-    setError("");
-    const fallbackCategory = "handyman";
-    setCategorySlug(fallbackCategory);
-    const draft = buildDraft(
-      problem.trim() || "General home inspection and repair needed",
-      fallbackCategory,
-      zip.trim() || "Local service area",
-    );
     setPreview(draft);
     dispatch(saveDraft(draft));
   }

@@ -3,12 +3,10 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
-  Calendar,
   Check,
   CheckCircle2,
   Clock,
   FileCheck2,
-  MapPin,
   ShieldCheck,
   Star,
   Truck,

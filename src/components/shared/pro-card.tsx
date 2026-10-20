@@ -31,7 +31,7 @@ export function ProCard({
   const user = useAppSelector((state) => state.auth.user);
   const isOwner = user?.role === "pro" && (pro.id === "pro-1" || pro.name.toLowerCase() === (user.name || "").toLowerCase());
   const saved = useAppSelector((state) => state.features.favorites.includes(pro.id));
-  const image = photos.services[pro.categorySlug];
+  const image = photos.services[pro.categorySlug] || photos.banner;
   const href = `/browse-pros/${pro.id}`;
 
   function onSave(event: React.MouseEvent) {

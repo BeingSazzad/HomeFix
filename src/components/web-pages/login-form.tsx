@@ -34,9 +34,11 @@ export function LoginForm() {
     }
   }, [user, nextPath, router]);
 
-  useEffect(() => {
-    if (roleParam === "pro" || roleParam === "homeowner") setRole(roleParam);
-  }, [roleParam]);
+  const [prevRoleParam, setPrevRoleParam] = useState(roleParam);
+  if (roleParam && (roleParam === "pro" || roleParam === "homeowner") && roleParam !== prevRoleParam) {
+    setPrevRoleParam(roleParam);
+    setRole(roleParam);
+  }
 
   function submit(event: React.FormEvent) {
     event.preventDefault();

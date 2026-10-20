@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Field, TextField } from "@/components/ui/field";
 import { startMembership } from "@/redux/slices/marketplaceSlice";
 import {
@@ -33,7 +32,7 @@ import { cn } from "@/lib/cn";
 
 export default function PricingPage() {
   const dispatch = useAppDispatch();
-  const { access, applicationStatus } = useRoleAccess();
+  const { applicationStatus } = useRoleAccess();
   const active = useAppSelector((state) => state.marketplace.membershipActive);
   const paused = useAppSelector((state) => state.features.membershipPaused);
   const cancelled = useAppSelector((state) => state.features.membershipCancelled);

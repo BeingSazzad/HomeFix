@@ -20,20 +20,19 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import { categories, getCategory, urgencyLabels } from "@/Mockdata";
+import { categories, getCategory } from "@/Mockdata";
 import { photos } from "@/lib/media";
 import { selectAllJobs } from "@/lib/marketplace";
 import { useRoleAccess } from "@/hooks/use-role-access";
 import { setLeadAction } from "@/redux/slices/featuresSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import type { Job } from "@/types";
 
 type TabKey = "all" | "saved" | "urgent" | "matches";
 type SortKey = "newest" | "budget-high" | "urgent";
 
 export default function ProJobsPage() {
   const dispatch = useAppDispatch();
-  const { access, membershipActive } = useRoleAccess();
+  const { access } = useRoleAccess();
   const leadActions = useAppSelector((state) => state.features.leadActions);
   const allJobsRaw = useAppSelector(selectAllJobs);
 

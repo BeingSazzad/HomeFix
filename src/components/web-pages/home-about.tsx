@@ -3,7 +3,6 @@
 import { Check, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
-import { cn } from "@/lib/cn";
 
 const points = [
   "Verified Professionals",

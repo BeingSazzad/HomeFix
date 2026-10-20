@@ -5,16 +5,13 @@ import { useState } from "react";
 import {
   ArrowUpRight,
   Building2,
-  Calendar,
   Check,
   CheckCircle2,
   Clock,
-  CreditCard,
   DollarSign,
   Eye,
   Image as ImageIcon,
   Info,
-  MapPin,
   Percent,
   Plus,
   ShieldCheck,
@@ -23,7 +20,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Field, NativeSelect, TextArea, TextField } from "@/components/ui/field";
 import { categories } from "@/Mockdata";
 import { updateUser } from "@/redux/slices/authSlice";

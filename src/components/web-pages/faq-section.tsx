@@ -35,7 +35,7 @@ export function FaqSection({
           </div>
 
           <h2 className="mt-4 font-display text-[32px] sm:text-[40px] md:text-[46px] font-medium uppercase leading-[1.08] tracking-[-0.04em] text-title">
-            Questions?<br />We’ve got answers.
+            {title}
           </h2>
 
           <p className="mt-4 max-w-sm font-sans text-[15px] sm:text-[16px] leading-relaxed text-[#757575]">

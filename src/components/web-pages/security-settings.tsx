@@ -9,12 +9,8 @@ import {
   CheckCircle2,
   KeyRound,
   Laptop,
-  Lock,
-  LogOut,
   Mail,
   Phone,
-  Shield,
-  ShieldCheck,
   Smartphone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,8 +25,6 @@ export function SecuritySettings({ role }: { role: "homeowner" | "pro" }) {
   const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
   const twoFactorOn = useAppSelector((state) => state.features.twoFactorOn);
-  const emailVerified = useAppSelector((state) => state.features.emailVerified);
-  const phoneVerified = useAppSelector((state) => state.features.phoneVerified);
 
   const [deleteArmed, setDeleteArmed] = useState(false);
   const [sessionsCleared, setSessionsCleared] = useState(false);

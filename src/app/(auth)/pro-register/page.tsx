@@ -56,9 +56,6 @@ export default function ProRegisterPage() {
     setForm((prev) => ({ ...prev, ...partial }));
   }
 
-  function validateStep() {
-    return "";
-  }
 
   function next() {
     setError("");

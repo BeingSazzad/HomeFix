@@ -11,10 +11,7 @@ import {
   MessageSquare,
   Send,
   Share2,
-  ShieldCheck,
   Star,
-  ThumbsUp,
-  User,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

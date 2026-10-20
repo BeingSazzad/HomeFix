@@ -19,12 +19,6 @@ export function JobCard({
   const category = getCategory(job.categorySlug);
   const image = photos.services[job.categorySlug];
   const isPro = viewer === "pro";
-  const meta = [
-    category?.name,
-    isPro ? `${job.city}, ${job.state}` : `${job.city}, ${job.state} ${job.zip}`,
-    urgencyLabels[job.urgency],
-    job.budget,
-  ].filter(Boolean);
 
   return (
     <Link

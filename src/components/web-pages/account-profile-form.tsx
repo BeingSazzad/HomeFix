@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Building2,
   Camera,
@@ -43,16 +43,13 @@ export function AccountProfileForm() {
   const dispatch = useAppDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
   const addresses = useAppSelector((state) => state.features.addresses);
-  const [avatar, setAvatar] = useState("");
+  const [customAvatar, setCustomAvatar] = useState<string | null>(null);
+  const avatar = customAvatar ?? user?.avatar ?? "";
   const [saved, setSaved] = useState(false);
   const [photoError, setPhotoError] = useState("");
   const [editingId, setEditingId] = useState<string | "new" | null>(null);
   const [draft, setDraft] = useState<AddressDraft>(emptyDraft());
   const [addrError, setAddrError] = useState("");
-
-  useEffect(() => {
-    if (user?.avatar) setAvatar(user.avatar);
-  }, [user?.avatar]);
 
   if (!user) return null;
   const current = user;
@@ -81,7 +78,7 @@ export function AccountProfileForm() {
     setPhotoError("");
     const reader = new FileReader();
     reader.onload = () => {
-      if (typeof reader.result === "string") setAvatar(reader.result);
+      if (typeof reader.result === "string") setCustomAvatar(reader.result);
     };
     reader.readAsDataURL(file);
   }
@@ -284,7 +281,7 @@ export function AccountProfileForm() {
                 {avatar && avatar !== current.avatar ? (
                   <button
                     type="button"
-                    onClick={() => setAvatar(current.avatar || "")}
+                    onClick={() => setCustomAvatar(null)}
                     className="text-xs font-medium text-muted hover:text-error transition"
                   >
                     Reset

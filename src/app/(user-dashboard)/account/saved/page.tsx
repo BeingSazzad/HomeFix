@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { ProCard } from "@/components/shared/pro-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Button } from "@/components/ui/button";

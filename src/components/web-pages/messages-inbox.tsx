@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -9,14 +9,11 @@ import {
   ChevronRight,
   ExternalLink,
   FileText,
-  Info,
   MapPin,
   Paperclip,
-  Phone,
   Search,
   Send,
   Star,
-  UserRound,
   Wrench,
   X,
 } from "lucide-react";
@@ -55,6 +52,34 @@ function previewLine(thread: MessageThread, role: "homeowner" | "pro") {
   return `${who}: ${thread.lastMessage}`;
 }
 
+function buildDirectThread(proId: string): MessageThread | null {
+  const pro = getPro(proId);
+  if (!pro) return null;
+  const threadId = `dm-${pro.id}`;
+  return {
+    id: threadId,
+    jobId: `dm:${pro.id}`,
+    jobTitle: `Chat with ${pro.businessName}`,
+    otherParty: pro.businessName,
+    proId: pro.id,
+    unread: 0,
+    lastMessage: "Say hello and share photos of the job.",
+    lastSender: "homeowner",
+    updatedAt: "Just now",
+    isDirect: true,
+    messages: [
+      {
+        id: `${threadId}-0`,
+        sender: "pro",
+        senderName: pro.businessName,
+        body: `Hi — thanks for reaching out to ${pro.businessName}. Share a few details or photos and I’ll follow up.`,
+        sentAt: "Just now",
+        read: true,
+      },
+    ],
+  };
+}
+
 export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pro" }) {
   const { access } = useRoleAccess();
   const searchParams = useSearchParams();
@@ -63,59 +88,52 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
   const [searchQuery, setSearchQuery] = useState("");
   const [showProDetails, setShowProDetails] = useState(false);
 
-  const [threads, setThreads] = useState(() =>
-    role === "pro"
-      ? seedThreads.map((thread) => ({
-          ...thread,
-          otherParty: "Maya Chen",
-          unread: thread.lastSender === "homeowner" ? Math.max(thread.unread, 1) : 0,
-        }))
-      : seedThreads,
-  );
-  const [activeId, setActiveId] = useState(threads[0]?.id ?? "");
+  const [threads, setThreads] = useState(() => {
+    let list =
+      role === "pro"
+        ? seedThreads.map((thread) => ({
+            ...thread,
+            otherParty: "Maya Chen",
+            unread: thread.lastSender === "homeowner" ? Math.max(thread.unread, 1) : 0,
+          }))
+        : seedThreads;
+
+    if (role === "homeowner" && dmProId) {
+      const dt = buildDirectThread(dmProId);
+      if (dt && !list.some((t) => t.id === dt.id)) {
+        list = [dt, ...list];
+      }
+    }
+    return list;
+  });
+
+  const [activeId, setActiveId] = useState(() => {
+    if (role === "homeowner" && dmProId) {
+      return `dm-${dmProId}`;
+    }
+    return threads[0]?.id ?? "";
+  });
   const [draft, setDraft] = useState("");
   const [file, setFile] = useState<PendingFile | null>(null);
   const [fileError, setFileError] = useState("");
-  const [mobileChat, setMobileChat] = useState(false);
+  const [mobileChat, setMobileChat] = useState(() => Boolean(role === "homeowner" && dmProId));
   const jobBase = role === "pro" ? "/pro/jobs" : "/account/jobs";
   const mySender = role === "pro" ? "pro" : "homeowner";
   const myName = role === "pro" ? "Ortega Plumbing" : "Maya Chen";
   const canSend = role === "homeowner" ? access.canHomeownerMessage : access.canProMessage;
 
-  useEffect(() => {
-    if (role !== "homeowner" || !dmProId) return;
-    const pro = getPro(dmProId);
-    if (!pro) return;
-    const threadId = `dm-${pro.id}`;
-    setThreads((list) => {
-      if (list.some((t) => t.id === threadId)) return list;
-      const thread: MessageThread = {
-        id: threadId,
-        jobId: `dm:${pro.id}`,
-        jobTitle: `Chat with ${pro.businessName}`,
-        otherParty: pro.businessName,
-        proId: pro.id,
-        unread: 0,
-        lastMessage: "Say hello and share photos of the job.",
-        lastSender: "homeowner",
-        updatedAt: "Just now",
-        isDirect: true,
-        messages: [
-          {
-            id: `${threadId}-0`,
-            sender: "pro",
-            senderName: pro.businessName,
-            body: `Hi — thanks for reaching out to ${pro.businessName}. Share a few details or photos and I’ll follow up.`,
-            sentAt: "Just now",
-            read: true,
-          },
-        ],
-      };
-      return [thread, ...list];
-    });
-    setActiveId(threadId);
-    setMobileChat(true);
-  }, [dmProId, role]);
+  const [prevDmProId, setPrevDmProId] = useState(dmProId);
+  if (dmProId && dmProId !== prevDmProId && role === "homeowner") {
+    setPrevDmProId(dmProId);
+    const dt = buildDirectThread(dmProId);
+    if (dt) {
+      if (!threads.some((t) => t.id === dt.id)) {
+        setThreads((list) => [dt, ...list]);
+      }
+      setActiveId(dt.id);
+      setMobileChat(true);
+    }
+  }
 
   const active = useMemo(
     () => threads.find((thread) => thread.id === activeId) ?? null,

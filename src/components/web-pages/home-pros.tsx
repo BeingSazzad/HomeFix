@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ export function HomePros() {
   const scrollStart = useRef(0);
   const hasDragged = useRef(false);
 
-  const updateScrollState = () => {
+  const updateScrollState = useCallback(() => {
     const el = scroller.current;
     if (!el) return;
     const maxScroll = el.scrollWidth - el.clientWidth;
@@ -29,13 +29,13 @@ export function HomePros() {
     const itemWidth = 310; // 290px card + 20px gap
     const index = Math.round(el.scrollLeft / itemWidth);
     setActiveIndex(Math.max(0, Math.min(index, list.length - 1)));
-  };
+  }, [list.length]);
 
   useEffect(() => {
     updateScrollState();
     window.addEventListener("resize", updateScrollState);
     return () => window.removeEventListener("resize", updateScrollState);
-  }, [list.length]);
+  }, [updateScrollState]);
 
   // Window-level mousemove and mouseup so dragging is completely fluid anywhere on screen
   useEffect(() => {

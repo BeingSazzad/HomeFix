@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   AlertCircle,
@@ -14,10 +14,8 @@ import {
   CheckCircle2,
   Clock,
   DollarSign,
-  FileCheck2,
   Home,
   ImagePlus,
-  Info,
   MapPin,
   PackageCheck,
   Send,
@@ -178,6 +176,10 @@ export default function PostJobPage() {
   );
 }
 
+function createJobId() {
+  return `job-local-${Date.now()}`;
+}
+
 function BookingFlow() {
   const searchParams = useSearchParams();
   const inviteId = searchParams.get("invite");
@@ -187,7 +189,6 @@ function BookingFlow() {
   const user = useAppSelector((state) => state.auth.user);
   const addresses = useAppSelector((state) => state.features.addresses);
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
 
   // Flow Step State (1 to 5)
@@ -280,7 +281,7 @@ function BookingFlow() {
       return;
     }
 
-    const jobId = `job-local-${Date.now()}`;
+    const jobId = createJobId();
     const materialsLabel =
       materialsStatus === "homeowner_supplies"
         ? "Homeowner has parts on-site"

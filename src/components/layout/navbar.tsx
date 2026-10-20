@@ -8,7 +8,6 @@ import { AccountMenu } from "@/components/layout/account-menu";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/cn";
-import { signupHref } from "@/lib/role-access";
 import { useAppSelector } from "@/redux/hooks";
 
 const homeownerLinks = [

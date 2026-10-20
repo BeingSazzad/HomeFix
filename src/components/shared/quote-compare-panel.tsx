@@ -7,7 +7,6 @@ import { useAppDispatch } from "@/redux/hooks";
 import {
   hireQuote,
   rejectSiblingOffers,
-  confirmBooking,
 } from "@/redux/slices/marketplaceSlice";
 import { addNotification, setJobStatus } from "@/redux/slices/featuresSlice";
 import type { Quote } from "@/types";
@@ -62,15 +61,6 @@ export function QuoteComparePanel({
   }
 
   if (!quotes.length) return null;
-
-  const rows: { label: string; key: keyof Quote | string }[] = [
-    { label: "Price type", key: "priceType" },
-    { label: "Amount",     key: "amount" },
-    { label: "Timeline",   key: "estimatedDuration" },
-    { label: "Availability", key: "availability" },
-    { label: "Offer expires", key: "expiresAt" },
-    { label: "Materials",  key: "materialsIncluded" },
-  ];
 
   return (
     /* Mobile: bottom sheet | Desktop: centered modal */

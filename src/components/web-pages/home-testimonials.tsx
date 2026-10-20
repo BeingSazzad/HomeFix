@@ -70,6 +70,7 @@ export function HomeTestimonials({
               <div>
                 {item.photo ? (
                   <div className="overflow-hidden rounded-[18px] bg-smoke">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.photo}
                       alt={item.name}
@@ -96,7 +97,7 @@ export function HomeTestimonials({
                 </div>
 
                 <p className="mt-3.5 font-['Inter_Display',Inter,sans-serif] text-[15px] sm:text-[15.5px] leading-[25px] tracking-[-0.15px] text-[#4a5568]">
-                  "{item.body}"
+                  &ldquo;{item.body}&rdquo;
                 </p>
               </div>
 
