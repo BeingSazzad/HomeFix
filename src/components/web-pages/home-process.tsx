@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList, MessagesSquare, Search, Wallet, ArrowRight } from "lucide-react";
+import { ClipboardList, FileCheck2, Star, Wallet, ArrowRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 
@@ -16,14 +16,14 @@ const steps = [
     step: "02",
     title: "Receive local bids",
     text: "Verified Austin contractors review your details and send clear, itemized price estimates.",
-    icon: Search,
+    icon: FileCheck2,
     tag: "No Cold Calls",
   },
   {
     step: "03",
     title: "Compare clear bids",
     text: "Inspect labor, parts, estimated arrival times, and verified neighbor reviews in one place.",
-    icon: MessagesSquare,
+    icon: Star,
     tag: "Zero Pressure",
   },
   {
