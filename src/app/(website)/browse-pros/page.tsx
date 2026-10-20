@@ -12,7 +12,7 @@ export default function BrowseProsPage() {
         description="Cleared pros only. Browse free."
         image={photos.banners.pros}
       />
-      <Suspense fallback={<div className="container-site py-16 text-sm text-muted">Loading directory…</div>}>
+      <Suspense fallback={<div className="container-site py-16 text-sm text-muted">Loading pros…</div>}>
         <BrowseProsClient />
       </Suspense>
     </>

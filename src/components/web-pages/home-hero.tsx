@@ -180,7 +180,7 @@ export function HomeHero() {
 
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <Button href="/browse-pros" variant="white" size="lg" className="font-medium text-sm">
-                Browse Directory ↗
+                Browse Pros ↗
               </Button>
               <Button href="/how-it-works" variant="ghost" size="lg" className="text-white hover:bg-white/10 border-white/30 text-sm">
                 How it works

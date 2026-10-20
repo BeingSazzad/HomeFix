@@ -83,7 +83,7 @@ export const plans: PlanItem[] = [
     features: [
       { text: "Keep 100% of your earnings ($0 job cut)", icon: "percent" },
       { text: "Quote unlimited Austin homeowner requests", icon: "briefcase" },
-      { text: "Verified Austin Pro badge on directory", icon: "shield" },
+      { text: "Verified Austin Pro badge on pro listings", icon: "shield" },
       { text: "Direct homeowner chat & scheduling", icon: "message" },
       { text: "Zero bidding fees or pay-per-lead costs", icon: "zap" },
     ],
@@ -100,7 +100,7 @@ export const plans: PlanItem[] = [
     featured: false,
     features: [
       { text: "All Pro Monthly features included", icon: "check" },
-      { text: "Priority search placement in directory", icon: "award" },
+      { text: "Priority search placement in pro search", icon: "award" },
       { text: "Featured contractor profile badge", icon: "sparkles" },
       { text: "Dedicated local Austin support line", icon: "phone" },
       { text: "Quarterly job request analytics", icon: "trending" },

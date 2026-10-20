@@ -492,7 +492,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 Credentials & Verification
               </h2>
               <p className="mt-1 text-sm text-[#757575]">
-                Screened and audited by LocalHomeFix before active directory approval
+                Screened and audited by LocalHomeFix before pro approval
               </p>
             </div>
 

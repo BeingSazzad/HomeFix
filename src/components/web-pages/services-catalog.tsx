@@ -16,7 +16,7 @@ export function ServicesCatalog() {
         <div className="mx-auto max-w-2xl text-center">
           <SectionHeading
             align="center"
-            eyebrow="Directory"
+            eyebrow="Browse Pros"
             title="All home services"
             description="Pick a trade to browse reviewed pros nearby with transparent pricing and verified licenses."
           />
