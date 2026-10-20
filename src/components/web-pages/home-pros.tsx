@@ -58,15 +58,15 @@ export function HomePros() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 pb-2">
           <SectionHeading
             align="left"
-            eyebrow="Verified Network"
-            title="Reviewed local pros ready for work"
-            description="Explore background-checked specialists across Austin. Free to browse without creating an account."
+            eyebrow="Popular in Austin"
+            title="Popular local pros ready to help"
+            description="A curated showcase of highly reviewed, background-checked specialists across Greater Austin. Compare neighbor ratings, view past work, or explore the full directory."
           />
 
           {/* Ergonomic Header Navigation Cluster: Zero Card Overlap */}
           <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-end">
             <span className="font-sans text-xs font-medium text-[#757575] mr-1.5">
-              <span className="font-semibold text-title">{activeIndex + 1}</span> of {list.length} pros
+              <span className="font-semibold text-title">{activeIndex + 1}</span> of {list.length} featured
             </span>
             <button
               type="button"
