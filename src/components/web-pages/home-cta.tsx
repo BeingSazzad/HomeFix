@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles, CheckCircle2 } from "lucide-react";
+import { Clock, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
 
@@ -18,7 +18,7 @@ export function HomeCta() {
 
           <div className="relative z-10 mx-auto max-w-2xl">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-medium text-white backdrop-blur-md">
-              <Sparkles className="h-3.5 w-3.5 text-accent" />
+              <Clock className="h-3.5 w-3.5 text-blue-300" />
               Post your job in under 2 minutes
             </span>
 
