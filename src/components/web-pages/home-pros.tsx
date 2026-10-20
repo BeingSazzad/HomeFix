@@ -58,9 +58,9 @@ export function HomePros() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 pb-2">
           <SectionHeading
             align="left"
-            eyebrow="Popular in Austin"
-            title="Popular local pros ready to help"
-            description="A curated showcase of highly reviewed, background-checked specialists across Greater Austin. Compare neighbor ratings, view past work, or explore the full directory."
+            eyebrow="Popular Near You"
+            title="Top-rated pros ready to help"
+            description="A curated showcase of background-checked specialists in your area. Compare neighbor ratings, view past work, or explore the full directory."
           />
 
           {/* Ergonomic Header Navigation Cluster: Zero Card Overlap */}
