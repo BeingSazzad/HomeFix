@@ -10,10 +10,7 @@ import {
   Zap,
   DollarSign,
   ArrowRight,
-  Lock,
-  Users,
   Star,
-  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageBanner } from "@/components/layout/page-banner";
@@ -30,8 +27,8 @@ export function AboutContent() {
       {/* ========================================================================= */}
       <PageBanner
         eyebrow="About"
-        title="About LocalHomeFix"
-        description="Austin's direct home services platform connecting homeowners with vetted, licensed trade pros with zero middleman markup."
+        title="About Us"
+        description="Connecting Austin homeowners with trusted, verified local trade professionals."
         image={photos.banners.about}
         breadcrumbs={[
           { label: "Home", href: "/" },
@@ -282,24 +279,7 @@ export function AboutContent() {
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                {/* Overlaid Bottom Card */}
-                <div className="absolute bottom-5 left-5 right-5 rounded-[18px] bg-title/90 p-4 text-white backdrop-blur-md border border-white/10">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-geist text-[15px] font-medium text-white">
-                        Austin Pro Network
-                      </p>
-                      <p className="text-[12px] text-white/80">
-                        Plumbing • Electrical • HVAC • Roofing
-                      </p>
-                    </div>
-                    <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-white">
-                      <Sparkles className="h-4 w-4" />
-                    </span>
-                  </div>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
             </div>
 
@@ -355,73 +335,8 @@ export function AboutContent() {
         </div>
       </section>
 
-
       {/* ========================================================================= */}
-      {/* SECTION 5: OUR CORE PILLARS (Clean Bento Grid)                           */}
-      {/* ========================================================================= */}
-      <section className="py-14 sm:py-20 bg-surface/50 border-b border-line/60">
-        <div className="container-site">
-          <div className="text-center max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 font-geist text-[13.5px] sm:text-[14px] font-medium tracking-tight text-title">
-              <span
-                aria-hidden="true"
-                className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border-[1.75px] border-primary"
-              />
-              <span>How We Protect You</span>
-            </div>
-            <h2 className="mt-3.5 font-geist text-[30px] sm:text-[38px] md:text-[42px] font-medium leading-[1.14] tracking-[-1.5px] sm:tracking-[-2px] !text-black">
-              Our Guiding <span className="text-primary font-medium">Principles</span>
-            </h2>
-            <p className="mt-3 font-['Inter_Display',Inter,sans-serif] text-[15px] sm:text-[16px] text-[#757575]">
-              Built with purpose to fix what has been broken in the home maintenance industry for decades.
-            </p>
-          </div>
-
-          <div className="mt-10 sm:mt-12 grid gap-6 md:grid-cols-3">
-            {/* Pillar 1 */}
-            <div className="rounded-[24px] border border-line/80 bg-white p-7 shadow-xs transition-all hover:shadow-sm">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Lock className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 font-geist text-[18px] font-medium text-title tracking-tight">
-                Strict homeowner privacy
-              </h3>
-              <p className="mt-2.5 font-['Inter_Display',Inter,sans-serif] text-[14px] leading-[1.65] text-[#666]">
-                Your phone number and physical address remain completely hidden until you choose to award a work order. No robo-call aggregators or aggressive sales calls.
-              </p>
-            </div>
-
-            {/* Pillar 2 */}
-            <div className="rounded-[24px] border border-line/80 bg-white p-7 shadow-xs transition-all hover:shadow-sm">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Users className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 font-geist text-[18px] font-medium text-title tracking-tight">
-                Fair pro economics
-              </h3>
-              <p className="mt-2.5 font-['Inter_Display',Inter,sans-serif] text-[14px] leading-[1.65] text-[#666]">
-                Independent contractors shouldn&apos;t have to pay $80 for shared leads or lose 20% of their hard-earned labor to middlemen. We believe in fair, flat memberships.
-              </p>
-            </div>
-
-            {/* Pillar 3 */}
-            <div className="rounded-[24px] border border-line/80 bg-white p-7 shadow-xs transition-all hover:shadow-sm">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <ShieldCheck className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 font-geist text-[18px] font-medium text-title tracking-tight">
-                $1,000 Protection guarantee
-              </h3>
-              <p className="mt-2.5 font-['Inter_Display',Inter,sans-serif] text-[14px] leading-[1.65] text-[#666]">
-                Every repair completed on LocalHomeFix is backed by our direct property resolution support. If craftsmanship does not meet standard trade codes, we step in.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* SECTION 6: CALL TO ACTION (Global Design System Typography)               */}
+      {/* SECTION 4: CALL TO ACTION (Global Design System Typography)               */}
       {/* ========================================================================= */}
       <section className="py-14 sm:py-20 bg-title text-white relative overflow-hidden">
         {/* Background Glow */}

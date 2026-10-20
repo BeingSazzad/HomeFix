@@ -21,8 +21,8 @@ export default function BrowseJobsPage() {
     <>
       <PageBanner
         eyebrow="For professionals"
-        title="Job board"
-        description="Private requests. Quote after clearance and membership."
+        title="Job Board"
+        description="Direct repair requests from Austin homeowners. Join as a verified pro to submit quotes."
         image={photos.banners.jobs}
       />
       <section className="bg-surface py-10 md:py-12">

@@ -7,8 +7,8 @@ export default function ServicesPage() {
     <>
       <PageBanner
         eyebrow="Services"
-        title="Our services"
-        description="Nine trades. Browse free — no account needed."
+        title="Our Services"
+        description="Explore specialized residential trade services available across Austin."
         image={photos.banners.pros}
       />
       <ServicesCatalog />

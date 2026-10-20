@@ -38,7 +38,7 @@ export default function ContactPage() {
       <PageBanner
         eyebrow="Contact"
         title="Contact Us"
-        description="No account needed. We reply by email."
+        description="Have questions or need assistance? Reach out to our Austin support team anytime."
         image={photos.banners.contact}
         breadcrumbs={[
           { label: "Home", href: "/" },

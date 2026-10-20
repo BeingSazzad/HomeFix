@@ -8,7 +8,7 @@ export default function FaqPage() {
       <PageBanner eyebrow="Help" title="FAQ" image={photos.banners.how} />
       <FaqSection
         title="Common questions"
-        description="Still unsure? Talk to our team — no account needed to write us."
+        description="Find answers to common questions about booking, quoting, and verified trade specialists."
         className="bg-white"
       />
     </>

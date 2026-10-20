@@ -9,7 +9,7 @@ export default function BrowseProsPage() {
       <PageBanner
         eyebrow="Find a Pro"
         title="Browse professionals"
-        description="Cleared pros only. Browse free."
+        description="Connect directly with verified, licensed trade professionals across Austin."
         image={photos.banners.pros}
       />
       <Suspense fallback={<div className="container-site py-16 text-sm text-muted">Loading pros…</div>}>

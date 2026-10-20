@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 import {
-  AlertCircle,
   ArrowRight,
-  Calendar,
   Check,
   CheckCircle2,
   Clock,
   CreditCard,
-  Download,
-  Flame,
   Pause,
   Play,
   Printer,
@@ -22,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Field, TextField } from "@/components/ui/field";
-import { ProAccessStrip } from "@/components/shared/pro-access-strip";
 import { startMembership } from "@/redux/slices/marketplaceSlice";
 import {
   setMembershipCancelled,
@@ -204,89 +199,45 @@ export default function PricingPage() {
         </div>
       )}
 
-      {/* Pro Verification Gate Strip */}
-      <ProAccessStrip />
-
       {/* ============================================================ */}
       {/* 2. CURRENT ACTIVE PLAN CARD                                  */}
       {/* ============================================================ */}
-      <Card className="rounded-[22px] border border-line/80 bg-white p-6 sm:p-7 shadow-xs relative overflow-hidden">
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-smoke px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-                Current Package
+      <Card className="rounded-[22px] border border-line/80 bg-white p-6 sm:p-7 shadow-xs">
+        {/* Card Header Status & Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line/60 pb-5">
+          <div className="flex items-center gap-2.5">
+            <span className="font-display text-xs font-semibold uppercase tracking-wider text-muted">
+              Current Plan
+            </span>
+            <span className="text-muted/40">·</span>
+            {isCancelled ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-700 border border-red-200">
+                Cancelled
               </span>
-              {isCancelled ? (
-                <Badge tone="orange" className="border border-red-300">
-                  Cancelled
-                </Badge>
-              ) : isPaused ? (
-                <Badge tone="amber" className="border border-amber-300">
-                  Paused
-                </Badge>
-              ) : isPaidActive ? (
-                <Badge tone="blue" className="border border-primary/30">
-                  Pro {currentPlan === "annual" ? "Annual" : "Monthly"}
-                </Badge>
-              ) : (
-                <Badge tone="green" className="border border-emerald-300">
-                  <Flame className="h-3 w-3 text-emerald-600 fill-emerald-600 mr-1" />
-                  3-Month Free Trial Active
-                </Badge>
-              )}
-            </div>
-
-            <h2 className="font-display text-[26px] sm:text-[30px] font-bold text-title tracking-tight leading-tight">
-              {isCancelled
-                ? "Subscription Inactive"
-                : isPaused
-                ? "Subscription On Hold"
-                : isPaidActive
-                ? currentPlan === "annual"
-                  ? "Pro Annual Subscription"
-                  : "Pro Monthly Subscription"
-                : "Pro 3-Month Free Trial"}
-            </h2>
-
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-4xl sm:text-5xl font-bold text-title tracking-tight">
-                {isCancelled
-                  ? "$19.99"
-                  : isPaidActive
-                  ? currentPlan === "annual"
-                    ? "$14.99"
-                    : "$19.99"
-                  : "$0.00"}
+            ) : isPaused ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 border border-amber-200">
+                <Pause className="h-3 w-3" />
+                Paused
               </span>
-              <span className="text-sm font-medium text-muted">
-                {isCancelled
-                  ? "/ month"
-                  : isPaidActive
-                  ? currentPlan === "annual"
-                    ? "/ month ($179.88 billed yearly)"
-                    : "/ month"
-                  : `/ for next ${trialDaysLeft} days`}
+            ) : isPaidActive ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary border border-primary/20">
+                <Check className="h-3 w-3" />
+                Pro {currentPlan === "annual" ? "Annual" : "Monthly"} Active
               </span>
-            </div>
-
-            <p className="text-sm text-copy leading-relaxed max-w-xl">
-              {isCancelled
-                ? "Your subscription has been cancelled. Re-activate anytime to begin quoting jobs again."
-                : isPaused
-                ? "Your subscription is currently paused. Homeowner contact details and new quoting are locked until you resume."
-                : isPaidActive
-                ? `Your paid subscription is in good standing. Next auto-renewal is scheduled for ${currentRenewalDate}. You maintain full directory visibility and direct quoting rights.`
-                : `You are currently enjoying the 3-Month Free Pro Trial with full privileges. Your trial ends on ${currentRenewalDate}. When the trial concludes, your account will transition to your chosen plan with zero interruption.`}
-            </p>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 border border-emerald-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                90-Day Free Trial
+              </span>
+            )}
           </div>
 
           {/* Quick Management Buttons */}
-          <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0">
+          <div className="flex items-center gap-2">
             {!active || cancelled ? (
-              <Button type="button" onClick={handleStartTrial} className="shadow-xs font-semibold">
-                <Play className="h-4 w-4 mr-1.5" />
-                Start 3-Month Free Trial
+              <Button type="button" size="sm" onClick={handleStartTrial} className="h-8 font-semibold text-xs">
+                <Play className="h-3.5 w-3.5 mr-1.5" />
+                Start Free Trial
               </Button>
             ) : (
               <>
@@ -295,17 +246,17 @@ export default function PricingPage() {
                   variant="ghost"
                   size="sm"
                   onClick={handleTogglePause}
-                  className="rounded-xl border border-line font-medium text-xs justify-start"
+                  className="h-8 rounded-lg border border-line text-xs font-medium text-copy hover:text-title hover:bg-smoke"
                 >
                   {paused ? (
                     <>
                       <Play className="h-3.5 w-3.5 mr-1.5 text-emerald-600" />
-                      Resume Subscription
+                      Resume Plan
                     </>
                   ) : (
                     <>
                       <Pause className="h-3.5 w-3.5 mr-1.5 text-muted" />
-                      Pause Membership
+                      Pause Plan
                     </>
                   )}
                 </Button>
@@ -315,22 +266,78 @@ export default function PricingPage() {
                   variant="ghost"
                   size="sm"
                   onClick={handleCancelAutoRenew}
-                  className="rounded-xl text-muted hover:text-error text-xs justify-start"
+                  className="h-8 rounded-lg text-xs font-medium text-muted hover:text-error hover:bg-red-50"
                 >
-                  Cancel Auto-Renewal
+                  Cancel Renewal
                 </Button>
               </>
             )}
           </div>
         </div>
 
+        {/* Plan Details & Pricing */}
+        <div className="mt-5 flex flex-col md:flex-row md:items-baseline justify-between gap-4">
+          <div className="space-y-1.5">
+            <h2 className="font-display text-2xl sm:text-[26px] font-bold text-title tracking-tight leading-tight">
+              {isCancelled
+                ? "Subscription Inactive"
+                : isPaused
+                ? "Subscription Paused"
+                : isPaidActive
+                ? currentPlan === "annual"
+                  ? "Pro Annual"
+                  : "Pro Monthly"
+                : "Pro 3-Month Free Trial"}
+            </h2>
+            <p className="text-xs sm:text-sm text-copy leading-relaxed max-w-xl">
+              {isCancelled
+                ? "Your subscription is cancelled. Reactivate anytime to submit quotes and contact homeowners."
+                : isPaused
+                ? "Your subscription is temporarily paused. Resume anytime to unlock direct contact and quoting privileges."
+                : isPaidActive
+                ? `Your Pro subscription is in good standing. Next auto-renewal is scheduled for ${currentRenewalDate}.`
+                : "Includes full directory listing, unlimited quote submissions, direct homeowner messaging, and zero commission fees."}
+            </p>
+          </div>
+
+          <div className="md:text-right shrink-0">
+            <div className="flex items-baseline md:justify-end gap-1.5">
+              <span className="font-display text-3xl sm:text-4xl font-bold text-title tracking-tight">
+                {isCancelled
+                  ? "$19.99"
+                  : isPaidActive
+                  ? currentPlan === "annual"
+                    ? "$14.99"
+                    : "$19.99"
+                  : "$0.00"}
+              </span>
+              <span className="text-xs sm:text-sm font-medium text-muted">
+                {isCancelled
+                  ? "/ month"
+                  : isPaidActive
+                  ? currentPlan === "annual"
+                    ? "/ mo ($179.88/yr)"
+                    : "/ month"
+                  : "/ month"}
+              </span>
+            </div>
+            <p className="mt-0.5 text-[11px] text-muted">
+              {isTrialActive
+                ? `Free through ${currentRenewalDate}`
+                : isPaidActive
+                ? `Renews on ${currentRenewalDate}`
+                : "No active billing"}
+            </p>
+          </div>
+        </div>
+
         {/* Trial Days Progress Bar */}
         {isTrialActive && (
-          <div className="mt-6 pt-5 border-t border-line/70">
+          <div className="mt-6 pt-5 border-t border-line/60">
             <div className="flex items-center justify-between text-xs font-semibold text-title mb-2">
               <span className="flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5 text-primary" />
-                Free Trial Progress: Day {90 - trialDaysLeft} of 90
+                Trial Progress · Day {90 - trialDaysLeft} of 90
               </span>
               <span className="text-primary font-bold">{trialDaysLeft} days remaining</span>
             </div>
@@ -341,47 +348,25 @@ export default function PricingPage() {
               />
             </div>
             <p className="mt-2 text-xs text-muted">
-              Auto-renewal date: <strong className="text-title">{currentRenewalDate}</strong>. You will not be charged a dime before this date.
+              Auto-renewal date: <strong className="text-title">{currentRenewalDate}</strong> · No payment will be collected before this date.
             </p>
           </div>
         )}
-
-        {/* In-Plan Perks Checklist */}
-        <div className="mt-6 pt-5 border-t border-line/70 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <div className="flex items-center gap-2 text-copy">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-            <span><strong>Unlimited Quoting:</strong> Bid on all homeowner repair requests</span>
-          </div>
-          <div className="flex items-center gap-2 text-copy">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-            <span><strong>Zero Commission:</strong> Keep 100% of your earnings ($0 fee)</span>
-          </div>
-          <div className="flex items-center gap-2 text-copy">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-            <span><strong>Direct Contact:</strong> Private 2-way homeowner messaging &amp; phone</span>
-          </div>
-          <div className="flex items-center gap-2 text-copy">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-            <span><strong>Verified Pro Shield:</strong> Priority trust badge on directory search</span>
-          </div>
-        </div>
       </Card>
 
       {/* ============================================================ */}
-      {/* 3. PLAN SELECTION & UPGRADE PATH ("Paid-e kibhabe jabe")    */}
+      {/* 3. PLAN SELECTION & UPGRADE PATH                             */}
       {/* ============================================================ */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="font-display text-[18px] sm:text-[20px] font-semibold text-title tracking-tight">
-              {isTrialActive ? "Choose Renewal Package / Upgrade Plan" : "Available Subscription Tiers"}
-            </h2>
-            <p className="text-xs text-muted">
-              {isTrialActive
-                ? "Select how you'd like to be billed when your free trial ends on Jan 10, 2027, or switch immediately."
-                : "Switch your billing frequency anytime. Changes take effect on your next cycle."}
-            </p>
-          </div>
+        <div>
+          <h2 className="font-display text-[18px] sm:text-[20px] font-semibold text-title tracking-tight">
+            {isTrialActive ? "Renewal Plan Selection" : "Available Subscription Plans"}
+          </h2>
+          <p className="text-xs text-muted">
+            {isTrialActive
+              ? `Choose how you'd like to be billed when your free trial concludes on ${currentRenewalDate}.`
+              : "Switch your billing frequency anytime. Changes take effect on your next cycle."}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -427,7 +412,7 @@ export default function PricingPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-3.5 w-3.5 text-primary shrink-0" />
-                  <span>Featured Pro Profile badge</span>
+                  <span>Featured Pro Profile trust badge</span>
                 </li>
               </ul>
             </div>
@@ -446,7 +431,7 @@ export default function PricingPage() {
                 }}
                 className="font-semibold text-xs"
               >
-                {currentPlan === "annual" ? "Current Preference ✓" : "Set as Renewal Plan"}
+                {currentPlan === "annual" ? "Renewal Plan Selected ✓" : "Select Annual Plan"}
               </Button>
             </div>
           </div>
@@ -505,7 +490,7 @@ export default function PricingPage() {
                 }}
                 className="font-semibold text-xs border border-line/80"
               >
-                {currentPlan === "monthly" ? "Current Preference ✓" : "Set as Renewal Plan"}
+                {currentPlan === "monthly" ? "Renewal Plan Selected ✓" : "Select Monthly Plan"}
               </Button>
             </div>
           </div>
