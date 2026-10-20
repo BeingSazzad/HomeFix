@@ -84,7 +84,7 @@ export function RequestDetail({
     () =>
       [...quotes].sort((a, b) => {
         const rank = (s: string) =>
-          s === "accepted" ? 0 : s === "countered" ? 1 : s === "pending" ? 2 : 3;
+          s === "accepted" ? 0 : s === "pending" ? 1 : 2;
         return rank(a.status) - rank(b.status) || a.amount - b.amount;
       }),
     [quotes],

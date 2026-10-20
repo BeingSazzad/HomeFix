@@ -2,13 +2,24 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import {
+  AlertCircle,
+  Calendar,
+  Check,
+  CheckCircle2,
+  Clock,
+  Package,
+  Shield,
+  ShieldCheck,
+  Star,
+  X,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Field, TextArea, TextField } from "@/components/ui/field";
+import { Field, TextField } from "@/components/ui/field";
 import { getPro, offerStatusLabels } from "@/Mockdata";
 import {
   confirmBooking,
-  counterOffer,
   hireQuote,
   rejectSiblingOffers,
   setOfferStatus,
@@ -16,12 +27,13 @@ import {
 import { addNotification, setJobStatus } from "@/redux/slices/featuresSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import type { Quote } from "@/types";
+import { cn } from "@/lib/cn";
 
-const priceLabels = {
-  fixed: "Fixed",
+const priceLabels: Record<string, string> = {
+  fixed: "Fixed Price",
   estimate: "Estimate",
   hourly: "Hourly",
-  time_and_materials: "Time & materials",
+  time_and_materials: "Time & Materials",
 };
 
 export function QuoteCard({
@@ -43,9 +55,6 @@ export function QuoteCard({
   const pro = getPro(quote.proId);
   const hired = hiredId === quote.id;
   const closed = quote.status === "rejected" || quote.status === "withdrawn" || quote.status === "expired";
-  const [showCounter, setShowCounter] = useState(false);
-  const [counterAmt, setCounterAmt] = useState(String(Math.round(quote.amount * 0.9)));
-  const [counterNote, setCounterNote] = useState("");
   const [showBooking, setShowBooking] = useState(false);
   const [bookDate, setBookDate] = useState("");
   const [bookTime, setBookTime] = useState("09:00");
@@ -76,43 +85,17 @@ export function QuoteCard({
       }),
     );
     setShowBooking(true);
-    setMsg("Offer accepted — pick a schedule to confirm booking.");
+    setMsg("Offer accepted — select a date and time below to lock in your appointment.");
   }
 
   function decline() {
     dispatch(setOfferStatus({ quoteId: quote.id, status: "rejected" }));
-    setMsg("Offer declined.");
-  }
-
-  function submitCounter() {
-    const amount = Number(counterAmt);
-    if (!Number.isFinite(amount) || amount <= 0) {
-      setMsg("Enter a valid counter amount.");
-      return;
-    }
-    dispatch(
-      counterOffer({
-        quoteId: quote.id,
-        amount,
-        note: counterNote.trim() || "Homeowner counter-proposal",
-      }),
-    );
-    dispatch(
-      addNotification({
-        title: "Counter sent",
-        body: `You proposed $${amount} to ${pro?.businessName ?? "the pro"}.`,
-        href: `/account/jobs/${quote.jobId}`,
-        createdAt: "Just now",
-        role: "pro",
-      }),
-    );
-    setShowCounter(false);
-    setMsg("Counter sent to the pro.");
+    setMsg("Quote declined.");
   }
 
   function lockBooking() {
     if (!bookDate) {
-      setMsg("Choose a date.");
+      setMsg("Please choose a date.");
       return;
     }
     dispatch(
@@ -137,133 +120,230 @@ export function QuoteCard({
       }),
     );
     setShowBooking(false);
-    setMsg("Booking confirmed.");
+    setMsg("Booking confirmed successfully.");
   }
 
   return (
     <article
-      className={`rounded-[14px] border bg-white p-5 ${
-        selected ? "border-primary ring-1 ring-primary/30" : "border-line"
-      } ${closed ? "opacity-70" : ""}`}
+      className={cn(
+        "rounded-2xl border bg-white p-5 sm:p-6 transition-all duration-200",
+        selected
+          ? "border-primary ring-2 ring-primary/20 shadow-sm"
+          : "border-line shadow-xs hover:border-line/90 hover:shadow-sm",
+        hired && "border-success/40 bg-success/[0.01]",
+        closed && !hired && "opacity-65 bg-stone-50/70 border-stone-200"
+      )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h3 className="text-lg">{pro?.businessName ?? "Provider"}</h3>
-          <p className="text-sm text-copy">{pro?.trade}</p>
+      {/* Top Header: Contractor Info & Badges */}
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+        <div className="flex items-start gap-3 min-w-0">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 font-display text-base font-bold text-primary">
+            {pro?.businessName ? pro.businessName.charAt(0) : "P"}
+          </div>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-display text-lg font-semibold leading-tight text-title truncate">
+                {pro?.businessName ?? "Provider"}
+              </h3>
+              {pro?.clearance === "cleared" && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                  <ShieldCheck className="h-3 w-3" />
+                  Verified Pro
+                </span>
+              )}
+            </div>
+            <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-muted">
+              <span className="font-medium text-stone-700">{pro?.trade}</span>
+              {pro?.rating ? (
+                <span className="inline-flex items-center gap-1 font-semibold text-title">
+                  <Star className="h-3 w-3 fill-accent text-accent" />
+                  {pro.rating.toFixed(1)}
+                  {pro.reviewCount ? (
+                    <span className="font-normal text-muted">({pro.reviewCount})</span>
+                  ) : null}
+                </span>
+              ) : null}
+              {pro?.yearsInBusiness ? (
+                <span className="text-stone-500">{pro.yearsInBusiness} in business</span>
+              ) : null}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-wrap justify-end gap-1.5">
-          <Badge>{hired ? "Hired" : priceLabels[quote.priceType]}</Badge>
-          <Badge tone={quote.status === "accepted" ? "green" : quote.status === "countered" ? "amber" : "slate"}>
-            {offerStatusLabels[quote.status] ?? quote.status}
+
+        {/* Status Badges */}
+        <div className="flex flex-wrap items-center gap-1.5 self-start sm:self-auto shrink-0">
+          <span className="rounded-full border border-stone-200 bg-stone-100 px-2.5 py-1 text-xs font-medium text-stone-700">
+            {priceLabels[quote.priceType] ?? "Fixed Price"}
+          </span>
+          <Badge
+            tone={
+              hired
+                ? "green"
+                : quote.status === "accepted"
+                ? "green"
+                : quote.status === "rejected"
+                ? "slate"
+                : "amber"
+            }
+          >
+            {hired
+              ? "Hired"
+              : quote.status === "rejected"
+              ? "Declined"
+              : offerStatusLabels[quote.status] ?? quote.status}
           </Badge>
         </div>
       </div>
 
-      <p className="mt-4 font-display text-2xl font-bold text-title">{price}</p>
-      <p className="mt-2 text-sm leading-6 text-copy">{quote.scope}</p>
-
-      <dl className="mt-3 grid gap-1.5 text-sm text-copy sm:grid-cols-2">
+      {/* Prominent Price Banner */}
+      <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2 rounded-xl border border-primary/15 bg-smoke/80 px-4 py-3">
         <div>
-          <dt className="text-xs text-muted">Availability</dt>
-          <dd>{quote.availability}</dd>
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+            Quote Amount
+          </span>
+          <div className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title">
+            {price}
+          </div>
         </div>
-        {quote.proposedSchedule ? (
-          <div>
-            <dt className="text-xs text-muted">Proposed schedule</dt>
-            <dd>{quote.proposedSchedule}</dd>
-          </div>
+        {quote.paymentTerms ? (
+          <span className="text-xs font-medium text-stone-600 self-center">
+            {quote.paymentTerms}
+          </span>
         ) : null}
-        {quote.estimatedDuration ? (
-          <div>
-            <dt className="text-xs text-muted">Duration</dt>
-            <dd>{quote.estimatedDuration}</dd>
-          </div>
-        ) : null}
-        {quote.materialsIncluded != null ? (
-          <div>
-            <dt className="text-xs text-muted">Materials</dt>
-            <dd>{quote.materialsIncluded ? "Included" : "Not included"}</dd>
-          </div>
-        ) : null}
-        {quote.expiresAt ? (
-          <div>
-            <dt className="text-xs text-muted">Offer expires</dt>
-            <dd>{quote.expiresAt}</dd>
-          </div>
-        ) : null}
-        {quote.warranty ? (
-          <div>
-            <dt className="text-xs text-muted">Warranty</dt>
-            <dd>{quote.warranty}</dd>
-          </div>
-        ) : null}
-      </dl>
+      </div>
 
-      {quote.exclusions ? (
-        <p className="mt-2 text-sm text-muted">
-          <span className="font-semibold text-copy">Not included: </span>
-          {quote.exclusions}
+      {/* Scope of Work */}
+      <div className="mt-4">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+          Scope of Work
+        </h4>
+        <p className="mt-1.5 text-sm leading-relaxed text-stone-700">
+          {quote.scope}
         </p>
-      ) : null}
-      {quote.paymentTerms ? (
-        <p className="mt-1 text-sm text-muted">{quote.paymentTerms}</p>
-      ) : null}
+      </div>
 
-      {quote.status === "countered" && quote.counterAmount != null ? (
-        <div className="mt-3 rounded-[10px] bg-smoke px-3 py-2 text-sm text-copy">
-          <p className="font-semibold text-title">Your counter: ${quote.counterAmount}</p>
-          {quote.counterNote ? <p className="mt-0.5">{quote.counterNote}</p> : null}
-          <p className="mt-1 text-xs text-muted">Waiting for the pro to respond.</p>
-        </div>
-      ) : null}
+      {/* Structured Terms Grid */}
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
+        {quote.availability && (
+          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
+            <Clock className="h-3.5 w-3.5 shrink-0 text-stone-500" />
+            <div className="min-w-0">
+              <span className="block text-[10px] font-medium uppercase text-muted">Availability</span>
+              <span className="block truncate font-semibold text-stone-800">{quote.availability}</span>
+            </div>
+          </div>
+        )}
 
-      {canHire && !hiredId && !closed && quote.status !== "countered" ? (
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Button type="button" size="sm" onClick={accept}>
-            Accept offer
+        {quote.proposedSchedule && (
+          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
+            <Calendar className="h-3.5 w-3.5 shrink-0 text-primary" />
+            <div className="min-w-0">
+              <span className="block text-[10px] font-medium uppercase text-muted">Proposed Schedule</span>
+              <span className="block truncate font-semibold text-stone-800">{quote.proposedSchedule}</span>
+            </div>
+          </div>
+        )}
+
+        {quote.estimatedDuration && (
+          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
+            <Clock className="h-3.5 w-3.5 shrink-0 text-stone-500" />
+            <div className="min-w-0">
+              <span className="block text-[10px] font-medium uppercase text-muted">Est. Duration</span>
+              <span className="block truncate font-semibold text-stone-800">{quote.estimatedDuration}</span>
+            </div>
+          </div>
+        )}
+
+        {quote.materialsIncluded != null && (
+          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
+            <Package className="h-3.5 w-3.5 shrink-0 text-stone-500" />
+            <div className="min-w-0">
+              <span className="block text-[10px] font-medium uppercase text-muted">Materials</span>
+              <span className="block truncate font-semibold text-stone-800">
+                {quote.materialsIncluded ? "Materials Included" : "Materials Not Included"}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {quote.warranty && (
+          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
+            <Shield className="h-3.5 w-3.5 shrink-0 text-success" />
+            <div className="min-w-0">
+              <span className="block text-[10px] font-medium uppercase text-muted">Warranty</span>
+              <span className="block truncate font-semibold text-stone-800">{quote.warranty}</span>
+            </div>
+          </div>
+        )}
+
+        {quote.expiresAt && (
+          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
+            <AlertCircle className="h-3.5 w-3.5 shrink-0 text-amber-600" />
+            <div className="min-w-0">
+              <span className="block text-[10px] font-medium uppercase text-muted">Offer Expires</span>
+              <span className="block truncate font-semibold text-stone-800">{quote.expiresAt}</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {quote.exclusions && (
+        <p className="mt-3 flex items-start gap-1.5 text-xs text-muted">
+          <span className="shrink-0 font-semibold text-stone-700">Not included:</span>
+          <span>{quote.exclusions}</span>
+        </p>
+      )}
+
+      {/* Action Buttons: Accept & Reject Only */}
+      {canHire && !hiredId && !closed ? (
+        <div className="mt-5 flex flex-wrap items-center gap-2.5 border-t border-line/70 pt-4">
+          <Button
+            type="button"
+            size="sm"
+            onClick={accept}
+            className="font-semibold shadow-xs"
+          >
+            <Check className="mr-1.5 h-4 w-4" />
+            Accept Quote
           </Button>
-          <Button type="button" size="sm" variant="ghost" onClick={() => setShowCounter((v) => !v)}>
-            Counter
-          </Button>
-          <Button type="button" size="sm" variant="ghost" onClick={decline}>
-            Decline
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={decline}
+            className="font-medium text-stone-600 hover:bg-error/10 hover:text-error"
+          >
+            <X className="mr-1.5 h-4 w-4" />
+            Reject
           </Button>
           {compareMode && onToggleCompare ? (
-            <Button type="button" size="sm" variant="ghost" onClick={onToggleCompare}>
-              {selected ? "Remove from compare" : "Compare"}
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              onClick={onToggleCompare}
+              className={cn(
+                "ml-auto font-medium",
+                selected
+                  ? "bg-primary/10 text-primary hover:bg-primary/15"
+                  : "text-stone-600 hover:bg-stone-100"
+              )}
+            >
+              {selected ? "✓ Comparing" : "Compare"}
             </Button>
           ) : null}
         </div>
       ) : null}
 
-      {showCounter ? (
-        <div className="mt-4 space-y-3 rounded-[12px] border border-line bg-surface p-3">
-          <Field label="Your proposed total ($)">
-            <TextField
-              type="number"
-              min={1}
-              value={counterAmt}
-              onChange={(e) => setCounterAmt(e.target.value)}
-            />
-          </Field>
-          <Field label="Note to pro">
-            <TextArea
-              value={counterNote}
-              onChange={(e) => setCounterNote(e.target.value)}
-              placeholder="Happy to book if we land near this number…"
-            />
-          </Field>
-          <Button type="button" size="sm" onClick={submitCounter}>
-            Send counter
-          </Button>
-        </div>
-      ) : null}
-
+      {/* Booking Form (Triggers immediately upon Accept) */}
       {(hired || showBooking) && !booking ? (
-        <div className="mt-4 space-y-3 rounded-[12px] border border-primary/20 bg-smoke/60 p-3">
-          <p className="text-sm font-semibold text-title">Confirm booking</p>
+        <div className="mt-5 space-y-3 rounded-xl border border-primary/25 bg-smoke/70 p-4">
+          <div className="flex items-center gap-2 text-sm font-semibold text-title">
+            <Calendar className="h-4 w-4 text-primary" />
+            Confirm appointment schedule
+          </div>
           <p className="text-xs text-muted">
-            Lock date and time. You still pay the pro directly — LocalHomeFix never takes the repair payment.
+            Lock in your preferred date and arrival time. You pay your pro directly upon completion—LocalHomeFix never takes middleman fees.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Date">
@@ -279,18 +359,28 @@ export function QuoteCard({
         </div>
       ) : null}
 
+      {/* Booked Confirmation Notice */}
       {hired && booking ? (
-        <div className="mt-4 space-y-2">
-          <p className="text-sm font-semibold text-success">
-            Booked · {booking.scheduledDate} at {booking.scheduledTime} · ${booking.agreedPrice}
+        <div className="mt-5 rounded-xl border border-success/30 bg-success/[0.05] p-4">
+          <div className="flex items-center gap-2 text-sm font-semibold text-success">
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            Booked for {booking.scheduledDate} at {booking.scheduledTime} · ${booking.agreedPrice}
+          </div>
+          <p className="mt-1 text-xs text-stone-600">
+            Work is confirmed. Coordinate directly with {pro?.businessName ?? "your contractor"} through messaging.
           </p>
-          <Link href="/account/messages" className="inline-flex font-display text-sm font-bold text-primary">
-            Open messages →
-          </Link>
+          <div className="mt-3">
+            <Link
+              href="/account/messages"
+              className="inline-flex items-center gap-1 font-display text-sm font-bold text-primary hover:underline"
+            >
+              Open messages →
+            </Link>
+          </div>
         </div>
       ) : null}
 
-      {msg ? <p className="mt-3 text-sm text-success">{msg}</p> : null}
+      {msg ? <p className="mt-3 text-xs font-medium text-primary">{msg}</p> : null}
     </article>
   );
 }
