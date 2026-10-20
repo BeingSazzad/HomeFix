@@ -37,9 +37,13 @@ export default function ContactPage() {
     <>
       <PageBanner
         eyebrow="Contact"
-        title="Contact us"
+        title="Contact Us"
         description="No account needed. We reply by email."
         image={photos.banners.contact}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Contact Us" },
+        ]}
       />
       <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
         <div className="container-site grid items-start gap-6 lg:grid-cols-2 lg:gap-8">
