@@ -15,7 +15,7 @@ import {
   MapPin,
   RotateCcw,
   Search,
-  Sparkles,
+  ShieldCheck,
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -224,7 +224,7 @@ export default function ProJobsPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-primary/25 bg-gradient-to-r from-primary/[0.04] via-smoke to-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-start sm:items-center gap-3.5">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Sparkles className="h-5 w-5" />
+              <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
               <h3 className="font-display text-sm sm:text-base font-semibold text-title">

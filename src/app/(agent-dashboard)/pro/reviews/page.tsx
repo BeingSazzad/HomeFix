@@ -12,7 +12,6 @@ import {
   Send,
   Share2,
   ShieldCheck,
-  Sparkles,
   Star,
   ThumbsUp,
   User,
@@ -518,7 +517,7 @@ export default function ProReviewsPage() {
 
               <div className="rounded-xl border border-line/70 bg-surface/50 p-3.5 space-y-2">
                 <p className="text-xs font-semibold text-title flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  <MessageSquare className="h-3.5 w-3.5 text-primary" />
                   Recommended SMS &amp; Email message:
                 </p>
                 <p className="text-xs text-muted italic bg-white p-3 rounded-lg border border-line/60 leading-relaxed">

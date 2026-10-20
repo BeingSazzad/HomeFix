@@ -22,7 +22,7 @@ import {
   PackageCheck,
   Send,
   ShieldCheck,
-  Sparkles,
+  CalendarCheck,
   Store,
   Sun,
   Sunrise,
@@ -453,7 +453,7 @@ function BookingFlow() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
-                    <Sparkles className="h-3 w-3" />
+                    <CheckCircle2 className="h-3 w-3" />
                     Direct Booking Request
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-800 border border-emerald-200">
@@ -583,7 +583,7 @@ function BookingFlow() {
                 {categoryIntakeGuide[categorySlug]?.commonIssues && (
                   <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 space-y-2">
                     <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-                      <Sparkles className="h-3.5 w-3.5" />
+                      <Wrench className="h-3.5 w-3.5" />
                       <span>Popular {selectedCategory.name} Scopes (Click to prefill)</span>
                     </div>
                     <div className="flex flex-wrap gap-2 pt-1">
@@ -671,7 +671,7 @@ function BookingFlow() {
                         id: "flexible",
                         title: "Flexible Schedule",
                         desc: "Planning ahead / gathering estimates without rush",
-                        icon: Sparkles,
+                        icon: CalendarCheck,
                       },
                     ] as const
                   ).map((item) => {

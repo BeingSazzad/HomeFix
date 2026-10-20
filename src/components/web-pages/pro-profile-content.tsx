@@ -16,7 +16,6 @@ import {
   MessageSquare,
   Share2,
   ShieldCheck,
-  Sparkles,
   Star,
   X,
 } from "lucide-react";

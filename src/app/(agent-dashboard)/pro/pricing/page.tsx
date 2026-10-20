@@ -8,10 +8,10 @@ import {
   Clock,
   CreditCard,
   Pause,
+  Percent,
   Play,
   Printer,
   ShieldCheck,
-  Sparkles,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -382,7 +382,7 @@ export default function PricingPage() {
             {/* Value Badge */}
             <div className="absolute right-4 top-4">
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-xs">
-                <Sparkles className="h-3 w-3" /> Save 25% ($60/yr)
+                <Percent className="h-3 w-3" /> Save 25% ($60/yr)
               </span>
             </div>
 

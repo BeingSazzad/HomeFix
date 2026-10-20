@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import {
   ArrowUpRight,
-  Briefcase,
+  Building2,
   Calendar,
   Check,
   CheckCircle2,
@@ -12,15 +12,14 @@ import {
   CreditCard,
   DollarSign,
   Eye,
-  Flame,
+  Image as ImageIcon,
   Info,
   MapPin,
+  Percent,
   Plus,
   ShieldCheck,
-  Sparkles,
-  Tag,
   Trash2,
-  Upload,
+  Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -31,7 +30,6 @@ import { updateUser } from "@/redux/slices/authSlice";
 import {
   updateProProfile,
   type ProServiceItem,
-  type ProSpecialOffer,
 } from "@/redux/slices/featuresSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { cn } from "@/lib/cn";
@@ -42,7 +40,7 @@ export function ProProfileForm() {
   const proProfile = useAppSelector((state) => state.features.proProfile);
 
   const [activeTab, setActiveTab] = useState<
-    "overview" | "services" | "hours" | "credentials" | "portfolio"
+    "services" | "overview" | "hours" | "credentials" | "portfolio"
   >("services");
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -70,7 +68,7 @@ export function ProProfileForm() {
 
   function showToast(msg: string) {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 4000);
+    setTimeout(() => setToastMessage(null), 3500);
   }
 
   function handleSaveAll() {
@@ -85,7 +83,7 @@ export function ProProfileForm() {
         zip: formData.zip,
       })
     );
-    showToast("Profile & service offerings updated! Changes are live on your public storefront.");
+    showToast("Profile & services updated successfully! Changes are live on your public storefront.");
   }
 
   // Service helpers
@@ -104,6 +102,7 @@ export function ProProfileForm() {
     }));
     setNewService({ name: "", price: 95, unit: "starting rate", description: "" });
     setShowAddService(false);
+    showToast("Service added");
   }
 
   function handleRemoveService(id: string) {
@@ -121,17 +120,6 @@ export function ProProfileForm() {
         ? prev.acceptedPayments.filter((p) => p !== payment)
         : [...prev.acceptedPayments, payment];
       return { ...prev, acceptedPayments: next };
-    });
-  }
-
-  // Perks toggle
-  function togglePerk(perk: string) {
-    setFormData((prev) => {
-      const exists = prev.includedPerks.includes(perk);
-      const next = exists
-        ? prev.includedPerks.filter((p) => p !== perk)
-        : [...prev.includedPerks, perk];
-      return { ...prev, includedPerks: next };
     });
   }
 
@@ -153,6 +141,7 @@ export function ProProfileForm() {
       image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80",
     });
     setShowAddPhoto(false);
+    showToast("Photo added to portfolio");
   }
 
   function handleRemovePhoto(index: number) {
@@ -166,26 +155,26 @@ export function ProProfileForm() {
     <div className="space-y-6 max-w-5xl mx-auto pb-16">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-2xl bg-title px-5 py-3.5 text-white shadow-xl animate-in slide-in-from-bottom-5">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-2xl bg-title px-5 py-3 text-white shadow-xl animate-in slide-in-from-bottom-5">
           <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
-          <span className="text-sm font-medium">{toastMessage}</span>
+          <span className="text-xs sm:text-sm font-medium">{toastMessage}</span>
         </div>
       )}
 
       {/* 1. Header Banner & Live Profile Shortcut */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-line/70 pb-5">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <h1 className="font-display text-[26px] sm:text-[30px] font-bold text-title tracking-tight leading-tight">
+          <div className="flex items-center gap-2.5 mb-1">
+            <h1 className="font-display text-[24px] sm:text-[28px] font-bold text-title tracking-tight leading-tight">
               Business Profile &amp; Services
             </h1>
-            <Badge tone="green" className="border border-emerald-300">
-              <Check className="h-3 w-3 mr-1 text-emerald-600" />
-              Storefront Active
-            </Badge>
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200">
+              <Check className="h-3 w-3 text-emerald-600" />
+              Storefront Live
+            </span>
           </div>
-          <p className="text-sm text-copy">
-            Configure your public storefront, service offerings, special promotional discounts, and business hours.
+          <p className="text-xs sm:text-sm text-muted">
+            Manage your public storefront profile, trade services, pricing, and operating schedule.
           </p>
         </div>
 
@@ -193,7 +182,7 @@ export function ProProfileForm() {
           <Link
             href="/browse-pros/pro-1"
             target="_blank"
-            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-title shadow-xs hover:border-primary hover:text-primary transition"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3.5 py-2 text-xs sm:text-sm font-semibold text-title shadow-2xs hover:border-primary hover:text-primary transition"
           >
             <Eye className="h-3.5 w-3.5" />
             <span>View Public Storefront</span>
@@ -202,21 +191,21 @@ export function ProProfileForm() {
           <Button
             type="button"
             onClick={handleSaveAll}
-            className="rounded-full shadow-xs text-xs sm:text-sm font-semibold px-5"
+            className="rounded-xl shadow-xs text-xs sm:text-sm font-semibold px-5"
           >
             Save All Changes
           </Button>
         </div>
       </div>
 
-      {/* 2. Modern Navigation Tabs */}
-      <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-1 border-b border-line/60 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* 2. Professional Navigation Tabs (Proper Icons, No Sparkles) */}
+      <div className="flex gap-2 sm:gap-2.5 overflow-x-auto pb-1 border-b border-line/60 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {[
-          { key: "services", label: "Services & Special Offers", icon: Sparkles },
-          { key: "overview", label: "Identity & Contact", icon: Briefcase },
-          { key: "hours", label: "Availability & Payments", icon: Clock },
-          { key: "credentials", label: "Licenses & Insurance", icon: ShieldCheck },
-          { key: "portfolio", label: "Portfolio Gallery", icon: Tag },
+          { key: "services", label: "Services & Rates", icon: Wrench, count: formData.services.length },
+          { key: "overview", label: "Business Info", icon: Building2 },
+          { key: "hours", label: "Hours & Payments", icon: Clock },
+          { key: "credentials", label: "Licenses & Verification", icon: ShieldCheck },
+          { key: "portfolio", label: "Project Photos", icon: ImageIcon, count: formData.portfolio.length },
         ].map((tab) => {
           const Icon = tab.icon;
           const active = activeTab === tab.key;
@@ -226,20 +215,22 @@ export function ProProfileForm() {
               type="button"
               onClick={() => setActiveTab(tab.key as typeof activeTab)}
               className={cn(
-                "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-display text-xs sm:text-sm font-semibold transition-all whitespace-nowrap",
+                "inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-display text-xs sm:text-sm font-semibold transition-all whitespace-nowrap",
                 active
                   ? "bg-primary text-white shadow-xs"
-                  : "bg-smoke/80 text-title hover:bg-smoke hover:text-primary"
+                  : "bg-smoke/70 text-title hover:bg-smoke hover:text-primary"
               )}
             >
               <Icon className="h-4 w-4" />
               <span>{tab.label}</span>
-              {tab.key === "services" && (
-                <span className={cn(
-                  "ml-1 rounded-full px-1.5 py-0.2 text-[10px] font-bold",
-                  active ? "bg-white/20 text-white" : "bg-primary/10 text-primary"
-                )}>
-                  {formData.services.length}
+              {typeof tab.count === "number" && (
+                <span
+                  className={cn(
+                    "ml-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
+                    active ? "bg-white/20 text-white" : "bg-primary/10 text-primary"
+                  )}
+                >
+                  {tab.count}
                 </span>
               )}
             </button>
@@ -248,32 +239,29 @@ export function ProProfileForm() {
       </div>
 
       {/* ============================================================ */}
-      {/* TAB 1: SERVICES & SPECIAL OFFERS (The primary focus)         */}
+      {/* TAB 1: SERVICES & RATES                                      */}
       {/* ============================================================ */}
       {activeTab === "services" && (
         <div className="space-y-6">
-          {/* SPECIAL PROMOTIONAL OFFER BOX */}
-          <Card className="rounded-[22px] border-2 border-emerald-300/80 bg-gradient-to-br from-emerald-50/70 via-white to-emerald-50/40 p-6 shadow-xs relative overflow-hidden">
+          {/* SPECIAL PROMOTIONAL DISCOUNT CARD */}
+          <Card className="rounded-2xl border border-emerald-200/80 bg-white p-5 sm:p-6 shadow-2xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-600 text-white shadow-xs">
-                  <Flame className="h-5 w-5" />
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+                  <Percent className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-display text-sm font-bold uppercase tracking-wider text-emerald-800">
-                      Promotional Offer &amp; Discounts
-                    </span>
-                    <Badge tone="green" className="text-[10px]">Homeowner Magnet</Badge>
-                  </div>
-                  <p className="text-xs text-[#555] mt-0.5">
-                    Highlighted prominently on your public profile header to increase quote conversion.
+                  <h3 className="font-display text-base font-bold text-title">
+                    First-Time Customer Discount
+                  </h3>
+                  <p className="text-xs text-muted mt-0.5">
+                    Optional promotional discount displayed on your public profile header to attract new clients.
                   </p>
                 </div>
               </div>
 
               {/* Offer Active Switch */}
-              <label className="inline-flex items-center gap-2 cursor-pointer self-start sm:self-auto bg-white border border-emerald-200 rounded-full px-3.5 py-1.5 shadow-2xs">
+              <label className="inline-flex items-center gap-2 cursor-pointer self-start sm:self-auto bg-smoke/80 border border-line/80 rounded-xl px-3.5 py-1.5">
                 <input
                   type="checkbox"
                   checked={formData.specialOffer.active}
@@ -283,16 +271,16 @@ export function ProProfileForm() {
                       specialOffer: { ...prev.specialOffer, active: e.target.checked },
                     }))
                   }
-                  className="h-4 w-4 rounded accent-emerald-600 cursor-pointer"
+                  className="h-4 w-4 rounded accent-primary cursor-pointer"
                 />
-                <span className="text-xs font-semibold text-emerald-900">
-                  {formData.specialOffer.active ? "Offer Active on Profile" : "Offer Paused"}
+                <span className="text-xs font-semibold text-title">
+                  {formData.specialOffer.active ? "Discount Active" : "Discount Inactive"}
                 </span>
               </label>
             </div>
 
             {formData.specialOffer.active && (
-              <div className="mt-5 grid gap-4 sm:grid-cols-3 pt-4 border-t border-emerald-200/60">
+              <div className="mt-4 grid gap-4 sm:grid-cols-3 pt-4 border-t border-line/50">
                 <Field label="Offer Headline">
                   <TextField
                     value={formData.specialOffer.title}
@@ -306,7 +294,7 @@ export function ProProfileForm() {
                   />
                 </Field>
 
-                <Field label="Discount Badge">
+                <Field label="Badge Text">
                   <TextField
                     value={formData.specialOffer.discount}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -315,29 +303,28 @@ export function ProProfileForm() {
                         specialOffer: { ...prev.specialOffer, discount: e.target.value },
                       }))
                     }
-                    placeholder="e.g. $25 OFF or 10% OFF"
+                    placeholder="e.g. $25 OFF"
                   />
                 </Field>
 
-                <Field label="Terms & Eligibility" className="sm:col-span-3">
-                  <TextArea
+                <Field label="Eligibility Note" className="sm:col-span-3">
+                  <TextField
                     value={formData.specialOffer.terms}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setFormData((prev) => ({
                         ...prev,
                         specialOffer: { ...prev.specialOffer, terms: e.target.value },
                       }))
                     }
-                    placeholder="e.g. Valid for all first-time homeowners in Travis & Williamson counties..."
-                    className="min-h-[64px]"
+                    placeholder="e.g. Valid for all first-time residential homeowners in Austin"
                   />
                 </Field>
               </div>
             )}
           </Card>
 
-          {/* BASE STARTING PRICE & PRICING TRANSPARENCY */}
-          <Card className="rounded-[20px] border border-line/80 bg-white p-5 sm:p-6 shadow-xs">
+          {/* BASE STARTING PRICE & RESPONSE TIME */}
+          <Card className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-2xs">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Profile Starting Rate ($)">
                 <div className="relative">
@@ -357,11 +344,11 @@ export function ProProfileForm() {
                   />
                 </div>
                 <p className="mt-1 text-[11px] text-muted">
-                  Displayed as &quot;Starting from ${formData.startingPrice}&quot; on search cards and profile banner.
+                  Shown as &ldquo;Starting from ${formData.startingPrice}&rdquo; on your public profile.
                 </p>
               </Field>
 
-              <Field label="Availability Note">
+              <Field label="Typical Response Time">
                 <TextField
                   value={formData.responseTime}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -370,21 +357,21 @@ export function ProProfileForm() {
                   placeholder="e.g. Usually responds within 1 hour"
                 />
                 <p className="mt-1 text-[11px] text-muted">
-                  Displays response commitment on search directory and profile header.
+                  Displays your expected response speed to homeowner inquiries.
                 </p>
               </Field>
             </div>
           </Card>
 
           {/* ITEMIZED SERVICES CATALOG */}
-          <Card className="rounded-[20px] border border-line/80 bg-white p-5 sm:p-6 shadow-xs space-y-4">
+          <Card className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-2xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-display text-[17px] font-bold text-title">
+                <h3 className="font-display text-base sm:text-[17px] font-bold text-title">
                   Services Offered &amp; Rates ({formData.services.length})
                 </h3>
                 <p className="text-xs text-muted">
-                  Homeowners browse these exact service options when requesting quotes.
+                  Homeowners can select and request quotes directly for these specific services.
                 </p>
               </div>
 
@@ -402,9 +389,9 @@ export function ProProfileForm() {
 
             {/* Inline Add Service Form */}
             {showAddService && (
-              <div className="rounded-xl border border-primary/30 bg-smoke/60 p-4 space-y-3 animate-in fade-in">
+              <div className="rounded-xl border border-primary/25 bg-smoke/60 p-4 space-y-3 animate-in fade-in">
                 <p className="text-xs font-bold uppercase tracking-wider text-primary">
-                  New Service Offering
+                  New Service Item
                 </p>
                 <div className="grid gap-3 sm:grid-cols-3">
                   <Field label="Service Name" className="sm:col-span-2">
@@ -426,7 +413,7 @@ export function ProProfileForm() {
                       placeholder="120"
                     />
                   </Field>
-                  <Field label="Unit / Rate Type">
+                  <Field label="Rate Type">
                     <TextField
                       value={newService.unit}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -435,13 +422,13 @@ export function ProProfileForm() {
                       placeholder="e.g. starting rate, per fixture"
                     />
                   </Field>
-                  <Field label="Short Scope Description" className="sm:col-span-2">
+                  <Field label="Scope Description" className="sm:col-span-2">
                     <TextField
                       value={newService.description}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setNewService({ ...newService, description: e.target.value })
                       }
-                      placeholder="e.g. Includes full mineral flush, valve inspection, and diagnostic."
+                      placeholder="e.g. Includes full system flush, diagnostic inspection, and seal verification."
                     />
                   </Field>
                 </div>
@@ -461,22 +448,22 @@ export function ProProfileForm() {
                     onClick={handleAddService}
                     className="text-xs font-semibold"
                   >
-                    Add Service to Profile
+                    Add Service
                   </Button>
                 </div>
               </div>
             )}
 
             {/* Services List */}
-            <div className="divide-y divide-line/60">
+            <div className="divide-y divide-line/50">
               {formData.services.map((srv) => (
                 <div key={srv.id} className="py-3.5 flex items-start justify-between gap-4">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
                       <p className="font-display text-[15px] font-bold text-title">{srv.name}</p>
-                      <Badge tone="blue" className="text-[11px] font-bold">
+                      <span className="font-semibold text-primary text-xs bg-smoke px-2 py-0.5 rounded-md border border-primary/20">
                         ${srv.price}
-                      </Badge>
+                      </span>
                       <span className="text-xs text-muted">/ {srv.unit}</span>
                     </div>
                     {srv.description && (
@@ -487,7 +474,7 @@ export function ProProfileForm() {
                   <button
                     type="button"
                     onClick={() => handleRemoveService(srv.id)}
-                    className="text-muted hover:text-error transition p-1"
+                    className="text-muted hover:text-rose-600 transition p-1"
                     title="Remove Service"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -496,61 +483,17 @@ export function ProProfileForm() {
               ))}
             </div>
           </Card>
-
-          {/* WHAT'S INCLUDED GUARANTEES */}
-          <Card className="rounded-[20px] border border-line/80 bg-white p-5 sm:p-6 shadow-xs space-y-3">
-            <div>
-              <h3 className="font-display text-[16px] font-bold text-title">
-                What&apos;s Included With Every Service Call
-              </h3>
-              <p className="text-xs text-muted">
-                These trust perks are highlighted on your public profile checklist.
-              </p>
-            </div>
-
-            <div className="grid gap-2.5 sm:grid-cols-2 pt-1">
-              {[
-                "Free upfront itemized quote",
-                "1-Year workmanship & leak warranty",
-                "Floor protection & clean boot covers",
-                "OEM certified plumbing parts",
-                "Direct payment on 100% completion ($0 platform fee)",
-                "Full clean-up of work area",
-              ].map((perk) => {
-                const checked = formData.includedPerks.includes(perk);
-                return (
-                  <label
-                    key={perk}
-                    className={cn(
-                      "flex items-center gap-3 p-3 rounded-xl border text-xs font-medium cursor-pointer transition",
-                      checked
-                        ? "border-emerald-300 bg-emerald-50/50 text-emerald-950 font-semibold"
-                        : "border-line/70 bg-white text-muted hover:bg-smoke"
-                    )}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      onChange={() => togglePerk(perk)}
-                      className="h-4 w-4 rounded accent-emerald-600 cursor-pointer"
-                    />
-                    <span>{perk}</span>
-                  </label>
-                );
-              })}
-            </div>
-          </Card>
         </div>
       )}
 
       {/* ============================================================ */}
-      {/* TAB 2: IDENTITY & CONTACT OVERVIEW                           */}
+      {/* TAB 2: BUSINESS INFO                                         */}
       {/* ============================================================ */}
       {activeTab === "overview" && (
-        <Card className="rounded-[20px] border border-line/80 bg-white p-6 shadow-xs space-y-5">
+        <Card className="rounded-2xl border border-line/80 bg-white p-6 shadow-2xs space-y-5">
           <div>
-            <h3 className="font-display text-[17px] font-bold text-title">Business Information</h3>
-            <p className="text-xs text-muted">Basic business profile details shown to local homeowners.</p>
+            <h3 className="font-display text-base sm:text-[17px] font-bold text-title">Business Information</h3>
+            <p className="text-xs text-muted">Core business details presented to Austin homeowners.</p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -669,7 +612,7 @@ export function ProProfileForm() {
               />
             </Field>
 
-            <Field label="Profile Tagline / Pitch" className="sm:col-span-2">
+            <Field label="Profile Pitch / Tagline" className="sm:col-span-2">
               <TextField
                 value={formData.tagline}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -679,15 +622,15 @@ export function ProProfileForm() {
               />
             </Field>
 
-            <Field label="Detailed Business Bio" className="sm:col-span-2">
+            <Field label="Business Bio" className="sm:col-span-2">
               <TextArea
                 value={formData.bio}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                   setFormData({ ...formData, bio: e.target.value })
                 }
-                className="min-h-[95px]"
+                className="min-h-[85px]"
                 rows={3}
-                placeholder="Describe your background, expertise, and customer commitment..."
+                placeholder="Describe your background, craftsmanship, and customer commitment..."
               />
             </Field>
           </div>
@@ -695,15 +638,14 @@ export function ProProfileForm() {
       )}
 
       {/* ============================================================ */}
-      {/* TAB 3: AVAILABILITY & DIRECT PAYMENT PREFERENCES             */}
+      {/* TAB 3: OPERATING HOURS & DIRECT PAYMENTS                     */}
       {/* ============================================================ */}
       {activeTab === "hours" && (
         <div className="space-y-6">
-          {/* BUSINESS HOURS */}
-          <Card className="rounded-[20px] border border-line/80 bg-white p-6 shadow-xs space-y-4">
+          <Card className="rounded-2xl border border-line/80 bg-white p-6 shadow-2xs space-y-4">
             <div>
-              <h3 className="font-display text-[17px] font-bold text-title">Business Operating Hours</h3>
-              <p className="text-xs text-muted">When homeowners can expect you to be on-duty or available for bookings.</p>
+              <h3 className="font-display text-base sm:text-[17px] font-bold text-title">Business Operating Hours</h3>
+              <p className="text-xs text-muted">When homeowners can reach you for service appointments.</p>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
@@ -748,7 +690,7 @@ export function ProProfileForm() {
             </div>
 
             {/* Emergency Toggle */}
-            <div className="pt-3 border-t border-line/60">
+            <div className="pt-3 border-t border-line/50">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
@@ -759,12 +701,11 @@ export function ProProfileForm() {
                   className="h-4 w-4 rounded accent-primary cursor-pointer"
                 />
                 <div>
-                  <p className="text-sm font-semibold text-title flex items-center gap-1.5">
-                    <span>24/7 Urgent Emergency Dispatch</span>
-                    <Badge tone="blue" className="text-[10px]">High Demand</Badge>
+                  <p className="text-sm font-semibold text-title">
+                    24/7 Emergency Dispatch Available
                   </p>
                   <p className="text-xs text-muted">
-                    Display an &quot;Emergency On-Call&quot; badge to attract homeowners with urgent water leaks or power outages.
+                    Show an emergency badge to receive high-urgency water leak or electrical requests.
                   </p>
                 </div>
               </label>
@@ -772,17 +713,17 @@ export function ProProfileForm() {
           </Card>
 
           {/* ACCEPTED DIRECT PAYMENTS */}
-          <Card className="rounded-[20px] border border-line/80 bg-white p-6 shadow-xs space-y-3">
+          <Card className="rounded-2xl border border-line/80 bg-white p-6 shadow-2xs space-y-3">
             <div>
-              <h3 className="font-display text-[17px] font-bold text-title">
-                Accepted Direct Payment Methods
+              <h3 className="font-display text-base sm:text-[17px] font-bold text-title">
+                Accepted Payment Methods
               </h3>
               <p className="text-xs text-muted">
-                Homeowners pay you directly upon 100% completion ($0 platform commission cut).
+                Methods homeowners can use to pay you directly upon 100% completed job.
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2.5 pt-2">
+            <div className="flex flex-wrap gap-2.5 pt-1">
               {[
                 "Credit/Debit Card",
                 "Zelle",
@@ -799,9 +740,9 @@ export function ProProfileForm() {
                     type="button"
                     onClick={() => togglePayment(method)}
                     className={cn(
-                      "inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold border transition-all",
+                      "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold border transition-all",
                       selected
-                        ? "border-primary bg-primary text-white shadow-xs"
+                        ? "border-primary bg-primary text-white shadow-2xs"
                         : "border-line bg-white text-muted hover:border-primary/40 hover:text-title"
                     )}
                   >
@@ -816,16 +757,16 @@ export function ProProfileForm() {
       )}
 
       {/* ============================================================ */}
-      {/* TAB 4: LICENSES, INSURANCE & CREDENTIALS                     */}
+      {/* TAB 4: LICENSES & VERIFICATION                               */}
       {/* ============================================================ */}
       {activeTab === "credentials" && (
-        <Card className="rounded-[20px] border border-line/80 bg-white p-6 shadow-xs space-y-5">
+        <Card className="rounded-2xl border border-line/80 bg-white p-6 shadow-2xs space-y-5">
           <div>
-            <h3 className="font-display text-[17px] font-bold text-title">
+            <h3 className="font-display text-base sm:text-[17px] font-bold text-title">
               Licenses &amp; Verification Badges
             </h3>
             <p className="text-xs text-muted">
-              Official credentials displayed on your profile that unlock homeowner trust.
+              Official trade credentials displayed on your public storefront.
             </p>
           </div>
 
@@ -874,29 +815,32 @@ export function ProProfileForm() {
 
           <div className="rounded-xl bg-smoke p-4 flex items-center justify-between border border-line/60">
             <div className="flex items-center gap-3">
-              <ShieldCheck className="h-6 w-6 text-emerald-600 shrink-0" />
+              <ShieldCheck className="h-5 w-5 text-emerald-600 shrink-0" />
               <div>
-                <p className="text-xs font-bold text-title">Checkr Background Screening</p>
+                <p className="text-xs font-bold text-title">Background Screening</p>
                 <p className="text-[11px] text-muted">Identity and criminal background verified annually.</p>
               </div>
             </div>
-            <Badge tone="green">Cleared &amp; Verified</Badge>
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200">
+              <Check className="h-3 w-3" />
+              Verified
+            </span>
           </div>
         </Card>
       )}
 
       {/* ============================================================ */}
-      {/* TAB 5: PORTFOLIO & WORK PHOTOS                               */}
+      {/* TAB 5: PORTFOLIO PHOTOS                                      */}
       {/* ============================================================ */}
       {activeTab === "portfolio" && (
-        <Card className="rounded-[20px] border border-line/80 bg-white p-6 shadow-xs space-y-5">
+        <Card className="rounded-2xl border border-line/80 bg-white p-6 shadow-2xs space-y-5">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-display text-[17px] font-bold text-title">
-                Project Gallery Photos ({formData.portfolio.length})
+              <h3 className="font-display text-base sm:text-[17px] font-bold text-title">
+                Project Photos ({formData.portfolio.length})
               </h3>
               <p className="text-xs text-muted">
-                Photos of your recent completed jobs displayed in your public portfolio.
+                Completed project photos displayed on your public storefront portfolio.
               </p>
             </div>
             <Button
@@ -913,12 +857,12 @@ export function ProProfileForm() {
 
           {/* Add Photo Form */}
           {showAddPhoto && (
-            <div className="rounded-xl border border-primary/30 bg-smoke/60 p-4 space-y-3">
+            <div className="rounded-xl border border-primary/25 bg-smoke/60 p-4 space-y-3">
               <p className="text-xs font-bold uppercase tracking-wider text-primary">
                 Add Project Photo
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
-                <Field label="Project Title / Caption">
+                <Field label="Project Caption">
                   <TextField
                     value={newPhoto.title}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -953,7 +897,7 @@ export function ProProfileForm() {
                   onClick={handleAddPhoto}
                   className="text-xs font-semibold"
                 >
-                  Add to Gallery
+                  Add Photo
                 </Button>
               </div>
             </div>
@@ -964,7 +908,7 @@ export function ProProfileForm() {
             {formData.portfolio.map((item, idx) => (
               <div
                 key={idx}
-                className="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-smoke border border-line shadow-xs"
+                className="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-smoke border border-line shadow-2xs"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -973,7 +917,7 @@ export function ProProfileForm() {
                   className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-between p-3 text-white">
-                  <span className="text-xs font-semibold truncate pr-2">{item.title}</span>
+                  <span className="text-xs font-medium truncate pr-2">{item.title}</span>
                   <button
                     type="button"
                     onClick={() => handleRemovePhoto(idx)}
@@ -990,7 +934,7 @@ export function ProProfileForm() {
       )}
 
       {/* Floating Save Footer Bar */}
-      <div className="sticky bottom-4 z-20 flex items-center justify-between gap-4 rounded-2xl border border-line/80 bg-white/95 px-6 py-4 shadow-lg backdrop-blur-md">
+      <div className="sticky bottom-4 z-20 flex items-center justify-between gap-4 rounded-2xl border border-line/80 bg-white/95 px-6 py-3.5 shadow-lg backdrop-blur-md">
         <div className="flex items-center gap-2 text-xs text-muted">
           <Info className="h-4 w-4 text-primary shrink-0" />
           <span>All updates immediately reflect across homeowner searches and your public storefront.</span>
@@ -1002,13 +946,13 @@ export function ProProfileForm() {
             target="_blank"
             className="text-xs font-semibold text-muted hover:text-primary transition flex items-center gap-1"
           >
-            <span>Preview Profile</span>
+            <span>Preview Storefront</span>
             <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
           <Button
             type="button"
             onClick={handleSaveAll}
-            className="rounded-full shadow-xs text-xs sm:text-sm font-semibold px-6"
+            className="rounded-xl shadow-xs text-xs sm:text-sm font-semibold px-6"
           >
             Save Changes
           </Button>
