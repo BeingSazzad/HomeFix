@@ -49,10 +49,10 @@ export function LoginForm() {
   return (
     <Card className="p-6 md:p-8">
       <h1 className="font-display text-[22px] sm:text-[24px] font-semibold leading-snug tracking-tight text-title">
-        Welcome back
+        Sign in to LocalHomeFix
       </h1>
       <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#757575]">
-        Sign in to manage your requests and quotes.
+        Sign in to your account or get started with quotes and requests.
       </p>
 
       <div
@@ -118,7 +118,7 @@ export function LoginForm() {
         </Button>
       </form>
 
-      <AuthLinks prompt="Don't have an account?" href="/signup" label="Sign up" />
+      <AuthLinks prompt="Don't have an account?" href="/signup" label="Sign up free ↗" />
     </Card>
   );
 }

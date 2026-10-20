@@ -56,17 +56,9 @@ export function Navbar() {
               <AccountMenu user={user} />
             </>
           ) : (
-            <>
-              <Link
-                href="/login"
-                className="font-sans text-[14px] font-medium text-title hover:text-primary transition-colors"
-              >
-                Sign in
-              </Link>
-              <Button href={signupHref("/account/post-job")} size="sm" className="font-medium">
-                Get Started <ArrowUpRight className="h-4 w-4 ml-0.5" />
-              </Button>
-            </>
+            <Button href="/login" size="sm" className="font-medium">
+              Get Started <ArrowUpRight className="h-4 w-4 ml-0.5" />
+            </Button>
           )}
         </div>
 
@@ -102,22 +94,14 @@ export function Navbar() {
                   {ctaLabel}
                 </Button>
               ) : (
-                <>
-                  <Link
-                    href="/login"
-                    onClick={() => setOpen(false)}
-                    className="font-display font-medium text-title py-1 text-center"
-                  >
-                    Sign in
-                  </Link>
-                  <Button
-                    href={signupHref("/account/post-job")}
-                    size="sm"
-                    className="w-full justify-center"
-                  >
-                    Get Started ↗
-                  </Button>
-                </>
+                <Button
+                  href="/login"
+                  size="sm"
+                  onClick={() => setOpen(false)}
+                  className="w-full justify-center"
+                >
+                  Get Started <ArrowUpRight className="h-4 w-4 ml-0.5" />
+                </Button>
               )}
             </div>
           </div>

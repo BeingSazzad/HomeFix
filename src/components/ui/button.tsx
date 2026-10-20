@@ -28,7 +28,11 @@ type Common = {
 type ButtonAsButton = Common &
   React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: undefined };
 
-type ButtonAsLink = Common & { href: string; type?: never };
+type ButtonAsLink = Common &
+  Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof Common | "href"> & {
+    href: string;
+    type?: never;
+  };
 
 export function Button({
   variant = "primary",
