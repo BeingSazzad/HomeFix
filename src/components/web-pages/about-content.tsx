@@ -184,8 +184,8 @@ export function AboutContent() {
             </div>
 
             {/* Right Column: High-Res Photo (Matches Reference Tablet/Tech Shot) */}
-            <div className="lg:col-span-6 relative">
-              <div className="relative h-[360px] sm:h-[460px] md:h-[500px] w-full overflow-hidden rounded-[24px] sm:rounded-[30px] border border-line/70 shadow-md group">
+            <div className="lg:col-span-6 relative pb-6 lg:pb-0">
+              <div className="relative h-[320px] sm:h-[440px] md:h-[500px] w-full overflow-hidden rounded-[24px] sm:rounded-[30px] border border-line/70 shadow-md group">
                 <Image
                   src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80"
                   alt="Certified home repair technician inspecting digital blueprints and work order specifications"
@@ -443,8 +443,8 @@ export function AboutContent() {
           <p className="mt-4 font-sans text-[15px] sm:text-[17px] leading-relaxed text-white/80 max-w-xl mx-auto">
             Post your project in under 2 minutes, get quotes from verified Austin contractors, and keep full control over your home.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Button href="/account/post-job" size="lg" className="bg-primary hover:bg-primary-hover text-white">
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-xs sm:max-w-none mx-auto">
+            <Button href="/account/post-job" size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white">
               Post a Job for Free
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -452,6 +452,7 @@ export function AboutContent() {
               href="/signup?role=pro"
               variant="onDark"
               size="lg"
+              className="w-full sm:w-auto"
             >
               Join as a Contractor
             </Button>
