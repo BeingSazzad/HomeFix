@@ -37,8 +37,24 @@ export function HomePros() {
     return () => window.removeEventListener("resize", updateScrollState);
   }, [list.length]);
 
-  // Window-level mouseup to ensure drag cleanly ends even if mouse releases outside
+  // Window-level mousemove and mouseup so dragging is completely fluid anywhere on screen
   useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (!isMouseDown.current) return;
+      const el = scroller.current;
+      if (!el) return;
+
+      const delta = e.pageX - startX.current;
+
+      if (Math.abs(delta) > 4) {
+        if (!hasDragged.current) {
+          hasDragged.current = true;
+          setIsDragging(true);
+        }
+        el.scrollLeft = scrollStart.current - delta;
+      }
+    };
+
     const handleGlobalMouseUp = () => {
       if (isMouseDown.current) {
         isMouseDown.current = false;
@@ -50,59 +66,36 @@ export function HomePros() {
       }
     };
 
+    window.addEventListener("mousemove", handleGlobalMouseMove);
     window.addEventListener("mouseup", handleGlobalMouseUp);
-    return () => window.removeEventListener("mouseup", handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleGlobalMouseMove);
+      window.removeEventListener("mouseup", handleGlobalMouseUp);
+    };
   }, []);
 
   function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     const el = scroller.current;
     if (!el) return;
-    // Only drag on left mouse button
+    // Only drag on primary (left) mouse button
     if (e.button !== 0) return;
 
     isMouseDown.current = true;
     hasDragged.current = false;
-    startX.current = e.pageX - el.offsetLeft;
+    startX.current = e.pageX;
     scrollStart.current = el.scrollLeft;
-    // Disable smooth-scrolling during drag for 1:1 direct responsiveness
+    // Instant response without sluggish smooth-scrolling while dragging
     el.style.scrollBehavior = "auto";
   }
 
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!isMouseDown.current) return;
-    const el = scroller.current;
-    if (!el) return;
-
-    e.preventDefault();
-    const x = e.pageX - el.offsetLeft;
-    const distance = (x - startX.current) * 1.25;
-
-    if (Math.abs(x - startX.current) > 5) {
-      if (!hasDragged.current) {
-        hasDragged.current = true;
-        setIsDragging(true);
-      }
-      el.scrollLeft = scrollStart.current - distance;
-    }
-  }
-
-  function handleMouseUp() {
-    if (isMouseDown.current) {
-      isMouseDown.current = false;
-      setIsDragging(false);
-      const el = scroller.current;
-      if (el) {
-        el.style.scrollBehavior = "smooth";
-      }
-    }
-  }
-
   function handleClickCapture(e: React.MouseEvent) {
-    // If user dragged more than 5px, cancel card link clicks so dragging doesn't navigate
+    // If user dragged more than 4px, cancel card link clicks so dragging doesn't navigate
     if (hasDragged.current) {
       e.preventDefault();
       e.stopPropagation();
-      hasDragged.current = false;
+      setTimeout(() => {
+        hasDragged.current = false;
+      }, 0);
     }
   }
 
@@ -170,9 +163,6 @@ export function HomePros() {
             ref={scroller}
             onScroll={updateScrollState}
             onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
             onClickCapture={handleClickCapture}
             className={cn(
               "-mx-1 flex gap-5 overflow-x-auto scroll-smooth px-1 pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none",
@@ -180,8 +170,14 @@ export function HomePros() {
             )}
           >
             {list.map((pro) => (
-              <div key={pro.id} className="pointer-events-auto">
-                <ProCard pro={pro} className="w-[270px] shrink-0 sm:w-[290px]" />
+              <div
+                key={pro.id}
+                className={cn(
+                  "shrink-0",
+                  isDragging && "pointer-events-none select-none"
+                )}
+              >
+                <ProCard pro={pro} className="w-[270px] sm:w-[290px]" />
               </div>
             ))}
           </div>
