@@ -1,64 +1,128 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { ProCard } from "@/components/shared/pro-card";
 import { professionals } from "@/Mockdata";
+import { cn } from "@/lib/cn";
 
 export function HomePros() {
   const list = professionals.filter((pro) => pro.clearance === "cleared");
   const scroller = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hasOverflow, setHasOverflow] = useState(true);
+
+  const updateScrollState = () => {
+    const el = scroller.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    setHasOverflow(maxScroll > 10);
+    const itemWidth = 310; // 290px card + 20px gap
+    const index = Math.round(el.scrollLeft / itemWidth);
+    setActiveIndex(Math.max(0, Math.min(index, list.length - 1)));
+  };
+
+  useEffect(() => {
+    updateScrollState();
+    window.addEventListener("resize", updateScrollState);
+    return () => window.removeEventListener("resize", updateScrollState);
+  }, [list.length]);
 
   function scrollBy(dir: -1 | 1) {
     const el = scroller.current;
     if (!el) return;
-    const amount = Math.min(320, el.clientWidth * 0.85);
-    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const step = el.clientWidth > 960 ? 310 * 2 : 310;
+
+    // Smooth wrap-around so clicking always yields a responsive action
+    if (dir === 1 && el.scrollLeft >= maxScroll - 15) {
+      el.scrollTo({ left: 0, behavior: "smooth" });
+    } else if (dir === -1 && el.scrollLeft <= 15) {
+      el.scrollTo({ left: maxScroll, behavior: "smooth" });
+    } else {
+      el.scrollBy({ left: dir * step, behavior: "smooth" });
+    }
+  }
+
+  function scrollToIndex(index: number) {
+    const el = scroller.current;
+    if (!el) return;
+    el.scrollTo({ left: index * 310, behavior: "smooth" });
   }
 
   return (
     <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
       <div className="container-site">
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 pb-2">
           <SectionHeading
-            align="center"
+            align="left"
             eyebrow="Verified Network"
             title="Reviewed local pros ready for work"
             description="Explore background-checked specialists across Austin. Free to browse without creating an account."
           />
+
+          {/* Ergonomic Header Navigation Cluster: Zero Card Overlap */}
+          <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-end">
+            <span className="font-sans text-xs font-medium text-[#757575] mr-1.5">
+              <span className="font-semibold text-title">{activeIndex + 1}</span> of {list.length} pros
+            </span>
+            <button
+              type="button"
+              aria-label="Previous professionals"
+              title="Previous"
+              onClick={() => scrollBy(-1)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line/90 bg-white text-title shadow-xs transition-all duration-200 hover:scale-105 hover:bg-white hover:text-primary hover:border-primary/40 hover:shadow-md active:scale-95 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden"
+            >
+              <ChevronLeft className="h-4.5 w-4.5" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next professionals"
+              title="Next"
+              onClick={() => scrollBy(1)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line/90 bg-white text-title shadow-xs transition-all duration-200 hover:scale-105 hover:bg-white hover:text-primary hover:border-primary/40 hover:shadow-md active:scale-95 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden"
+            >
+              <ChevronRight className="h-4.5 w-4.5" />
+            </button>
+          </div>
         </div>
 
-        <div className="relative mt-14 sm:mt-16">
-          <button
-            type="button"
-            aria-label="Scroll left"
-            onClick={() => scrollBy(-1)}
-            className="absolute -left-3 sm:-left-5 top-[88px] z-10 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-primary shadow-md hover:bg-smoke md:grid"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            aria-label="Scroll right"
-            onClick={() => scrollBy(1)}
-            className="absolute -right-3 sm:-right-5 top-[88px] z-10 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-primary shadow-md hover:bg-smoke md:grid"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-
+        <div className="relative mt-8 sm:mt-10">
+          {/* Scrollable track with touch & wheel support */}
           <div
             ref={scroller}
-            className="-mx-1 flex gap-5 overflow-x-auto scroll-smooth px-1 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            onScroll={updateScrollState}
+            className="-mx-1 flex gap-5 overflow-x-auto scroll-smooth px-1 pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {list.map((pro) => (
               <ProCard key={pro.id} pro={pro} className="w-[270px] shrink-0 sm:w-[290px]" />
             ))}
           </div>
+
+          {/* Slide Indicator Dots */}
+          {hasOverflow && (
+            <div className="mt-6 flex items-center justify-center gap-1.5">
+              {list.map((pro, idx) => (
+                <button
+                  key={pro.id}
+                  type="button"
+                  aria-label={`Go to professional ${idx + 1}`}
+                  onClick={() => scrollToIndex(idx)}
+                  className={cn(
+                    "h-2 rounded-full transition-all duration-300",
+                    activeIndex === idx
+                      ? "w-7 bg-primary"
+                      : "w-2 bg-line hover:bg-title/30",
+                  )}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="mt-14 sm:mt-16 text-center">
+        <div className="mt-12 sm:mt-14 text-center">
           <Button href="/browse-pros" variant="ghost">
             Browse all pros ↗
           </Button>

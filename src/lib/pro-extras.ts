@@ -32,6 +32,26 @@ export const portfolios: Record<string, PortfolioItem[]> = {
     "Trim and door refresh",
     "Clean edge wall finish",
   ]),
+  "pro-5": shots("handyman", [
+    "Drywall patch & texture",
+    "Cabinet hardware mounting",
+    "Interior door realignment",
+  ]),
+  "pro-6": shots("appliance-repair", [
+    "Refrigerator compressor fix",
+    "Washer pump replacement",
+    "Dishwasher seal service",
+  ]),
+  "pro-7": shots("roofing", [
+    "Shingle leak repair",
+    "Flashing reseal",
+    "Seamless gutter install",
+  ]),
+  "pro-8": shots("landscaping", [
+    "Garden bed grading",
+    "Seasonal yard cleanup",
+    "Residential turf refresh",
+  ]),
 };
 
 export const serviceLines: Record<string, string[]> = {
