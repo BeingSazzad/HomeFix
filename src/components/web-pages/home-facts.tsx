@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeDollarSign, ShieldCheck, CalendarDays, Star } from "lucide-react";
+import { BadgeDollarSign, ShieldCheck, Receipt, Star } from "lucide-react";
 
 const metrics = [
   {
@@ -19,7 +19,7 @@ const metrics = [
     value: "0%",
     label: "Invoice markup or cut",
     subtext: "You pay your technician directly",
-    icon: CalendarDays,
+    icon: Receipt,
   },
   {
     value: "4.9★",

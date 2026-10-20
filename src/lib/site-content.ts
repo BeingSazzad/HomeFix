@@ -101,7 +101,7 @@ export const plans: PlanItem[] = [
     features: [
       { text: "All Pro Monthly features included", icon: "check" },
       { text: "Priority search placement in pro search", icon: "award" },
-      { text: "Featured contractor profile badge", icon: "sparkles" },
+      { text: "Featured contractor profile badge", icon: "badgeCheck" },
       { text: "Dedicated local Austin support line", icon: "phone" },
       { text: "Quarterly job request analytics", icon: "trending" },
     ],

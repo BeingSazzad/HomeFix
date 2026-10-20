@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Zap } from "lucide-react";
+import { Check, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
 import { cn } from "@/lib/cn";
@@ -75,7 +75,7 @@ export function HomeAbout() {
           {/* Floating Badge */}
           <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2.5 rounded-full border border-black/5 bg-white/95 px-4 py-2.5 shadow-xl backdrop-blur-md">
             <span className="grid h-7 w-7 place-items-center rounded-full bg-primary text-white">
-              <Zap className="h-3.5 w-3.5" />
+              <Clock className="h-3.5 w-3.5 text-white" />
             </span>
             <p className="font-display text-xs font-bold text-title">Fast local response</p>
           </div>

@@ -4,12 +4,12 @@ import { useState } from "react";
 import {
   ClipboardList,
   FileCheck2,
-  MessagesSquare,
-  Search,
   ShieldCheck,
   UserPlus,
   Wallet,
-  Wrench,
+  CalendarDays,
+  CreditCard,
+  Star,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -52,13 +52,13 @@ const journeys: Record<
         n: "02",
         title: "Receive itemized quotes",
         text: "Cleared local contractors in your neighborhood review the details and submit price estimates.",
-        icon: Search,
+        icon: FileCheck2,
       },
       {
         n: "03",
         title: "Compare bids & ratings",
         text: "Inspect labor, parts, estimated arrival times, and verified neighbor reviews in one private dashboard.",
-        icon: MessagesSquare,
+        icon: Star,
       },
       {
         n: "04",
@@ -91,13 +91,13 @@ const journeys: Record<
         n: "03",
         title: "Enjoy 3 months free",
         text: "Quote homeowner jobs in your area with zero platform fees or commissions during your free trial.",
-        icon: FileCheck2,
+        icon: CalendarDays,
       },
       {
         n: "04",
         title: "Flat monthly membership",
         text: "After your trial, continue for just $19.99/mo flat. Quote unlimited jobs and keep every dollar you charge.",
-        icon: Wrench,
+        icon: CreditCard,
       },
     ],
     cta: { href: "/pro-register", label: "Apply as a pro ↗" },

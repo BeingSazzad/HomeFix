@@ -5,7 +5,6 @@ import {
   ClipboardList,
   MapPin,
   Search,
-  Sparkles,
   Star,
   TriangleAlert,
   Wrench,
@@ -193,7 +192,7 @@ export function HomeHero() {
             <div className="flex items-center justify-between border-b border-line/60 pb-3.5">
               <div className="flex items-center gap-2">
                 <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary/10 text-primary">
-                  {mode === "ai" ? <Sparkles className="h-4 w-4" /> : <Search className="h-4 w-4" />}
+                  {mode === "ai" ? <Wrench className="h-4 w-4" /> : <Search className="h-4 w-4" />}
                 </span>
                 <h2 className="font-geist text-[17px] sm:text-[19px] font-medium tracking-tight text-title">
                   {mode === "ai" ? "What needs fixing?" : "Select your trade"}

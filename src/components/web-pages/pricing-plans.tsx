@@ -10,7 +10,7 @@ import {
   Briefcase,
   MessagesSquare,
   Zap,
-  Sparkles,
+  BadgeCheck,
   Award,
   Phone,
   TrendingUp,
@@ -39,8 +39,9 @@ function getPlanIcon(name: string) {
       return MessagesSquare;
     case "zap":
       return Zap;
+    case "badgeCheck":
     case "sparkles":
-      return Sparkles;
+      return BadgeCheck;
     case "award":
       return Award;
     case "phone":
