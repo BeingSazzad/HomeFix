@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  ArrowUpRight,
   Briefcase,
   MapPin,
   Repeat,
@@ -22,8 +21,6 @@ import { saveDraft } from "@/redux/slices/intakeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { postJobHref } from "@/lib/role-access";
 import { cn } from "@/lib/cn";
-
-
 
 const EMERGENCY_PATTERNS = [
   "gas leak",
@@ -255,18 +252,18 @@ export function HomeHero() {
                 <div className="space-y-2 pt-1">
                   <Button
                     href="/pro/jobs"
-                    size="lg"
-                    className="w-full text-sm font-semibold rounded-xl h-11 shadow-xs justify-center"
+                    size="md"
+                    className="w-full justify-center shadow-xs"
                   >
-                    Browse Available Jobs Board <ArrowUpRight className="h-4 w-4 ml-1" />
+                    Browse Available Jobs Board ↗
                   </Button>
                   <Button
                     href="/pro/messages"
                     variant="ghost"
                     size="sm"
-                    className="w-full justify-center text-xs"
+                    className="w-full justify-center"
                   >
-                    Open Client Messages
+                    Open Client Messages ↗
                   </Button>
                 </div>
 
@@ -378,8 +375,8 @@ export function HomeHero() {
                 <div className="pt-1">
                   <Button
                     type="button"
-                    size="lg"
-                    className="w-full text-sm font-semibold rounded-xl h-11 shadow-xs transition-all hover:shadow-md"
+                    size="md"
+                    className="w-full justify-center shadow-xs transition-all hover:shadow-md"
                     onClick={handleSummarize}
                   >
                     {mode === "ai" ? "Review My Request ↗" : "Find Matching Pros ↗"}

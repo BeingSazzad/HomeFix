@@ -480,7 +480,7 @@ function BookingFlow() {
               href={`/browse-pros/${invitedPro.id}`}
               className="text-xs font-semibold text-primary hover:underline shrink-0 self-start sm:self-auto"
             >
-              View Full Profile →
+              View Full Profile ↗
             </Link>
           </div>
         </Card>

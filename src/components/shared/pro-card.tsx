@@ -93,16 +93,16 @@ export function ProCard({
       </div>
 
       {/* 2. Card Content Body */}
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-5 pb-4.5">
         {/* Category Row */}
         <div className="flex items-center gap-2 text-xs">
-          <span className="inline-flex items-center rounded-md bg-smoke px-2.5 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider text-primary">
+          <span className="inline-flex items-center rounded-full bg-smoke px-2.5 py-1 font-sans text-[11px] font-semibold uppercase tracking-wider text-primary">
             {pro.trade}
           </span>
         </div>
 
         {/* Pro Name as Main Title with Verified Shield */}
-        <h3 className="mt-3 font-display text-[17px] font-semibold text-title tracking-tight leading-snug transition-colors group-hover:text-primary flex items-center gap-1.5">
+        <h3 className="mt-2.5 font-display text-[17px] font-semibold text-title tracking-tight leading-snug transition-colors group-hover:text-primary flex items-center gap-1.5">
           <span className="truncate">{pro.name}</span>
           <span title="Screened & Verified Professional" className="inline-flex shrink-0">
             <ShieldCheck
@@ -128,23 +128,23 @@ export function ProCard({
           <span className="h-1 w-1 rounded-full bg-muted/40" />
           <span className="font-medium text-copy">{pro.jobsCompleted} jobs</span>
         </div>
+      </div>
 
-        {/* 3. Card Footer with Rock-Solid Alignment (mt-auto) */}
-        <div className="mt-auto pt-4 border-t border-line/70">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="block text-[11px] font-medium text-muted leading-none">
-                From
-              </span>
-              <span className="mt-1.5 block font-display text-[17px] font-bold text-title leading-none">
-                ${pro.startingPrice}
-              </span>
-            </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-smoke px-3.5 py-1.5 text-xs font-semibold text-primary transition-all duration-200 group-hover:bg-primary group-hover:text-white group-hover:shadow-xs">
-              {isOwner ? "Preview storefront" : "View profile"}
-              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+      {/* 3. Card Footer with Full-Bleed Border & Proper Standard Spacing */}
+      <div className="mt-auto border-t border-line/70 bg-white px-5 py-3.5">
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="block text-[11px] font-medium text-muted leading-none">
+              From
+            </span>
+            <span className="mt-1.5 block font-display text-[17px] font-bold text-title leading-none">
+              ${pro.startingPrice}
             </span>
           </div>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-smoke px-3.5 py-1.5 text-xs font-semibold text-primary transition-all duration-200 group-hover:bg-primary group-hover:text-white group-hover:shadow-xs">
+            {isOwner ? "Preview storefront" : "View profile"}
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </span>
         </div>
       </div>
     </Link>

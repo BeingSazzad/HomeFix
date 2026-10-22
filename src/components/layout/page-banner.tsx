@@ -35,7 +35,7 @@ export function PageBanner({
       <div
         className={cn(
           "container-site relative py-12 md:py-16",
-          centered && "mx-auto max-w-3xl text-center",
+          centered && "mx-auto max-w-4xl text-center",
         )}
       >
         <nav
@@ -65,7 +65,7 @@ export function PageBanner({
         <h1
           className={cn(
             "mt-3.5 font-display text-[30px] font-semibold leading-[1.15] tracking-tight text-white sm:text-[38px] md:text-[44px]",
-            centered ? "mx-auto max-w-2xl text-center" : "max-w-2xl",
+            centered ? "mx-auto max-w-3xl text-center" : "max-w-3xl",
           )}
         >
           {title}
@@ -73,7 +73,7 @@ export function PageBanner({
         {description ? (
           <p
             className={cn(
-              "mt-2.5 max-w-3xl font-sans text-sm sm:text-base text-white/90",
+              "mt-2.5 max-w-4xl font-sans text-sm sm:text-base text-white/90 whitespace-normal sm:whitespace-nowrap",
               centered && "mx-auto text-center",
             )}
           >

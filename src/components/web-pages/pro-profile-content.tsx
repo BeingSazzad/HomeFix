@@ -272,15 +272,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               </div>
 
               <div className="space-y-1 pt-1 sm:pt-2">
-                <div className="flex items-center gap-2.5">
-                  <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title leading-tight">
-                    {pro.name}
-                  </h1>
-                  <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200">
-                    <CheckCircle2 className="h-3 w-3" />
-                    Verified Pro
-                  </span>
-                </div>
+                <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title leading-tight">
+                  {pro.name}
+                </h1>
 
                 {/* Clean, Non-repetitive Meta Line */}
                 <div className="font-sans text-xs sm:text-sm text-copy flex flex-wrap items-center gap-2">
@@ -414,9 +408,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   <Button
                     href={quoteHref}
                     size="sm"
-                    className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shrink-0 self-start sm:self-auto"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shrink-0 self-start sm:self-auto"
                   >
-                    Claim Offer
+                    Claim Offer ↗
                   </Button>
                 )}
               </div>
@@ -496,7 +490,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                           href={`${quoteHref}&service=${encodeURIComponent(srv.name)}`}
                           className="font-semibold text-primary hover:underline inline-flex items-center gap-0.5"
                         >
-                          Request quote →
+                          Request quote ↗
                         </Link>
                       )}
                     </div>
@@ -796,12 +790,12 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-2 pt-1">
+            <div className="space-y-2.5 pt-1">
               {quoteHref ? (
                 <Button
                   href={quoteHref}
-                  size="lg"
-                  className="w-full justify-center text-xs sm:text-sm font-semibold rounded-xl shadow-xs"
+                  size="md"
+                  className="w-full justify-center shadow-xs"
                 >
                   Request a Free Quote ↗
                 </Button>
@@ -811,11 +805,11 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 <Button
                   href={messageHref}
                   variant="ghost"
-                  size="lg"
-                  className="w-full justify-center text-xs sm:text-sm font-semibold rounded-xl"
+                  size="md"
+                  className="w-full justify-center"
                 >
-                  <MessageSquare className="h-3.5 w-3.5 mr-1.5" />
-                  Message Directly
+                  <MessageSquare className="h-4 w-4 mr-1" />
+                  Message Directly ↗
                 </Button>
               ) : null}
             </div>

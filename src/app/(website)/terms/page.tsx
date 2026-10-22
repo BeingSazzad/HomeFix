@@ -46,7 +46,7 @@ export default function TermsPage() {
     <>
       <PageBanner
         title="Terms & Conditions"
-        description="Clear rules, responsibilities, and standards for homeowners and independent service professionals."
+        description="Rules and service standards for homeowners and independent trade professionals."
         image={photos.banners.legal}
         breadcrumbs={[
           { label: "Home", href: "/" },

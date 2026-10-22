@@ -5,11 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Check,
+  DollarSign,
+  Star,
   Wrench,
   Zap,
-  DollarSign,
-  ArrowRight,
-  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageBanner } from "@/components/layout/page-banner";
@@ -174,14 +173,13 @@ export function AboutContent() {
               {/* Call to Action Button */}
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Button href="/browse-pros" size="lg">
-                  Browse Verified Pros
-                  <ArrowRight className="ml-1.5 h-4 w-4" />
+                  Browse Verified Pros ↗
                 </Button>
                 <Link
                   href="/how-it-works"
                   className="font-geist text-sm font-medium text-[#555] hover:text-primary transition-colors px-2 py-2"
                 >
-                  See how it works →
+                  See how it works ↗
                 </Link>
               </div>
             </div>
@@ -330,7 +328,7 @@ export function AboutContent() {
         <div className="pointer-events-none absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
         <div className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
 
-        <div className="container-site relative z-10 text-center max-w-3xl mx-auto">
+        <div className="container-site relative z-10 text-center max-w-5xl mx-auto">
           <div className="inline-flex items-center gap-2 font-geist text-[13px] font-medium tracking-tight text-white/90">
             <span
               aria-hidden="true"
@@ -338,7 +336,7 @@ export function AboutContent() {
             />
             <span>Ready to get started?</span>
           </div>
-          <h2 className="mt-3.5 font-geist text-[30px] sm:text-[38px] md:text-[44px] font-medium leading-[1.15] tracking-[-1.5px] sm:tracking-[-2px] text-white">
+          <h2 className="mt-3.5 font-geist text-[24px] sm:text-[30px] md:text-[36px] lg:text-[42px] font-medium leading-[1.15] tracking-[-1px] sm:tracking-[-1.5px] text-white whitespace-normal sm:whitespace-nowrap">
             Experience Stress-Free{" "}
             <span className="text-secondary font-medium">Home Repairs</span> Today
           </h2>
@@ -347,8 +345,7 @@ export function AboutContent() {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-xs sm:max-w-none mx-auto">
             <Button href={postJobHref(user)} size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white">
-              Post a Job for Free
-              <ArrowRight className="ml-2 h-4 w-4" />
+              Post a Job for Free ↗
             </Button>
             <Button
               href="/signup?role=pro"
@@ -356,7 +353,7 @@ export function AboutContent() {
               size="lg"
               className="w-full sm:w-auto"
             >
-              Join as a Contractor
+              Join as a Contractor ↗
             </Button>
           </div>
         </div>

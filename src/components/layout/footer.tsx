@@ -43,21 +43,11 @@ const groups = [
 
 const socials = [
   {
-    href: "mailto:admin@localhomefix.com",
-    label: "Email",
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-        <rect x="3" y="5" width="18" height="14" rx="0" />
-        <path d="m3 7 9 6 9-6" />
-      </svg>
-    ),
-  },
-  {
     href: "https://www.facebook.com/localhomefix",
     label: "Facebook",
     icon: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
-        <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1Z" />
+      <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+        <path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.361H7.332v3.209h2.753v8.196h3.312z" />
       </svg>
     ),
   },
@@ -65,10 +55,10 @@ const socials = [
     href: "https://www.instagram.com/localhomefix",
     label: "Instagram",
     icon: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-        <rect x="3" y="3" width="18" height="18" />
-        <circle cx="12" cy="12" r="4" />
-        <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeWidth="2" />
       </svg>
     ),
   },
@@ -76,8 +66,17 @@ const socials = [
     href: "https://www.linkedin.com/company/localhomefix",
     label: "LinkedIn",
     icon: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
-        <path d="M6.5 9H4v11h2.5V9ZM5.2 4C4.3 4 3.6 4.7 3.6 5.6s.7 1.6 1.6 1.6 1.6-.7 1.6-1.6S6.2 4 5.2 4ZM20 20h-2.5v-5.6c0-1.6-.6-2.4-1.8-2.4-1.2 0-1.9.8-1.9 2.4V20H11V9h2.4v1.5c.5-.9 1.5-1.7 3.1-1.7 2.2 0 3.5 1.4 3.5 4.3V20Z" />
+      <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+        <path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z" />
+      </svg>
+    ),
+  },
+  {
+    href: "https://x.com/localhomefix",
+    label: "X",
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
       </svg>
     ),
   },

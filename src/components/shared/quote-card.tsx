@@ -391,7 +391,7 @@ export function QuoteCard({
               href="/account/messages"
               className="inline-flex items-center gap-1 font-display text-sm font-bold text-primary hover:underline"
             >
-              Open messages →
+              Open messages ↗
             </Link>
           </div>
         </div>

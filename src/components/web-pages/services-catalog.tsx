@@ -25,9 +25,9 @@ export function ServicesCatalog() {
           ))}
         </div>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <Button href="/browse-pros">Browse all pros</Button>
+          <Button href="/browse-pros">Browse all pros ↗</Button>
           <Button href={postJobHref(user)} variant="ghost">
-            Post a request
+            Post a request ↗
           </Button>
         </div>
       </div>

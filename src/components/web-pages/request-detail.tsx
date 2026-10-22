@@ -318,7 +318,7 @@ export function RequestDetail({
                 onClick={() => setShowSettleModal(true)}
                 className="shrink-0 rounded-full font-semibold shadow-xs"
               >
-                Confirm &amp; Settle Direct →
+                Confirm &amp; Settle Direct ↗
               </Button>
             ) : null}
           </div>

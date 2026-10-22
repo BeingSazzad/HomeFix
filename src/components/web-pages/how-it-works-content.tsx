@@ -70,7 +70,7 @@ const journeys: Record<
       },
     ],
     cta: { href: "/login?next=%2Faccount%2Fpost-job", label: "Post a job free ↗" },
-    secondary: { href: "/browse-pros", label: "Browse pros first" },
+    secondary: { href: "/browse-pros", label: "Browse pros first ↗" },
   },
   pro: {
     eyebrow: "For Contractors & Pros",
@@ -103,7 +103,7 @@ const journeys: Record<
       },
     ],
     cta: { href: "/pro-register", label: "Apply as a pro ↗" },
-    secondary: { href: "/#pricing", label: "See pricing breakdown" },
+    secondary: { href: "/#pricing", label: "See pricing breakdown ↗" },
   },
 };
 
@@ -118,7 +118,7 @@ export function HowItWorksContent() {
       <PageBanner
         eyebrow="How It Works"
         title="Simple, transparent home repairs"
-        description="Whether you're fixing a leak or growing your contractor business, LocalHomeFix keeps the process direct and commission-free."
+        description="Direct, transparent, and commission-free home repairs for Austin homeowners and trade pros."
         image={photos.banners.how}
       />
 
@@ -163,7 +163,7 @@ export function HowItWorksContent() {
                 text: journey.secondary?.label
                   ? `Or ${journey.secondary.label.toLowerCase()}.`
                   : "Continue when you are ready.",
-                linkLabel: `${journey.cta.label} →`,
+                linkLabel: `${journey.cta.label} ↗`,
               }}
             />
           </div>

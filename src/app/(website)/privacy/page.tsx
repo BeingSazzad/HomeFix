@@ -46,7 +46,7 @@ export default function PrivacyPage() {
     <>
       <PageBanner
         title="Privacy Policy"
-        description="How LocalHomeFix collects, protects, and handles personal data, screening records, and account activity."
+        description="How LocalHomeFix protects and manages your personal data and privacy."
         image={photos.banners.legal}
         breadcrumbs={[
           { label: "Home", href: "/" },

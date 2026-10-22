@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { getCategory, urgencyLabels } from "@/Mockdata";
 import { photos } from "@/lib/media";
@@ -66,8 +66,7 @@ export function JobCard({
         <div className="mt-3 flex items-center justify-between pt-2 border-t border-line/40">
           <span className="text-[11px] text-muted">Posted {job.postedAt}</span>
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary group-hover:underline">
-            {actionLabel}
-            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            {actionLabel} ↗
           </span>
         </div>
       </div>
