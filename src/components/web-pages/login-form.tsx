@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field, TextField } from "@/components/ui/field";
 import { PasswordField } from "@/components/ui/password-field";
+import { GoogleIcon } from "@/components/ui/google-icon";
 import { AuthLinks } from "@/components/web-pages/auth-links";
 import { cn } from "@/lib/cn";
 import { loginAs } from "@/redux/slices/authSlice";
@@ -44,6 +45,16 @@ export function LoginForm() {
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
+    setError("");
+    dispatch(loginAs(role));
+    if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {
+      router.push(nextPath);
+      return;
+    }
+    router.push(role === "pro" ? "/pro" : "/account");
+  }
+
+  function handleGoogleSignIn() {
     setError("");
     dispatch(loginAs(role));
     if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {
@@ -133,6 +144,26 @@ export function LoginForm() {
           Sign in ↗
         </Button>
       </form>
+
+      {/* Or Divider */}
+      <div className="relative my-5 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-line/80" />
+        </div>
+        <span className="relative bg-white px-3 font-display text-xs font-medium uppercase tracking-wider text-muted">
+          Or
+        </span>
+      </div>
+
+      {/* Google Sign In Button */}
+      <button
+        type="button"
+        onClick={handleGoogleSignIn}
+        className="flex w-full items-center justify-center gap-2.5 rounded-full border border-line bg-white px-5 py-3 font-display text-sm font-semibold text-title shadow-2xs transition-all duration-200 hover:bg-smoke/70 hover:border-line hover:shadow-xs active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary cursor-pointer"
+      >
+        <GoogleIcon className="h-4.5 w-4.5" />
+        <span>Continue with Google ↗</span>
+      </button>
 
       <AuthLinks prompt="Don't have an account?" href={signupHrefWithNext} label="Sign up free ↗" />
     </Card>
