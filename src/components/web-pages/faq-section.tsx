@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight, Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { faqs as defaultFaqs } from "@/lib/site-content";
+import { faqs as defaultFaqs, homeownerFaqs, proFaqs } from "@/lib/site-content";
 
 export function FaqSection({
   eyebrow = "FAQ",
@@ -19,7 +19,11 @@ export function FaqSection({
   items?: { q: string; a: string }[];
   className?: string;
 }) {
+  const [tab, setTab] = useState<"homeowner" | "pro">("homeowner");
   const [open, setOpen] = useState(0);
+
+  const displayItems =
+    items !== defaultFaqs ? items : tab === "homeowner" ? homeownerFaqs : proFaqs;
 
   return (
     <section id="faq" className={cn("bg-surface py-[var(--section-sm)] md:py-[var(--section)]", className)}>
@@ -42,6 +46,40 @@ export function FaqSection({
             {description}
           </p>
 
+          {/* Dual Tabs Switcher: Homeowners vs Contractors */}
+          <div className="mt-6 inline-flex rounded-full border border-line bg-smoke p-1 shadow-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setTab("homeowner");
+                setOpen(0);
+              }}
+              className={cn(
+                "rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition-all",
+                tab === "homeowner"
+                  ? "bg-primary text-white shadow-xs"
+                  : "text-title hover:text-primary",
+              )}
+            >
+              Homeowner FAQs
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setTab("pro");
+                setOpen(0);
+              }}
+              className={cn(
+                "rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition-all",
+                tab === "pro"
+                  ? "bg-primary text-white shadow-xs"
+                  : "text-title hover:text-primary",
+              )}
+            >
+              Contractor / Pro FAQs
+            </button>
+          </div>
+
           <div className="mt-8">
             <Link
               href="/contact"
@@ -57,7 +95,7 @@ export function FaqSection({
 
         {/* Right Column: Clean floating white cards with plus/minus toggles */}
         <div className="space-y-3.5 sm:space-y-4">
-          {items.map((item, index) => {
+          {displayItems.map((item, index) => {
             const active = open === index;
             return (
               <div

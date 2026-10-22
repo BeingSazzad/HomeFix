@@ -35,85 +35,96 @@ export default function ContactPage() {
       />
 
       <section className="bg-surface/50 py-12 md:py-20 border-b border-line/60">
-        <div className="container-site grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="container-site grid items-stretch gap-8 lg:grid-cols-12 lg:gap-10">
           {/* ========================================================= */}
           {/* LEFT COLUMN: GET IN TOUCH CARD                            */}
           {/* ========================================================= */}
-          <div className="lg:col-span-6 rounded-[28px] border border-line/80 bg-white p-6 sm:p-8 md:p-9 shadow-xs space-y-7">
-            <div>
-              <h2 className="font-display text-2xl sm:text-3xl font-semibold text-title tracking-tight">
-                Get in Touch
-              </h2>
-              <p className="mt-2 text-sm sm:text-[15px] leading-relaxed text-muted">
-                Have questions or need help with a request? Reach out to us directly.
-              </p>
-            </div>
+          <div className="lg:col-span-6 flex flex-col justify-between rounded-[28px] border border-line/80 bg-white p-6 sm:p-8 md:p-9 shadow-xs">
+            <div className="space-y-6 sm:space-y-7">
+              <div>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold text-title tracking-tight">
+                  Get in Touch
+                </h2>
+                <p className="mt-2 text-sm sm:text-[15px] leading-relaxed text-muted">
+                  Have questions or need help with a request? Reach out to us directly.
+                </p>
+              </div>
 
-            {/* Channels List - Clean, Minimal, Elegant Cards */}
-            <div className="space-y-3">
-              {/* Channel 1: Email */}
-              <a
-                href="mailto:admin@localhomefix.com"
-                className="group flex items-center justify-between gap-4 rounded-2xl border border-line/70 bg-white p-4 transition-all duration-200 hover:border-primary/60 hover:shadow-xs"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100 transition-colors group-hover:bg-primary group-hover:text-white">
-                    <Mail className="h-5 w-5" />
+              {/* Channels List - Clean, Minimal, Elegant Cards */}
+              <div className="space-y-3">
+                {/* Channel 1: Email */}
+                <a
+                  href="mailto:admin@localhomefix.com"
+                  className="group flex items-center justify-between gap-4 rounded-2xl border border-line/70 bg-white p-4 transition-all duration-200 hover:border-primary/60 hover:shadow-xs"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100 transition-colors group-hover:bg-primary group-hover:text-white">
+                      <Mail className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
+                        Email
+                      </h3>
+                      <p className="text-sm font-semibold text-title group-hover:text-primary transition-colors">
+                        admin@localhomefix.com
+                      </p>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-muted shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+                </a>
+
+                {/* Channel 2: Phone */}
+                <a
+                  href="tel:5125550140"
+                  className="group flex items-center justify-between gap-4 rounded-2xl border border-line/70 bg-white p-4 transition-all duration-200 hover:border-primary/60 hover:shadow-xs"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100 transition-colors group-hover:bg-primary group-hover:text-white">
+                      <Phone className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
+                        Phone
+                      </h3>
+                      <p className="text-sm font-semibold text-title group-hover:text-primary transition-colors">
+                        (512) 555-0140
+                      </p>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-muted shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+                </a>
+
+                {/* Channel 3: Service Area */}
+                <div className="flex items-center gap-3.5 rounded-2xl border border-line/70 bg-white p-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100">
+                    <MapPin className="h-5 w-5" />
                   </div>
                   <div className="space-y-0.5">
                     <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
-                      Email
+                      Service Area
                     </h3>
-                    <p className="text-sm font-semibold text-title group-hover:text-primary transition-colors">
-                      admin@localhomefix.com
+                    <p className="text-sm font-semibold text-title">
+                      Austin, TX &amp; surrounding areas
                     </p>
                   </div>
-                </div>
-                <ArrowUpRight className="h-4 w-4 text-muted shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
-              </a>
-
-              {/* Channel 2: Phone */}
-              <a
-                href="tel:5125550140"
-                className="group flex items-center justify-between gap-4 rounded-2xl border border-line/70 bg-white p-4 transition-all duration-200 hover:border-primary/60 hover:shadow-xs"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100 transition-colors group-hover:bg-primary group-hover:text-white">
-                    <Phone className="h-5 w-5" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
-                      Phone
-                    </h3>
-                    <p className="text-sm font-semibold text-title group-hover:text-primary transition-colors">
-                      (512) 555-0140
-                    </p>
-                  </div>
-                </div>
-                <ArrowUpRight className="h-4 w-4 text-muted shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
-              </a>
-
-              {/* Channel 3: Service Area */}
-              <div className="flex items-center gap-3.5 rounded-2xl border border-line/70 bg-white p-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100">
-                  <MapPin className="h-5 w-5" />
-                </div>
-                <div className="space-y-0.5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
-                    Service Area
-                  </h3>
-                  <p className="text-sm font-semibold text-title">
-                    Austin, TX &amp; surrounding areas
-                  </p>
                 </div>
               </div>
+            </div>
+
+            {/* Support Hours Card - Fills space seamlessly */}
+            <div className="mt-6 rounded-2xl border border-line/60 bg-surface/60 p-4.5 text-xs text-muted">
+              <p className="font-semibold text-title">Support Hours</p>
+              <p className="mt-1 leading-relaxed">
+                Monday – Saturday: 8:00 AM – 7:00 PM CST<br />
+                Sunday: Closed (Emergency inquiries monitored)
+              </p>
             </div>
           </div>
 
           {/* ========================================================= */}
           {/* RIGHT COLUMN: SEND MESSAGE FORM                           */}
           {/* ========================================================= */}
-          <div className="lg:col-span-6 rounded-[28px] border border-line/80 bg-white p-6 sm:p-8 md:p-9 shadow-xs space-y-6">
+          <div className="lg:col-span-6 flex flex-col justify-between rounded-[28px] border border-line/80 bg-white p-6 sm:p-8 md:p-9 shadow-xs space-y-6">
             <div>
               <h2 className="font-display text-2xl sm:text-3xl font-semibold text-title tracking-tight">
                 Send a Message
@@ -158,7 +169,7 @@ export default function ContactPage() {
                 </Field>
 
                 <Button type="submit" size="lg" className="w-full justify-center rounded-full shadow-xs">
-                  Send Message
+                  Send Message ↗
                 </Button>
               </form>
             )}

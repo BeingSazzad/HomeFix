@@ -21,10 +21,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             Browse free. Account only when you need to act.
           </h2>
           <p className="mt-3 font-sans text-[14px] sm:text-[15px] leading-relaxed !text-white/80">
-            Sign up to post a job or apply as a pro. You pay your technician directly upon completion.
+            Sign in to post a request, compare quotes, or manage jobs. New here? You can create a free account in 30 seconds.
           </p>
         </div>
-        <p className="relative text-sm !text-white/60">No repair payments collected here.</p>
       </aside>
 
       <div className="flex flex-col bg-surface px-5 py-10 md:px-10">

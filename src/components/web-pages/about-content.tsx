@@ -196,30 +196,6 @@ export function AboutContent() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
               </div>
-
-              {/* Floating $0 Fee Pill Badge */}
-              <div className="absolute top-5 right-5 rounded-[16px] bg-primary px-4 py-3 text-white shadow-xl">
-                <p className="font-geist text-[24px] font-bold leading-none">$0</p>
-                <p className="mt-0.5 text-[11px] font-medium text-white/90">
-                  Platform Fee
-                </p>
-              </div>
-
-              {/* Floating Pro Testimonial Badge */}
-              <div className="absolute -bottom-4 left-4 sm:left-6 rounded-[18px] border border-line/80 bg-white/95 p-3.5 shadow-xl backdrop-blur-md max-w-[280px]">
-                <div className="flex items-center gap-1 text-amber-500">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                  ))}
-                  <span className="ml-1.5 font-geist text-xs font-semibold text-title">5.0</span>
-                </div>
-                <p className="mt-1 font-sans text-[12px] leading-snug text-[#555]">
-                  &ldquo;Direct communication saved us $450 on our water heater replacement.&rdquo;
-                </p>
-                <p className="mt-1 font-geist text-[11px] font-medium text-title">
-                  — Austin Homeowner in Travis Heights
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -348,7 +324,7 @@ export function AboutContent() {
               Post a Job for Free ↗
             </Button>
             <Button
-              href="/signup?role=pro"
+              href="/login?role=pro"
               variant="onDark"
               size="lg"
               className="w-full sm:w-auto"

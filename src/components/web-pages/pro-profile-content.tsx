@@ -57,7 +57,6 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
   const effectiveBio = isDemoPro && proProfile?.bio ? proProfile.bio : pro.bio;
   const effectiveStartingPrice = isDemoPro && proProfile?.startingPrice ? proProfile.startingPrice : pro.startingPrice;
 
-  const displaySpecialOffer = isDemoPro && proProfile?.specialOffer?.active ? proProfile.specialOffer : null;
   const displayServices = isDemoPro && proProfile?.services?.length ? proProfile.services : null;
 
   const cover = photos.services[pro.categorySlug] ?? photos.banner;
@@ -387,34 +386,6 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           {/* SECTION 1: SERVICES & UPFRONT RATES                         */}
           {/* ============================================================ */}
           <section id="sec-services" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-6">
-            {/* Promotional Offer Banner (Clean & Subtle) */}
-            {displaySpecialOffer && (
-              <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white font-bold text-xs">
-                    {displaySpecialOffer.discount}
-                  </div>
-                  <div>
-                    <h3 className="font-display text-sm font-bold text-emerald-950">
-                      {displaySpecialOffer.title}
-                    </h3>
-                    <p className="text-xs text-emerald-800/80 leading-relaxed">
-                      First-time residential customers · Applied directly to initial quote
-                    </p>
-                  </div>
-                </div>
-
-                {quoteHref && (
-                  <Button
-                    href={quoteHref}
-                    size="sm"
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shrink-0 self-start sm:self-auto"
-                  >
-                    Claim Offer ↗
-                  </Button>
-                )}
-              </div>
-            )}
 
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <div>

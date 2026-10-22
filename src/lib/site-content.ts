@@ -1,4 +1,4 @@
-export const faqs = [
+export const homeownerFaqs = [
   {
     q: "Do I need an account to browse contractors?",
     a: "No. You can freely explore verified local contractor profiles, read authentic customer reviews, and check past project photos without creating an account. You only need a free account when you're ready to post a job and receive competitive bids.",
@@ -31,11 +31,36 @@ export const faqs = [
     q: "What if I'm not sure which trade to pick?",
     a: "Use our 'Describe Issue' tool on the homepage. Just explain what you see, hear, or smell in everyday words, and our system will route it to the right licensed trade (or a trusted handyman).",
   },
+];
+
+export const proFaqs = [
   {
-    q: "Which areas do you currently serve?",
-    a: "We connect homeowners with certified independent trade contractors across metropolitan and regional communities nationwide.",
+    q: "How much does it cost for contractors to join?",
+    a: "We offer a 3-month completely free trial. Afterward, membership is a flat $19.99/month. We charge zero percent commission on your completed jobs and never charge per-lead fees.",
+  },
+  {
+    q: "How do I receive leads and job notifications?",
+    a: "Once cleared, you will receive real-time notifications whenever a homeowner in your service area posts a request in your trade. You can inspect project photos, descriptions, and urgency before submitting an itemized bid.",
+  },
+  {
+    q: "Do you take a cut of my earnings or charge for leads?",
+    a: "No. Unlike other platforms that sell expensive leads to multiple contractors or take a 15–25% cut of every project, LocalHomeFix operates on a transparent, flat monthly membership. You keep 100% of every dollar you charge.",
+  },
+  {
+    q: "What documents do I need to clear verification?",
+    a: "Pros must submit proof of relevant state or municipal trade licensing (for plumbing, electrical, and HVAC), current general liability insurance certificate, and complete standard identity screening.",
+  },
+  {
+    q: "How and when do homeowners pay me?",
+    a: "Homeowners pay you directly upon job completion using your preferred payment methods (cash, check, card, or direct transfer). LocalHomeFix never withholds your funds or charges checkout fees.",
+  },
+  {
+    q: "Can I pause or cancel my membership anytime?",
+    a: "Yes, there are no long-term contracts. You can pause or cancel your subscription at any time directly from your Pro Dashboard settings with one click.",
   },
 ];
+
+export const faqs = homeownerFaqs;
 
 export type PlanFeature = {
   text: string;

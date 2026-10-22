@@ -121,9 +121,8 @@ export function Footer() {
           </div>
         ))}
       </div>
-      <div className="container-site flex flex-wrap items-center justify-between gap-3 py-5 text-xs text-white/50">
+      <div className="container-site py-5 text-center text-xs text-white/50">
         <p>© {new Date().getFullYear()} LocalHomeFix Inc.</p>
-        <p>No deposits or project payments collected by the platform.</p>
       </div>
     </footer>
   );
