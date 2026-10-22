@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field, TextField } from "@/components/ui/field";
 import { PasswordField } from "@/components/ui/password-field";
+import { GoogleIcon } from "@/components/ui/google-icon";
 import { AuthLinks } from "@/components/web-pages/auth-links";
 import { loginAs } from "@/redux/slices/authSlice";
 import { setEmailVerified, setPhoneVerified } from "@/redux/slices/featuresSlice";
@@ -65,6 +66,30 @@ export function SignupForm() {
           email: email.trim() || "alex@example.com",
           phone: phone.trim() || "(512) 555-0199",
           zip: zip.trim() || "78701",
+          city: "Austin",
+          state: "TX",
+        },
+      }),
+    );
+    dispatch(setEmailVerified(true));
+    dispatch(setPhoneVerified(true));
+    if (nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")) {
+      router.push(nextPath);
+      return;
+    }
+    router.push(draft.summary ? "/account/post-job" : "/account");
+  }
+
+  function handleGoogleSignUp() {
+    setError("");
+    dispatch(
+      loginAs({
+        role: "homeowner",
+        profile: {
+          name: "Alex Mercer",
+          email: "alex.mercer@gmail.com",
+          phone: "(512) 555-0199",
+          zip: draft.zip || "78701",
           city: "Austin",
           state: "TX",
         },
@@ -320,6 +345,26 @@ export function SignupForm() {
           Continue to OTP ↗
         </Button>
       </form>
+
+      {/* Or Divider */}
+      <div className="relative my-4 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-line/80" />
+        </div>
+        <span className="relative bg-white px-3 font-display text-xs font-medium uppercase tracking-wider text-muted">
+          Or
+        </span>
+      </div>
+
+      {/* Google Sign Up Button */}
+      <button
+        type="button"
+        onClick={handleGoogleSignUp}
+        className="flex w-full items-center justify-center gap-2.5 rounded-full border border-line bg-white px-5 py-3 font-display text-sm font-semibold text-title shadow-2xs transition-all duration-200 hover:bg-smoke/70 hover:border-line hover:shadow-xs active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary cursor-pointer"
+      >
+        <GoogleIcon className="h-4.5 w-4.5" />
+        <span>Continue with Google ↗</span>
+      </button>
 
       <AuthLinks
         prompt="Already have an account?"

@@ -9,9 +9,7 @@ import {
   Calendar,
   ShieldCheck,
   MapPin,
-  ArrowRight,
 } from "lucide-react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 

@@ -181,14 +181,14 @@ export default function ProRegisterPage() {
       <div className="mt-6 flex flex-wrap gap-2">
         {step > 0 ? (
           <Button type="button" variant="ghost" onClick={() => setStep((value) => value - 1)}>
-            Back
+            ← Back
           </Button>
         ) : null}
         <Button type="button" onClick={next}>
-          {step < 2 ? "Next" : "Submit application"}
+          {step < 2 ? "Next ↗" : "Submit application ↗"}
         </Button>
       </div>
-      <AuthLinks prompt="Already have an account?" href="/login?role=pro" label="Sign in" />
+      <AuthLinks prompt="Already have an account?" href="/login?role=pro" label="Sign in ↗" />
     </Card>
   );
 }

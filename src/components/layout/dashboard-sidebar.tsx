@@ -9,23 +9,27 @@ import {
   ChevronRight,
   ClipboardList,
   CreditCard,
+  FileCheck,
   KeyRound,
   LayoutDashboard,
   MessageSquare,
   PlusCircle,
   ShieldCheck,
+  Star,
   UserRound,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 function getSidebarIcon(label: string) {
   const norm = label.toLowerCase();
-  if (norm.includes("dashboard")) return LayoutDashboard;
+  if (norm.includes("dashboard") || norm.includes("overview")) return LayoutDashboard;
   if (norm.includes("post")) return PlusCircle;
   if (norm.includes("request") || norm.includes("job")) return ClipboardList;
   if (norm.includes("message")) return MessageSquare;
   if (norm.includes("saved")) return Bookmark;
   if (norm.includes("notification")) return Bell;
+  if (norm.includes("review")) return Star;
+  if (norm.includes("application")) return FileCheck;
   if (norm.includes("profile")) return UserRound;
   if (norm.includes("security")) return ShieldCheck;
   if (norm.includes("password")) return KeyRound;
