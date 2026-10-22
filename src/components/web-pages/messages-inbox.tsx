@@ -59,8 +59,8 @@ function buildDirectThread(proId: string): MessageThread | null {
   return {
     id: threadId,
     jobId: `dm:${pro.id}`,
-    jobTitle: `Chat with ${pro.businessName}`,
-    otherParty: pro.businessName,
+    jobTitle: `Chat with ${pro.name}`,
+    otherParty: pro.name,
     proId: pro.id,
     unread: 0,
     lastMessage: "Say hello and share photos of the job.",
@@ -71,8 +71,8 @@ function buildDirectThread(proId: string): MessageThread | null {
       {
         id: `${threadId}-0`,
         sender: "pro",
-        senderName: pro.businessName,
-        body: `Hi — thanks for reaching out to ${pro.businessName}. Share a few details or photos and I’ll follow up.`,
+        senderName: pro.name,
+        body: `Hi — thanks for reaching out. I'm ${pro.name} (${pro.trade}). Share a few details or photos and I’ll follow up.`,
         sentAt: "Just now",
         read: true,
       },
@@ -152,7 +152,6 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
   }, [active]);
 
   const activeContactName = role === "homeowner" && activePro?.name ? activePro.name : (active?.otherParty ?? "");
-  const activeCompanyName = role === "homeowner" && activePro?.businessName && activePro.businessName !== activeContactName ? activePro.businessName : null;
 
   const filteredThreads = useMemo(() => {
     if (!searchQuery.trim()) return threads;
@@ -292,7 +291,6 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                 const selected = thread.id === activeId;
                 const pro = thread.proId ? getPro(thread.proId) : null;
                 const contactName = role === "homeowner" && pro?.name ? pro.name : thread.otherParty;
-                const companyName = role === "homeowner" && pro?.businessName && pro.businessName !== contactName ? pro.businessName : null;
 
                 return (
                   <li key={thread.id}>
@@ -325,13 +323,6 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                             {thread.updatedAt}
                           </span>
                         </div>
-
-                        {/* Company Subtitle */}
-                        {companyName ? (
-                          <p className="text-[11px] text-muted truncate leading-tight mt-0.5">
-                            {companyName}
-                          </p>
-                        ) : null}
 
                         {/* Row 2: Job Subject Tag */}
                         <div className="mt-1">
@@ -409,9 +400,6 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                         >
                           {activeContactName}
                         </button>
-                        {activeCompanyName ? (
-                          <span className="text-xs text-muted truncate">({activeCompanyName})</span>
-                        ) : null}
                       </div>
                       <p className="truncate text-xs text-[#666]">{active.jobTitle}</p>
                     </div>
@@ -582,9 +570,6 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                     <h3 className="font-display text-[17px] font-semibold text-title">
                       {activeContactName}
                     </h3>
-                    {activeCompanyName ? (
-                      <p className="text-xs text-muted">{activeCompanyName}</p>
-                    ) : null}
                   </div>
                   {activePro?.rating && (
                     <div className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700 border border-amber-200">

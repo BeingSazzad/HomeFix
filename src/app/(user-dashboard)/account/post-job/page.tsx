@@ -338,7 +338,7 @@ function BookingFlow() {
       addNotification({
         title: "Work Order Confirmed",
         body: invitedPro
-          ? `Dispatched directly to ${invitedPro.businessName}. Expected response within 15 minutes.`
+          ? `Dispatched directly to ${invitedPro.name}. Expected response within 15 minutes.`
           : "Request broadcast to top-rated local pros. Quotes will appear in your requests.",
         href: `/account/jobs/${jobId}`,
         createdAt: "Just now",
@@ -364,7 +364,7 @@ function BookingFlow() {
 
         <h1 className="mt-3 font-display text-2xl sm:text-3xl font-bold text-title">
           {invitedPro
-            ? `Request Sent to ${invitedPro.businessName}!`
+            ? `Request Sent to ${invitedPro.name}!`
             : "Your Request is Live!"}
         </h1>
 
@@ -463,7 +463,7 @@ function BookingFlow() {
                   </span>
                 </div>
                 <h2 className="mt-1 font-display text-lg sm:text-xl font-bold text-title">
-                  {invitedPro.businessName} ({invitedPro.name})
+                  {invitedPro.name}
                 </h2>
                 <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted">
                   <span className="font-semibold text-title">★ {invitedPro.rating.toFixed(1)}</span>
@@ -1162,7 +1162,7 @@ function BookingFlow() {
                 >
                   <Send className="h-4 w-4" />
                   {invitedPro
-                    ? `Confirm & Send to ${invitedPro.businessName}`
+                    ? `Confirm & Send to ${invitedPro.name}`
                     : "Confirm & Dispatch Request"}
                 </Button>
               )}
@@ -1186,7 +1186,7 @@ function BookingFlow() {
                   </span>
                   <div className="min-w-0">
                     <p className="font-display text-sm font-bold text-title truncate">
-                      {invitedPro.businessName}
+                      {invitedPro.name}
                     </p>
                     <p className="text-xs text-muted truncate">{invitedPro.trade} • {invitedPro.city}</p>
                   </div>

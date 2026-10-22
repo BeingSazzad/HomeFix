@@ -1,29 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, MapPin, Phone } from "lucide-react";
+import {
+  Mail,
+  MapPin,
+  Phone,
+  ArrowUpRight,
+  CheckCircle2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field, TextArea, TextField } from "@/components/ui/field";
 import { PageBanner } from "@/components/layout/page-banner";
 import { photos } from "@/lib/media";
-
-const details = [
-  {
-    icon: Mail,
-    title: "Email",
-    text: "admin@localhomefix.com",
-  },
-  {
-    icon: Phone,
-    title: "Phone",
-    text: "(512) 555-0140",
-  },
-  {
-    icon: MapPin,
-    title: "Service area",
-    text: "Nationwide local communities",
-  },
-];
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -45,58 +33,132 @@ export default function ContactPage() {
           { label: "Contact Us" },
         ]}
       />
-      <section className="bg-surface py-[var(--section-sm)] md:py-[var(--section)]">
-        <div className="container-site grid items-start gap-6 lg:grid-cols-2 lg:gap-8">
-          <div className="rounded-[20px] bg-white p-5 soft-shadow md:p-7">
-            <h2 className="text-[24px] leading-tight md:text-[28px]">Get in touch</h2>
-            <p className="mt-2 max-w-md text-[15px] leading-6 text-copy">
-              Help with requests, applications, or membership. We never take project payments.
-            </p>
-            <div className="mt-6 space-y-3">
-              {details.map((item) => (
-                <article key={item.title} className="flex items-start gap-3 rounded-[14px] bg-surface p-4">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-primary">
-                    <item.icon className="h-4 w-4" />
-                  </span>
-                  <span>
-                    <h3 className="text-[16px] font-semibold">{item.title}</h3>
-                    <p className="mt-0.5 text-sm leading-6 text-copy">{item.text}</p>
-                  </span>
-                </article>
-              ))}
+
+      <section className="bg-surface/50 py-12 md:py-20 border-b border-line/60">
+        <div className="container-site grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
+          {/* ========================================================= */}
+          {/* LEFT COLUMN: GET IN TOUCH CARD                            */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-6 rounded-[28px] border border-line/80 bg-white p-6 sm:p-8 md:p-9 shadow-xs space-y-7">
+            <div>
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold text-title tracking-tight">
+                Get in Touch
+              </h2>
+              <p className="mt-2 text-sm sm:text-[15px] leading-relaxed text-muted">
+                Have questions or need help with a request? Reach out to us directly.
+              </p>
+            </div>
+
+            {/* Channels List - Clean, Minimal, Elegant Cards */}
+            <div className="space-y-3">
+              {/* Channel 1: Email */}
+              <a
+                href="mailto:admin@localhomefix.com"
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-line/70 bg-white p-4 transition-all duration-200 hover:border-primary/60 hover:shadow-xs"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100 transition-colors group-hover:bg-primary group-hover:text-white">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
+                      Email
+                    </h3>
+                    <p className="text-sm font-semibold text-title group-hover:text-primary transition-colors">
+                      admin@localhomefix.com
+                    </p>
+                  </div>
+                </div>
+                <ArrowUpRight className="h-4 w-4 text-muted shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+              </a>
+
+              {/* Channel 2: Phone */}
+              <a
+                href="tel:5125550140"
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-line/70 bg-white p-4 transition-all duration-200 hover:border-primary/60 hover:shadow-xs"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100 transition-colors group-hover:bg-primary group-hover:text-white">
+                    <Phone className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
+                      Phone
+                    </h3>
+                    <p className="text-sm font-semibold text-title group-hover:text-primary transition-colors">
+                      (512) 555-0140
+                    </p>
+                  </div>
+                </div>
+                <ArrowUpRight className="h-4 w-4 text-muted shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+              </a>
+
+              {/* Channel 3: Service Area */}
+              <div className="flex items-center gap-3.5 rounded-2xl border border-line/70 bg-white p-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <div className="space-y-0.5">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
+                    Service Area
+                  </h3>
+                  <p className="text-sm font-semibold text-title">
+                    Austin, TX &amp; surrounding areas
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="rounded-[20px] bg-white p-5 soft-shadow md:p-7">
-            <h2 className="text-[24px] leading-tight md:text-[28px]">Send a message</h2>
+          {/* ========================================================= */}
+          {/* RIGHT COLUMN: SEND MESSAGE FORM                           */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-6 rounded-[28px] border border-line/80 bg-white p-6 sm:p-8 md:p-9 shadow-xs space-y-6">
+            <div>
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold text-title tracking-tight">
+                Send a Message
+              </h2>
+              <p className="mt-2 text-sm sm:text-[15px] leading-relaxed text-muted">
+                Drop us a note below and a representative will reply to your email promptly.
+              </p>
+            </div>
+
             {sent ? (
-              <div className="mt-5 rounded-[14px] bg-surface p-5">
-                <p className="font-display text-lg font-bold text-title">Message sent</p>
-                <p className="mt-2 text-sm leading-6 text-copy">
-                  Thanks. We will reply to the email you provided.
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-6 sm:p-7 text-center space-y-3">
+                <div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-emerald-600 text-white shadow-xs">
+                  <CheckCircle2 className="h-6 w-6" />
+                </div>
+                <h3 className="font-display text-lg font-bold text-title">Message Successfully Sent</h3>
+                <p className="text-sm text-copy/90 max-w-sm mx-auto leading-relaxed">
+                  Thank you for reaching out. We have received your inquiry and will follow up shortly at your provided email.
                 </p>
-                <div className="mt-4">
-                  <Button type="button" variant="ghost" size="sm" onClick={() => setSent(false)}>
-                    Send another
+                <div className="pt-2">
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setSent(false)} className="rounded-full text-xs">
+                    Send another message
                   </Button>
                 </div>
               </div>
             ) : (
-              <form className="mt-5 space-y-3.5" onSubmit={submit}>
-                <Field label="Full name">
-                  <TextField required name="name" placeholder="Jane Smith" />
-                </Field>
-                <Field label="Email">
-                  <TextField required name="email" type="email" placeholder="you@email.com" />
-                </Field>
+              <form className="space-y-4" onSubmit={submit}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label="Full Name">
+                    <TextField required name="name" placeholder="Luis Ortega" />
+                  </Field>
+                  <Field label="Email Address">
+                    <TextField required name="email" type="email" placeholder="you@example.com" />
+                  </Field>
+                </div>
+
                 <Field label="Subject">
-                  <TextField required name="subject" placeholder="How can we help?" />
+                  <TextField required name="subject" placeholder="Contractor verification, quote question, etc." />
                 </Field>
-                <Field label="Message">
-                  <TextArea required name="message" placeholder="Type your message" className="min-h-32" />
+
+                <Field label="Your Message">
+                  <TextArea required name="message" placeholder="Provide as much detail as possible..." className="min-h-32" />
                 </Field>
-                <Button type="submit" className="w-full">
-                  Send message
+
+                <Button type="submit" size="lg" className="w-full justify-center rounded-full shadow-xs">
+                  Send Message
                 </Button>
               </form>
             )}

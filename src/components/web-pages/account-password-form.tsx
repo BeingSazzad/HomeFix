@@ -9,7 +9,6 @@ import {
   Check,
   CheckCircle2,
   Lock,
-  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -218,17 +217,6 @@ export function AccountPasswordForm() {
           </div>
         </form>
       </Card>
-
-      {/* Security Reassurance Card */}
-      <div className="rounded-[16px] border border-line/70 bg-smoke/40 p-4 flex items-start gap-3 text-xs text-muted">
-        <ShieldCheck className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-        <div>
-          <p className="font-semibold text-title text-[13px]">Encrypted & Private</p>
-          <p className="mt-0.5 leading-relaxed">
-            Your login credentials are encrypted in transit and hashed at rest. We never view or share your password with any local contractor or third party.
-          </p>
-        </div>
-      </div>
     </div>
   );
 }

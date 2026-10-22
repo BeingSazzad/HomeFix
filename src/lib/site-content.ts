@@ -63,7 +63,7 @@ export const plans: PlanItem[] = [
     price: "$0",
     period: "/forever",
     tagline: "Free to browse, post, and compare quotes.",
-    href: "/signup?next=%2Faccount%2Fpost-job",
+    href: "/login?next=%2Faccount%2Fpost-job",
     cta: "Post a request",
     featured: false,
     features: [

@@ -19,6 +19,8 @@ export function LoginForm() {
   const search = useSearchParams();
   const nextPath = search.get("next");
   const roleParam = search.get("role");
+  const isPostJob = Boolean(nextPath?.includes("post-job"));
+  const signupHrefWithNext = nextPath ? `/signup?next=${encodeURIComponent(nextPath)}` : "/signup";
   const [role, setRole] = useState<"homeowner" | "pro">(roleParam === "pro" ? "pro" : "homeowner");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,10 +56,19 @@ export function LoginForm() {
   return (
     <Card className="p-6 md:p-8">
       <h1 className="font-display text-[22px] sm:text-[24px] font-semibold leading-snug tracking-tight text-title">
-        Sign in to LocalHomeFix
+        {isPostJob ? "Sign in to post your request" : "Sign in to LocalHomeFix"}
       </h1>
       <p className="mt-1.5 font-sans text-sm leading-relaxed text-[#757575]">
-        Sign in to your account or get started with quotes and requests.
+        {isPostJob ? (
+          <>
+            Please sign in to continue posting your request. Don&apos;t have an account yet?{" "}
+            <Link href={signupHrefWithNext} className="font-semibold text-primary hover:underline">
+              Create an account
+            </Link>
+          </>
+        ) : (
+          "Sign in to your account or get started with quotes and requests."
+        )}
       </p>
 
       <div
@@ -123,7 +134,7 @@ export function LoginForm() {
         </Button>
       </form>
 
-      <AuthLinks prompt="Don't have an account?" href="/signup" label="Sign up free ↗" />
+      <AuthLinks prompt="Don't have an account?" href={signupHrefWithNext} label="Sign up free ↗" />
     </Card>
   );
 }

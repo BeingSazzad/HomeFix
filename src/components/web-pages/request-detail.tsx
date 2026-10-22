@@ -375,9 +375,6 @@ export function RequestDetail({
               <dt className="text-xs text-muted font-medium">Assigned Contractor</dt>
               <dd className="font-semibold text-title flex items-center gap-1.5 mt-0.5">
                 <span>{hiredPro?.name ?? "Professional"}</span>
-                {hiredPro?.businessName && hiredPro.businessName !== hiredPro.name ? (
-                  <span className="text-xs font-normal text-muted">({hiredPro.businessName})</span>
-                ) : null}
               </dd>
             </div>
             <div>
@@ -693,7 +690,7 @@ export function RequestDetail({
               <option value="">Select</option>
               {invitePool.map((pro) => (
                 <option key={pro.id} value={pro.id}>
-                  {pro.businessName}
+                  {pro.name} ({pro.trade})
                 </option>
               ))}
             </NativeSelect>

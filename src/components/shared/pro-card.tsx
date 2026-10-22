@@ -10,7 +10,7 @@ import {
   Star,
 } from "lucide-react";
 import { photos } from "@/lib/media";
-import { signupHref } from "@/lib/role-access";
+import { loginHref } from "@/lib/role-access";
 import { toggleFavorite } from "@/redux/slices/featuresSlice";
 import { useRoleAccess } from "@/hooks/use-role-access";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -38,7 +38,7 @@ export function ProCard({
     event.preventDefault();
     event.stopPropagation();
     if (access.audience === "guest") {
-      router.push(signupHref(pathname || href));
+      router.push(loginHref({ next: pathname || href }));
       return;
     }
     if (!access.canSavePro) return;
@@ -49,7 +49,7 @@ export function ProCard({
     <Link
       href={href}
       className={cn(
-        "group flex h-full min-w-0 w-full flex-col overflow-hidden rounded-[20px] border border-line/80 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md",
+        "group flex h-full min-w-0 w-full flex-col overflow-hidden rounded-[20px] border border-line/80 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md cursor-pointer",
         className,
       )}
     >
@@ -101,9 +101,9 @@ export function ProCard({
           </span>
         </div>
 
-        {/* Contractor Business Name with Verified Shield */}
+        {/* Pro Name as Main Title with Verified Shield */}
         <h3 className="mt-3 font-display text-[17px] font-semibold text-title tracking-tight leading-snug transition-colors group-hover:text-primary flex items-center gap-1.5">
-          <span className="truncate">{pro.businessName || pro.name}</span>
+          <span className="truncate">{pro.name}</span>
           <span title="Screened & Verified Professional" className="inline-flex shrink-0">
             <ShieldCheck
               className="h-4 w-4 text-primary fill-primary/15"
@@ -112,10 +112,8 @@ export function ProCard({
           </span>
         </h3>
 
-        {/* Pro Name & Location Row */}
+        {/* Location Row (No Company Name) */}
         <p className="mt-1 flex items-center gap-1.5 font-sans text-xs text-muted truncate">
-          <span>{pro.name}</span>
-          <span>·</span>
           <MapPin className="h-3 w-3 shrink-0 text-muted" />
           <span>{pro.city}, {pro.state}</span>
         </p>
@@ -132,7 +130,7 @@ export function ProCard({
         </div>
 
         {/* 3. Card Footer with Rock-Solid Alignment (mt-auto) */}
-        <div className="mt-5 pt-4 border-t border-line/70">
+        <div className="mt-auto pt-4 border-t border-line/70">
           <div className="flex items-center justify-between">
             <div>
               <span className="block text-[11px] font-medium text-muted leading-none">

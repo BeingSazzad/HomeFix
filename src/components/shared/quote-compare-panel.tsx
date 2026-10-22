@@ -52,7 +52,7 @@ export function QuoteComparePanel({
     dispatch(setJobStatus({ jobId, status: "hired" }));
     dispatch(addNotification({
       title: "Offer accepted",
-      body: `You hired ${pro?.businessName ?? "the pro"}. Confirm a date to lock the booking.`,
+      body: `You hired ${pro?.name ?? "the pro"}. Confirm a date to lock the booking.`,
       href: `/account/jobs/${jobId}`,
       createdAt: "Just now",
       role: "homeowner",
@@ -99,7 +99,7 @@ export function QuoteComparePanel({
                     <th key={q.id} className="px-4 py-4 text-left" scope="col">
                       <div className="space-y-1">
                         <p className="text-sm font-semibold text-title leading-tight">
-                          {pro?.businessName ?? "Pro"}
+                          {pro?.name ?? "Pro"}
                         </p>
                         <p className="text-xs text-muted">{pro?.trade}</p>
                         {pro?.clearance === "cleared" && (

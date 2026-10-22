@@ -13,13 +13,6 @@ export function HomePros() {
   const scroller = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hasOverflow, setHasOverflow] = useState(true);
-  const [isDragging, setIsDragging] = useState(false);
-
-  // Mouse drag-to-scroll refs for high-performance zero-rerender tracking
-  const isMouseDown = useRef(false);
-  const startX = useRef(0);
-  const scrollStart = useRef(0);
-  const hasDragged = useRef(false);
 
   const updateScrollState = useCallback(() => {
     const el = scroller.current;
@@ -36,68 +29,6 @@ export function HomePros() {
     window.addEventListener("resize", updateScrollState);
     return () => window.removeEventListener("resize", updateScrollState);
   }, [updateScrollState]);
-
-  // Window-level mousemove and mouseup so dragging is completely fluid anywhere on screen
-  useEffect(() => {
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (!isMouseDown.current) return;
-      const el = scroller.current;
-      if (!el) return;
-
-      const delta = e.pageX - startX.current;
-
-      if (Math.abs(delta) > 4) {
-        if (!hasDragged.current) {
-          hasDragged.current = true;
-          setIsDragging(true);
-        }
-        el.scrollLeft = scrollStart.current - delta;
-      }
-    };
-
-    const handleGlobalMouseUp = () => {
-      if (isMouseDown.current) {
-        isMouseDown.current = false;
-        setIsDragging(false);
-        const el = scroller.current;
-        if (el) {
-          el.style.scrollBehavior = "smooth";
-        }
-      }
-    };
-
-    window.addEventListener("mousemove", handleGlobalMouseMove);
-    window.addEventListener("mouseup", handleGlobalMouseUp);
-    return () => {
-      window.removeEventListener("mousemove", handleGlobalMouseMove);
-      window.removeEventListener("mouseup", handleGlobalMouseUp);
-    };
-  }, []);
-
-  function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
-    const el = scroller.current;
-    if (!el) return;
-    // Only drag on primary (left) mouse button
-    if (e.button !== 0) return;
-
-    isMouseDown.current = true;
-    hasDragged.current = false;
-    startX.current = e.pageX;
-    scrollStart.current = el.scrollLeft;
-    // Instant response without sluggish smooth-scrolling while dragging
-    el.style.scrollBehavior = "auto";
-  }
-
-  function handleClickCapture(e: React.MouseEvent) {
-    // If user dragged more than 4px, cancel card link clicks so dragging doesn't navigate
-    if (hasDragged.current) {
-      e.preventDefault();
-      e.stopPropagation();
-      setTimeout(() => {
-        hasDragged.current = false;
-      }, 0);
-    }
-  }
 
   function scrollBy(dir: -1 | 1) {
     const el = scroller.current;
@@ -158,24 +89,16 @@ export function HomePros() {
         </div>
 
         <div className="relative mt-8 sm:mt-10">
-          {/* Scrollable track with touch, wheel & mouse-drag support */}
+          {/* Scrollable track with touch & wheel support */}
           <div
             ref={scroller}
             onScroll={updateScrollState}
-            onMouseDown={handleMouseDown}
-            onClickCapture={handleClickCapture}
-            className={cn(
-              "-mx-1 flex gap-5 overflow-x-auto scroll-smooth px-1 pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none",
-              isDragging ? "cursor-grabbing" : "cursor-grab"
-            )}
+            className="-mx-1 flex gap-5 overflow-x-auto scroll-smooth px-1 pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {list.map((pro) => (
               <div
                 key={pro.id}
-                className={cn(
-                  "shrink-0 flex h-full",
-                  isDragging && "pointer-events-none select-none"
-                )}
+                className="shrink-0 flex h-full"
               >
                 <ProCard pro={pro} className="w-[270px] sm:w-[290px]" />
               </div>

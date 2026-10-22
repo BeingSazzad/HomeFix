@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ShieldCheck,
   Check,
   Wrench,
   Zap,
@@ -15,9 +14,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { PageBanner } from "@/components/layout/page-banner";
 import { photos } from "@/lib/media";
+import { postJobHref } from "@/lib/role-access";
+import { useAppSelector } from "@/redux/hooks";
 import { cn } from "@/lib/cn";
 
 export function AboutContent() {
+  const user = useAppSelector((state) => state.auth.user);
   const [activeTab, setActiveTab] = useState<"mission" | "vision">("mission");
 
   return (
@@ -28,7 +30,7 @@ export function AboutContent() {
       <PageBanner
         eyebrow="About"
         title="About Us"
-        description="Connecting Austin homeowners with trusted, verified local trade professionals."
+        description="Connecting Austin homeowners directly with verified local trade professionals."
         image={photos.banners.about}
         breadcrumbs={[
           { label: "Home", href: "/" },
@@ -66,7 +68,7 @@ export function AboutContent() {
           {/* Wide Hero Showcase Image Banner */}
           <div className="mt-8 sm:mt-12 relative h-[280px] sm:h-[420px] md:h-[500px] w-full overflow-hidden rounded-[24px] sm:rounded-[32px] border border-line/70 shadow-sm group">
             <Image
-              src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1800&q=80"
+              src="/images/about/hero.jpg"
               alt="LocalHomeFix verified trade technicians collaborating on a residential service project"
               fill
               priority
@@ -74,22 +76,7 @@ export function AboutContent() {
               className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
             />
             {/* Subtle Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
-
-            {/* Bottom floating trust banner inside hero */}
-            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-auto flex flex-wrap items-center gap-3 rounded-[18px] border border-white/20 bg-white/95 px-4 py-3 sm:px-6 sm:py-3.5 shadow-xl backdrop-blur-md">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white">
-                <ShieldCheck className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="font-geist text-[14px] sm:text-[15px] font-medium text-title leading-tight">
-                  100% Austin Trade Verified
-                </p>
-                <p className="font-sans text-[12px] text-[#666]">
-                  Active Texas state licensing & criminal background clearance
-                </p>
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
           </div>
         </div>
       </section>
@@ -203,7 +190,7 @@ export function AboutContent() {
             <div className="lg:col-span-6 relative pb-6 lg:pb-0">
               <div className="relative h-[320px] sm:h-[440px] md:h-[480px] w-full overflow-hidden rounded-[24px] sm:rounded-[30px] border border-line/70 shadow-sm group">
                 <Image
-                  src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80"
+                  src="/images/about/solutions.jpg"
                   alt="Certified home repair technician inspecting digital blueprints and work order specifications"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -273,7 +260,7 @@ export function AboutContent() {
             <div className="lg:col-span-5 relative">
               <div className="relative h-[340px] sm:h-[440px] md:h-[480px] w-full overflow-hidden rounded-[24px] sm:rounded-[30px] border border-line/80 shadow-sm group">
                 <Image
-                  src="/images/why-choose/pro-craftsman.jpg"
+                  src="/images/about/craftsman.jpg"
                   alt="Austin master craftsman repairing residential woodwork and fixtures"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
@@ -359,7 +346,7 @@ export function AboutContent() {
             Post your project in under 2 minutes, get quotes from verified Austin contractors, and keep full control over your home.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-xs sm:max-w-none mx-auto">
-            <Button href="/account/post-job" size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white">
+            <Button href={postJobHref(user)} size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white">
               Post a Job for Free
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

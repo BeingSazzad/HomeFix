@@ -112,9 +112,6 @@ export function WorkOrderReceipt({
             <p className="mt-1 font-display text-base font-bold text-title">
               {pro?.name ?? "Professional Contractor"}
             </p>
-            {pro?.businessName && pro.businessName !== pro.name ? (
-              <p className="text-xs font-medium text-copy">{pro.businessName}</p>
-            ) : null}
             <p className="mt-1 text-xs text-muted">
               {pro?.trade ?? "Home Specialist"}{pro?.city ? ` · ${pro.city}${pro?.state ? `, ${pro.state}` : ""}` : ""}
             </p>

@@ -57,7 +57,7 @@ export function signupHref(next?: string) {
 }
 
 export function postJobHref(user: User | null) {
-  if (!user) return "/signup?next=%2Faccount%2Fpost-job";
+  if (!user) return loginHref({ next: "/account/post-job" });
   if (user.role === "pro") return "/pro/jobs";
   return "/account/post-job";
 }

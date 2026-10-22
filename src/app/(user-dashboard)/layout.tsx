@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
-import { signupHref } from "@/lib/role-access";
+import { loginHref } from "@/lib/role-access";
 import { useAppSelector } from "@/redux/hooks";
 
 const items = [
@@ -30,7 +30,7 @@ export default function UserDashboardLayout({
     if (!hydrated) return;
     if (!user) {
       const next = pathname?.startsWith("/account") ? pathname : "/account/post-job";
-      router.replace(signupHref(next));
+      router.replace(loginHref({ next }));
       return;
     }
     if (user.role === "pro") router.replace("/pro");

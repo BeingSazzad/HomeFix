@@ -321,7 +321,11 @@ export function SignupForm() {
         </Button>
       </form>
 
-      <AuthLinks prompt="Already have an account?" href="/login" label="Sign in" />
+      <AuthLinks
+        prompt="Already have an account?"
+        href={nextPath ? `/login?next=${encodeURIComponent(nextPath)}` : "/login"}
+        label="Sign in"
+      />
     </Card>
   );
 }

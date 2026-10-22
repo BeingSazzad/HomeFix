@@ -73,7 +73,7 @@ export function PageBanner({
         {description ? (
           <p
             className={cn(
-              "mt-3 max-w-lg font-sans text-sm sm:text-base leading-relaxed text-white/85",
+              "mt-2.5 max-w-3xl font-sans text-sm sm:text-base text-white/90",
               centered && "mx-auto text-center",
             )}
           >

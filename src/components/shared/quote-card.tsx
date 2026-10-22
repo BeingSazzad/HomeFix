@@ -144,11 +144,8 @@ export function QuoteCard({
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="font-display text-lg font-semibold leading-tight text-title truncate">
-                {pro?.name ?? pro?.businessName ?? "Provider"}
+                {pro?.name ?? "Provider"}
               </h3>
-              {pro?.businessName && pro.businessName !== pro.name ? (
-                <span className="text-xs text-muted truncate">({pro.businessName})</span>
-              ) : null}
               {pro?.clearance === "cleared" && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
                   <ShieldCheck className="h-3 w-3" />
@@ -387,7 +384,7 @@ export function QuoteCard({
             Booked for {booking.scheduledDate} at {booking.scheduledTime} · ${booking.agreedPrice}
           </div>
           <p className="mt-1 text-xs text-stone-600">
-            Work is confirmed. Coordinate directly with {pro?.businessName ?? "your contractor"} through messaging.
+            Work is confirmed. Coordinate directly with {pro?.name ?? "your contractor"} through messaging.
           </p>
           <div className="mt-3">
             <Link

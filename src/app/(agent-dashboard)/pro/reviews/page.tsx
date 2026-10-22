@@ -446,7 +446,7 @@ export default function ProReviewsPage() {
                             P
                           </span>
                           <span className="font-display text-xs font-bold text-title">
-                            {proProfile?.businessName ?? "Ortega Plumbing"} (You)
+                            {proProfile?.contactName ?? "Luis Ortega"} (You)
                           </span>
                           <span className="text-[11px] text-muted">· Public response</span>
                         </div>

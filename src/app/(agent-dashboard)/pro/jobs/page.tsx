@@ -12,10 +12,10 @@ import {
   DollarSign,
   EyeOff,
   Filter,
+  Layers,
   MapPin,
   RotateCcw,
   Search,
-  ShieldCheck,
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -218,32 +218,6 @@ export default function ProJobsPage() {
         </div>
       </div>
 
-      {/* Pro Membership / Quoting Notice (Only when trial not started or quote locked) */}
-      {!access.canSubmitQuote && (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-primary/25 bg-gradient-to-r from-primary/[0.04] via-smoke to-white p-4 sm:p-5 shadow-xs">
-          <div className="flex items-start sm:items-center gap-3.5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <ShieldCheck className="h-5 w-5" />
-            </div>
-            <div>
-              <h3 className="font-display text-sm sm:text-base font-semibold text-title">
-                Start your 14-day free pro trial to submit quotes
-              </h3>
-              <p className="mt-0.5 text-xs sm:text-sm text-copy">
-                Unlock direct homeowner contacts, phone inquiries, and submit unlimited itemized bids with zero platform fees.
-              </p>
-            </div>
-          </div>
-          <Button
-            href="/pro/pricing"
-            size="sm"
-            className="shrink-0 rounded-xl px-4 py-2 font-semibold shadow-xs"
-          >
-            Start Free Trial
-          </Button>
-        </div>
-      )}
-
       {/* Toast Bar with Undo */}
       {toastMessage && (
         <div className="flex items-center justify-between gap-3 rounded-xl bg-title px-4 py-3 text-white shadow-lg animate-in fade-in duration-200">
@@ -266,90 +240,95 @@ export default function ProJobsPage() {
         </div>
       )}
 
-      {/* Standard Lead Tabs */}
-      <div className="border-b border-line/70">
-        <div className="flex gap-2 overflow-x-auto pb-px scrollbar-none">
+      {/* Modern Segmented Lead Tabs */}
+      <div className="overflow-x-auto pb-1 scrollbar-none">
+        <div className="inline-flex min-w-full sm:min-w-0 items-center gap-1.5 rounded-2xl border border-line/80 bg-smoke/80 p-1.5 shadow-2xs backdrop-blur-xs">
+          {/* Tab 1: All Leads */}
           <button
             type="button"
             onClick={() => setActiveTab("all")}
-            className={`flex items-center gap-2 px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
+            className={`flex items-center gap-2.5 rounded-xl px-4 py-2 font-display text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
               activeTab === "all"
-                ? "border-primary text-primary font-semibold"
-                : "border-transparent text-muted hover:text-title hover:border-line"
+                ? "bg-white text-title shadow-xs border border-line/50"
+                : "text-muted hover:text-title hover:bg-white/40 border border-transparent"
             }`}
           >
+            <Layers className={`h-4 w-4 ${activeTab === "all" ? "text-primary" : "text-muted"}`} />
             <span>All Leads</span>
             <span
-              className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors ${
                 activeTab === "all"
-                  ? "bg-primary/10 text-primary"
-                  : "bg-surface text-muted"
+                  ? "bg-primary text-white shadow-xs"
+                  : "bg-surface text-muted border border-line/60"
               }`}
             >
               {counts.all}
             </span>
           </button>
 
+          {/* Tab 2: Trade Matches */}
           <button
             type="button"
             onClick={() => setActiveTab("matches")}
-            className={`flex items-center gap-2 px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
+            className={`flex items-center gap-2.5 rounded-xl px-4 py-2 font-display text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
               activeTab === "matches"
-                ? "border-primary text-primary font-semibold"
-                : "border-transparent text-muted hover:text-title hover:border-line"
+                ? "bg-white text-title shadow-xs border border-line/50"
+                : "text-muted hover:text-title hover:bg-white/40 border border-transparent"
             }`}
           >
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+            <CheckCircle2 className={`h-4 w-4 ${activeTab === "matches" ? "text-emerald-600" : "text-muted"}`} />
             <span>Trade Matches</span>
             <span
-              className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors ${
                 activeTab === "matches"
-                  ? "bg-primary/10 text-primary"
-                  : "bg-surface text-muted"
+                  ? "bg-emerald-600 text-white shadow-xs"
+                  : "bg-surface text-muted border border-line/60"
               }`}
             >
               {counts.matches}
             </span>
           </button>
 
+          {/* Tab 3: Urgent (24h) */}
           <button
             type="button"
             onClick={() => setActiveTab("urgent")}
-            className={`flex items-center gap-2 px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
+            className={`flex items-center gap-2.5 rounded-xl px-4 py-2 font-display text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
               activeTab === "urgent"
-                ? "border-primary text-primary font-semibold"
-                : "border-transparent text-muted hover:text-title hover:border-line"
+                ? "bg-white text-title shadow-xs border border-line/50"
+                : "text-muted hover:text-title hover:bg-white/40 border border-transparent"
             }`}
           >
-            <Zap className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
+            <Zap className={`h-4 w-4 ${activeTab === "urgent" ? "text-amber-500 fill-amber-500" : "text-muted"}`} />
             <span>Urgent (24h)</span>
             <span
-              className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors ${
                 activeTab === "urgent"
-                  ? "bg-primary/10 text-primary"
-                  : "bg-surface text-muted"
+                  ? "bg-amber-500 text-white shadow-xs"
+                  : "bg-surface text-muted border border-line/60"
               }`}
             >
               {counts.urgent}
             </span>
           </button>
 
+          {/* Tab 4: Saved for Later */}
           <button
             type="button"
             onClick={() => setActiveTab("saved")}
-            className={`flex items-center gap-2 px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
+            className={`flex items-center gap-2.5 rounded-xl px-4 py-2 font-display text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
               activeTab === "saved"
-                ? "border-primary text-primary font-semibold"
-                : "border-transparent text-muted hover:text-title hover:border-line"
+                ? "bg-white text-title shadow-xs border border-line/50"
+                : "text-muted hover:text-title hover:bg-white/40 border border-transparent"
             }`}
           >
-            <Bookmark className="h-3.5 w-3.5 text-primary" />
+            <Bookmark className={`h-4 w-4 ${activeTab === "saved" ? "text-primary fill-primary/20" : "text-muted"}`} />
             <span>Saved for Later</span>
             <span
-              className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors ${
                 activeTab === "saved"
-                  ? "bg-primary/10 text-primary"
-                  : "bg-surface text-muted"
+                  ? "bg-primary text-white shadow-xs"
+                  : "bg-surface text-muted border border-line/60"
               }`}
             >
               {counts.saved}

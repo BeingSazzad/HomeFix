@@ -1,16 +1,55 @@
 "use client";
 
-import { Check, Clock } from "lucide-react";
+import {
+  ShieldCheck,
+  Receipt,
+  Tag,
+  Wallet,
+  CircleSlash,
+  Lock,
+  Clock,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
+import { cn } from "@/lib/cn";
 
-const points = [
-  "Verified Professionals",
-  "Clear, Itemized Quotes",
-  "100% Free for Homeowners",
-  "Pay Contractors Directly",
-  "No Middleman Fees",
-  "Your Privacy Protected",
+const approachFeatures = [
+  {
+    icon: ShieldCheck,
+    title: "Verified Professionals",
+    subtitle: "Screened trade licenses & verified records",
+    iconColor: "text-blue-600 bg-blue-50 border-blue-100",
+  },
+  {
+    icon: Receipt,
+    title: "Clear, Itemized Quotes",
+    subtitle: "Detailed line-item pricing upfront",
+    iconColor: "text-emerald-600 bg-emerald-50 border-emerald-100",
+  },
+  {
+    icon: Tag,
+    title: "100% Free for Homeowners",
+    subtitle: "Zero platform fees or hidden booking costs",
+    iconColor: "text-sky-600 bg-sky-50 border-sky-100",
+  },
+  {
+    icon: Wallet,
+    title: "Pay Contractors Directly",
+    subtitle: "Settle securely after inspecting finished work",
+    iconColor: "text-indigo-600 bg-indigo-50 border-indigo-100",
+  },
+  {
+    icon: CircleSlash,
+    title: "No Middleman Fees",
+    subtitle: "Direct contractor rates with zero commissions",
+    iconColor: "text-amber-600 bg-amber-50 border-amber-100",
+  },
+  {
+    icon: Lock,
+    title: "Your Privacy Protected",
+    subtitle: "No contact spam or shared homeowner info",
+    iconColor: "text-teal-600 bg-teal-50 border-teal-100",
+  },
 ];
 
 export function HomeAbout() {
@@ -34,21 +73,36 @@ export function HomeAbout() {
             Find trusted local professionals, compare clear quotes, and pay contractors directly. No pushy sales calls or hidden markups.
           </p>
 
-          {/* Clean checklist without subtext */}
-          <ul className="mt-7 grid gap-3.5 sm:grid-cols-2">
-            {points.map((point) => (
-              <li key={point} className="flex items-center gap-2.5 text-[14.5px] font-semibold text-title">
-                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
-                  <Check className="h-3 w-3 stroke-[2.5]" />
+          {/* Senior Product Design: Compact, Structured Benefit Cards */}
+          <div className="mt-7 grid gap-3 sm:grid-cols-2">
+            {approachFeatures.map((item) => (
+              <div
+                key={item.title}
+                className="group flex items-start gap-3 rounded-2xl border border-line/70 bg-white/75 p-3.5 transition-all duration-200 hover:border-primary/50 hover:bg-white hover:shadow-xs"
+              >
+                <span
+                  className={cn(
+                    "grid h-9 w-9 shrink-0 place-items-center rounded-xl border transition-colors",
+                    item.iconColor
+                  )}
+                >
+                  <item.icon className="h-4 w-4" />
                 </span>
-                <span>{point}</span>
-              </li>
+                <div className="min-w-0 pt-0.5">
+                  <p className="font-geist text-[13.5px] font-semibold text-title leading-snug group-hover:text-primary transition-colors">
+                    {item.title}
+                  </p>
+                  <p className="mt-0.5 text-[11.5px] text-muted leading-tight">
+                    {item.subtitle}
+                  </p>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
 
-          <div className="mt-10 sm:mt-11">
-            <Button href="/about" size="lg">
-              Learn our story ↗
+          <div className="mt-8 sm:mt-9">
+            <Button href="/about">
+              Learn more ↗
             </Button>
           </div>
         </div>

@@ -69,7 +69,7 @@ const journeys: Record<
         icon: Wallet,
       },
     ],
-    cta: { href: "/signup?next=%2Faccount%2Fpost-job", label: "Post a job free ↗" },
+    cta: { href: "/login?next=%2Faccount%2Fpost-job", label: "Post a job free ↗" },
     secondary: { href: "/browse-pros", label: "Browse pros first" },
   },
   pro: {
