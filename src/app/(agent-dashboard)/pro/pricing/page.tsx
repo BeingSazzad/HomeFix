@@ -245,7 +245,7 @@ export default function PricingPage() {
                   variant="ghost"
                   size="sm"
                   onClick={handleTogglePause}
-                  className="h-8 rounded-lg border border-line text-xs font-medium text-copy hover:text-title hover:bg-smoke"
+                  className="h-8 border border-line text-xs font-medium text-copy hover:text-title hover:bg-smoke"
                 >
                   {paused ? (
                     <>
@@ -265,7 +265,7 @@ export default function PricingPage() {
                   variant="ghost"
                   size="sm"
                   onClick={handleCancelAutoRenew}
-                  className="h-8 rounded-lg text-xs font-medium text-muted hover:text-error hover:bg-red-50"
+                  className="h-8 text-xs font-medium text-muted hover:text-error hover:bg-red-50"
                 >
                   Cancel Renewal
                 </Button>
@@ -430,7 +430,7 @@ export default function PricingPage() {
                 }}
                 className="font-semibold text-xs"
               >
-                {currentPlan === "annual" ? "Renewal Plan Selected ✓" : "Select Annual Plan"}
+                {currentPlan === "annual" ? "Renewal Plan Selected ✓" : "Select Annual Plan ↗"}
               </Button>
             </div>
           </div>
@@ -489,7 +489,7 @@ export default function PricingPage() {
                 }}
                 className="font-semibold text-xs border border-line/80"
               >
-                {currentPlan === "monthly" ? "Renewal Plan Selected ✓" : "Select Monthly Plan"}
+                {currentPlan === "monthly" ? "Renewal Plan Selected ✓" : "Select Monthly Plan ↗"}
               </Button>
             </div>
           </div>
@@ -523,9 +523,9 @@ export default function PricingPage() {
             variant="ghost"
             size="sm"
             onClick={() => setShowCardModal(true)}
-            className="rounded-xl border border-line/80 text-xs font-semibold self-start sm:self-auto"
+            className="border border-line/80 text-xs font-semibold self-start sm:self-auto"
           >
-            Update Payment Card
+            Update Payment Card ↗
           </Button>
         </div>
       </Card>
@@ -589,8 +589,7 @@ export default function PricingPage() {
                       onClick={() => setSelectedInvoice(inv)}
                       className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
                     >
-                      <span>View</span>
-                      <ArrowRight className="h-3 w-3" />
+                      <span>View ↗</span>
                     </button>
                   </td>
                 </tr>

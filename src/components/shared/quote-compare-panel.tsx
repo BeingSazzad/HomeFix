@@ -193,16 +193,16 @@ export function QuoteComparePanel({
                     type="button"
                     disabled={expired}
                     onClick={() => accept(q)}
-                    className="w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-white hover:bg-primary-hover disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                    className="w-full rounded-full bg-primary py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-primary-hover disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary transition-all active:scale-[0.99]"
                   >
-                    {expired ? "Expired" : "Accept"}
+                    {expired ? "Expired" : "Accept ↗"}
                   </button>
                   {pro && (
                     <Link
                       href={`/browse-pros/${pro.id}`}
-                      className="block text-center text-xs font-semibold text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded"
+                      className="block text-center text-xs font-semibold text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-full py-1"
                     >
-                      View profile
+                      View profile ↗
                     </Link>
                   )}
                 </div>

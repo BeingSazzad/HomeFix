@@ -159,7 +159,7 @@ export function SignupForm() {
           </div>
           {error ? <p className="text-sm text-error">{error}</p> : null}
           <Button type="submit" className="w-full">
-            Verify and create account
+            Verify and create account ↗
           </Button>
           <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
             <button
@@ -317,14 +317,14 @@ export function SignupForm() {
         </label>
         {error ? <p className="text-xs font-medium text-error">{error}</p> : null}
         <Button type="submit" className="w-full">
-          Continue to OTP
+          Continue to OTP ↗
         </Button>
       </form>
 
       <AuthLinks
         prompt="Already have an account?"
         href={nextPath ? `/login?next=${encodeURIComponent(nextPath)}` : "/login"}
-        label="Sign in"
+        label="Sign in ↗"
       />
     </Card>
   );

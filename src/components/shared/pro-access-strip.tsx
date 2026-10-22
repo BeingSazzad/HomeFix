@@ -34,8 +34,8 @@ export function ProAccessStrip() {
       {access.blockedReason ? (
         <p className="w-full text-sm text-copy">
           {access.blockedReason}{" "}
-          <Link href={fixHref} className="font-semibold text-primary">
-            Fix
+          <Link href={fixHref} className="font-semibold text-primary hover:underline">
+            Fix ↗
           </Link>
         </p>
       ) : null}

@@ -89,7 +89,7 @@ export const plans: PlanItem[] = [
     period: "/forever",
     tagline: "Free to browse, post, and compare quotes.",
     href: "/login?next=%2Faccount%2Fpost-job",
-    cta: "Post a request",
+    cta: "Post a request ↗",
     featured: false,
     features: [
       { text: "Browse verified local contractor profiles", icon: "search" },
@@ -107,7 +107,7 @@ export const plans: PlanItem[] = [
     period: "/per month",
     tagline: "First 3 months completely free. Cancel anytime.",
     href: "/pro-register",
-    cta: "Start 3 months free",
+    cta: "Start 3 months free ↗",
     featured: true,
     features: [
       { text: "Keep 100% of your earnings ($0 job cut)", icon: "percent" },
@@ -125,7 +125,7 @@ export const plans: PlanItem[] = [
     period: "/per month",
     tagline: "Billed annually ($179/yr) after 3-month trial.",
     href: "/pro-register",
-    cta: "Get started",
+    cta: "Get started ↗",
     featured: false,
     features: [
       { text: "All Pro Monthly features included", icon: "check" },

@@ -84,19 +84,19 @@ export function PricingPlans({
             if (isHome) {
               if (access.audience === "homeowner") {
                 href = "/account/post-job";
-                cta = "Post a request";
+                cta = "Post a request ↗";
               } else if (access.audience === "pro") {
                 href = "/pro/jobs";
-                cta = "Stay on pro jobs";
+                cta = "Stay on pro jobs ↗";
               }
             }
             if (isPro) {
               if (access.audience === "pro") {
                 href = "/pro/pricing";
-                cta = membershipActive ? "Manage membership" : "Start free trial";
+                cta = membershipActive ? "Manage membership ↗" : "Start free trial ↗";
               } else if (access.audience === "homeowner") {
                 href = "/pro-register";
-                cta = "Apply with a pro account";
+                cta = "Apply with a pro account ↗";
               }
             }
 

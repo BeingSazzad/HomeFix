@@ -522,7 +522,7 @@ export default function ProJobsPage() {
                       type="button"
                       onClick={() => handleHideLead(job.id)}
                       title="Hide this lead from your feed"
-                      className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted hover:text-rose-600 hover:bg-rose-50 border border-line/60 hover:border-rose-200 transition-all"
+                      className="inline-flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs font-medium text-muted hover:text-rose-600 hover:bg-rose-50 border border-line/60 hover:border-rose-200 transition-all"
                     >
                       <EyeOff className="h-3.5 w-3.5" />
                       <span>Pass</span>
@@ -597,10 +597,9 @@ export default function ProJobsPage() {
                   <Button
                     href={`/pro/jobs/${job.id}`}
                     size="sm"
-                    className="rounded-xl px-4 py-2 font-semibold shadow-xs hover:shadow transition-all group/btn self-end sm:self-auto"
+                    className="font-semibold shadow-xs hover:shadow transition-all self-end sm:self-auto"
                   >
-                    <span>{access.canSubmitQuote ? "View & Submit Quote" : "View Job Details"}</span>
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5" />
+                    <span>{access.canSubmitQuote ? "View & Submit Quote ↗" : "View Job Details ↗"}</span>
                   </Button>
                 </div>
               </div>

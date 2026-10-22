@@ -23,13 +23,13 @@ export default function ProOverviewPage() {
         <div className="flex flex-wrap items-center gap-2.5">
           <Button href="/pro/jobs" size="sm" className="font-semibold shadow-xs">
             <Briefcase className="h-4 w-4 mr-1.5" />
-            Find Available Jobs
+            Find Available Jobs ↗
           </Button>
           <Button href="/pro/pricing" size="sm" variant="ghost">
-            {membershipActive ? "Subscription" : "Start Trial"}
+            {membershipActive ? "Subscription ↗" : "Start Trial ↗"}
           </Button>
           <Button href="/pro/verification" size="sm" variant="ghost">
-            Verification
+            Verification ↗
           </Button>
         </div>
       </div>

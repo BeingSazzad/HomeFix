@@ -130,7 +130,7 @@ export function LoginForm() {
         </div>
         {error ? <p className="text-sm text-error">{error}</p> : null}
         <Button type="submit" className="w-full">
-          Sign in
+          Sign in ↗
         </Button>
       </form>
 

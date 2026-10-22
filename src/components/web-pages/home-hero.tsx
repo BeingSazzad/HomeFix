@@ -167,7 +167,7 @@ export function HomeHero() {
                   View Available Jobs (6) ↗
                 </Button>
                 <Button href="/pro/profile" variant="ghost" size="lg" className="text-white hover:bg-white/10 border-white/30 text-sm">
-                  My Storefront & Offers
+                  My Storefront & Offers ↗
                 </Button>
               </div>
             </div>
@@ -185,7 +185,7 @@ export function HomeHero() {
                   Browse Pros ↗
                 </Button>
                 <Button href="/how-it-works" variant="ghost" size="lg" className="text-white hover:bg-white/10 border-white/30 text-sm">
-                  How it works
+                  How it works ↗
                 </Button>
               </div>
             </div>
@@ -408,7 +408,7 @@ export function HomeHero() {
                       <button
                         type="button"
                         onClick={() => setIsChangingCategory(!isChangingCategory)}
-                        className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+                        className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
                       >
                         <RotateCcw className="h-3 w-3" />
                         {isChangingCategory ? "Done" : "Change"}
@@ -425,7 +425,7 @@ export function HomeHero() {
                         href={`/browse-pros?category=${preview.categorySlug}&location=${encodeURIComponent(preview.zip)}`}
                         className="text-xs"
                       >
-                        Browse {suggested?.name ?? "pros"}
+                        Browse {suggested?.name ?? "pros"} ↗
                       </Button>
                     </div>
                   </div>

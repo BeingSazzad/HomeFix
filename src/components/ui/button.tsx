@@ -5,10 +5,10 @@ type Variant = "primary" | "secondary" | "ghost" | "white" | "onDark";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-primary text-white hover:bg-primary-hover hover:text-white",
-  secondary: "bg-secondary text-white hover:bg-primary hover:text-white",
-  ghost: "border border-line bg-transparent text-title hover:border-primary hover:text-primary",
-  white: "bg-white text-title hover:bg-smoke hover:text-title",
+  primary: "bg-primary text-white hover:bg-primary-hover hover:text-white shadow-xs hover:shadow-sm",
+  secondary: "bg-secondary text-white hover:bg-primary hover:text-white shadow-xs hover:shadow-sm",
+  ghost: "border border-line bg-transparent text-title hover:border-primary hover:text-primary hover:bg-smoke/60",
+  white: "bg-white text-title hover:bg-smoke hover:text-title shadow-xs hover:shadow-sm",
   onDark: "border border-white bg-transparent !text-white hover:bg-white hover:!text-title",
 };
 
@@ -42,7 +42,7 @@ export function Button({
   ...props
 }: ButtonAsButton | ButtonAsLink) {
   const classes = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full font-display font-medium tracking-tight transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50",
+    "inline-flex items-center justify-center gap-2 rounded-full font-display font-medium tracking-tight transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.99]",
     variants[variant],
     sizes[size],
     className,

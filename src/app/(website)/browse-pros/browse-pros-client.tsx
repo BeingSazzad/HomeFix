@@ -89,15 +89,15 @@ export function BrowseProsClient() {
               </div>
               <div className="flex flex-wrap items-center gap-2 shrink-0">
                 <Button href="/pro/jobs" size="sm" className="font-semibold shadow-xs">
-                  Available Jobs Board <ArrowUpRight className="h-3.5 w-3.5 ml-0.5" />
+                  Available Jobs Board ↗
                 </Button>
                 <Button href="/browse-pros/pro-1" variant="ghost" size="sm">
-                  My Storefront
+                  My Storefront ↗
                 </Button>
                 <button
                   type="button"
                   onClick={() => dispatch(loginAs("homeowner"))}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-smoke px-3 py-1.5 font-display text-xs font-medium text-title hover:bg-white hover:border-primary/40 transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-smoke px-3 py-1.5 font-display text-xs font-medium text-title hover:bg-white hover:border-primary/40 transition-colors"
                   title="Switch to Homeowner Mode"
                 >
                   <Repeat className="h-3.5 w-3.5 text-muted" />

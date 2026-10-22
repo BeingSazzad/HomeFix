@@ -12,6 +12,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 export type YearlyMetrics = {
@@ -532,12 +533,14 @@ export function ProAnalytics() {
               Homeowners paid you directly upon 100% job satisfaction ($0 middleman cut).
             </p>
           </div>
-          <Link
+          <Button
             href="/pro/jobs"
-            className="inline-flex items-center gap-1 font-display text-xs font-semibold text-primary hover:underline"
+            variant="ghost"
+            size="sm"
+            className="text-xs font-semibold"
           >
-            Find more jobs <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+            Find more jobs ↗
+          </Button>
         </div>
 
         <div className="mt-4 overflow-x-auto">

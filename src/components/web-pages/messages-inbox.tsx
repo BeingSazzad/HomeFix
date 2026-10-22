@@ -660,19 +660,18 @@ export function MessagesInbox({ role = "homeowner" }: { role?: "homeowner" | "pr
                 {activePro?.id && (
                   <Link
                     href={`/browse-pros/${activePro.id}`}
-                    className="flex w-full items-center justify-center gap-1.5 rounded-[10px] bg-primary px-3 py-2 text-xs font-semibold text-white hover:bg-primary-hover transition-colors"
+                    className="flex w-full items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-primary-hover transition-colors active:scale-[0.99]"
                   >
-                    <span>View Full Public Profile</span>
-                    <ExternalLink className="h-3.5 w-3.5" />
+                    <span>View Full Public Profile ↗</span>
                   </Link>
                 )}
                 {active.jobId && !active.jobId.startsWith("dm:") && (
                   <Link
                     href={`${jobBase}/${active.jobId}`}
-                    className="flex w-full items-center justify-center gap-1.5 rounded-[10px] border border-line bg-white px-3 py-2 text-xs font-semibold text-title hover:bg-smoke transition-colors"
+                    className="flex w-full items-center justify-center gap-1.5 rounded-full border border-line bg-white px-4 py-2.5 text-xs font-semibold text-title hover:bg-smoke hover:border-primary/40 hover:text-primary transition-colors active:scale-[0.99]"
                   >
                     <FileText className="h-3.5 w-3.5 text-primary" />
-                    <span>View Repair Quote & Details</span>
+                    <span>View Repair Quote &amp; Details ↗</span>
                   </Link>
                 )}
               </div>

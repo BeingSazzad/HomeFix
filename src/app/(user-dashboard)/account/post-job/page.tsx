@@ -414,7 +414,7 @@ function BookingFlow() {
             size="lg"
             className="w-full sm:w-auto font-semibold rounded-full shadow-xs px-6"
           >
-            Track Work Order &amp; Quotes <ArrowRight className="h-4 w-4 ml-1" />
+            Track Work Order &amp; Quotes ↗
           </Button>
 
           {invitedPro ? (
@@ -424,7 +424,7 @@ function BookingFlow() {
               size="lg"
               className="w-full sm:w-auto rounded-full text-xs font-semibold"
             >
-              Open Direct Messages
+              Open Direct Messages ↗
             </Button>
           ) : (
             <Button
@@ -433,7 +433,7 @@ function BookingFlow() {
               size="lg"
               className="w-full sm:w-auto rounded-full text-xs font-semibold"
             >
-              Browse More Pros
+              Browse More Pros ↗
             </Button>
           )}
         </div>

@@ -92,7 +92,7 @@ export function Navbar() {
             </>
           ) : (
             <Button href="/login" size="sm" className="font-medium">
-              Get Started <ArrowUpRight className="h-4 w-4 ml-0.5" />
+              Get Started ↗
             </Button>
           )}
         </div>
@@ -162,7 +162,7 @@ export function Navbar() {
                   onClick={() => setOpen(false)}
                   className="w-full justify-center"
                 >
-                  Get Started <ArrowUpRight className="h-4 w-4 ml-0.5" />
+                  Get Started ↗
                 </Button>
               )}
           </div>

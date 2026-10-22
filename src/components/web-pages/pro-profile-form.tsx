@@ -178,16 +178,15 @@ export function ProProfileForm() {
           <Link
             href="/browse-pros/pro-1"
             target="_blank"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3.5 py-2 text-xs sm:text-sm font-semibold text-title shadow-2xs hover:border-primary hover:text-primary transition"
+            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-title shadow-2xs hover:border-primary hover:text-primary transition"
           >
             <Eye className="h-3.5 w-3.5" />
-            <span>View Public Storefront</span>
-            <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
+            <span>View Public Storefront ↗</span>
           </Link>
           <Button
             type="button"
             onClick={handleSaveAll}
-            className="rounded-xl shadow-xs text-xs sm:text-sm font-semibold px-5"
+            className="shadow-xs text-xs sm:text-sm font-semibold px-5"
           >
             Save All Changes
           </Button>
@@ -376,7 +375,7 @@ export function ProProfileForm() {
                 size="sm"
                 variant="ghost"
                 onClick={() => setShowAddService(!showAddService)}
-                className="rounded-xl border border-line text-xs font-semibold"
+                className="border border-line text-xs font-semibold"
               >
                 <Plus className="h-3.5 w-3.5 mr-1 text-primary" />
                 Add Service
@@ -844,7 +843,7 @@ export function ProProfileForm() {
               size="sm"
               variant="ghost"
               onClick={() => setShowAddPhoto(!showAddPhoto)}
-              className="rounded-xl border border-line text-xs font-semibold"
+              className="border border-line text-xs font-semibold"
             >
               <Plus className="h-3.5 w-3.5 mr-1 text-primary" />
               Add Photo
@@ -942,13 +941,12 @@ export function ProProfileForm() {
             target="_blank"
             className="text-xs font-semibold text-muted hover:text-primary transition flex items-center gap-1"
           >
-            <span>Preview Storefront</span>
-            <ArrowUpRight className="h-3.5 w-3.5" />
+            <span>Preview Storefront ↗</span>
           </Link>
           <Button
             type="button"
             onClick={handleSaveAll}
-            className="rounded-xl shadow-xs text-xs sm:text-sm font-semibold px-6"
+            className="shadow-xs text-xs sm:text-sm font-semibold px-6"
           >
             Save Changes
           </Button>

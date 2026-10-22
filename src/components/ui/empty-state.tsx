@@ -18,7 +18,9 @@ export function EmptyState({
       {actionLabel && href ? (
         <div className="mt-4">
           <Button href={href} size="sm">
-            {actionLabel}
+            {actionLabel.endsWith("↗") || actionLabel.startsWith("←")
+              ? actionLabel
+              : `${actionLabel} ↗`}
           </Button>
         </div>
       ) : null}

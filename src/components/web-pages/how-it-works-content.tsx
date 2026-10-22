@@ -163,7 +163,7 @@ export function HowItWorksContent() {
                 text: journey.secondary?.label
                   ? `Or ${journey.secondary.label.toLowerCase()}.`
                   : "Continue when you are ready.",
-                linkLabel: `${journey.cta.label} ↗`,
+                linkLabel: journey.cta.label,
               }}
             />
           </div>
