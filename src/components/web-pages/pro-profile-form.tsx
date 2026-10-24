@@ -209,10 +209,10 @@ export function ProProfileForm() {
               type="button"
               onClick={() => setActiveTab(tab.key as typeof activeTab)}
               className={cn(
-                "inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-display text-xs sm:text-sm font-semibold transition-all whitespace-nowrap",
+                "inline-flex items-center gap-2 px-3.5 py-2 rounded-lg font-display text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer",
                 active
-                  ? "bg-primary text-white shadow-xs"
-                  : "bg-smoke/70 text-title hover:bg-smoke hover:text-primary"
+                  ? "bg-title text-white shadow-2xs font-semibold"
+                  : "bg-white text-muted hover:text-title border border-line/80 hover:bg-slate-50"
               )}
             >
               <Icon className="h-4 w-4" />
@@ -220,8 +220,8 @@ export function ProProfileForm() {
               {typeof tab.count === "number" && (
                 <span
                   className={cn(
-                    "ml-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
-                    active ? "bg-white/20 text-white" : "bg-primary/10 text-primary"
+                    "ml-1 rounded-full px-2 py-0.5 text-[10px] font-semibold",
+                    active ? "bg-white/20 text-white" : "bg-slate-100 text-muted"
                   )}
                 >
                   {tab.count}
@@ -238,14 +238,14 @@ export function ProProfileForm() {
       {activeTab === "services" && (
         <div className="space-y-6">
           {/* SPECIAL PROMOTIONAL DISCOUNT CARD */}
-          <Card className="rounded-2xl border border-emerald-200/80 bg-white p-5 sm:p-6 shadow-2xs space-y-4">
+          <Card className="rounded-xl border border-line/80 bg-white p-5 sm:p-6 shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+                <div className="grid h-10 w-10 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60 shrink-0">
                   <Percent className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-display text-base font-bold text-title">
+                  <h3 className="font-display text-base font-semibold text-title">
                     First-Time Customer Discount
                   </h3>
                   <p className="text-xs text-muted mt-0.5">
@@ -255,7 +255,7 @@ export function ProProfileForm() {
               </div>
 
               {/* Offer Active Switch */}
-              <label className="inline-flex items-center gap-2 cursor-pointer self-start sm:self-auto bg-smoke/80 border border-line/80 rounded-xl px-3.5 py-1.5">
+              <label className="inline-flex items-center gap-2 cursor-pointer self-start sm:self-auto bg-slate-50 border border-line/80 rounded-lg px-3 py-1.5 hover:bg-slate-100 transition-colors">
                 <input
                   type="checkbox"
                   checked={formData.specialOffer.active}
@@ -267,7 +267,7 @@ export function ProProfileForm() {
                   }
                   className="h-4 w-4 rounded accent-primary cursor-pointer"
                 />
-                <span className="text-xs font-semibold text-title">
+                <span className="text-xs font-medium text-title">
                   {formData.specialOffer.active ? "Discount Active" : "Discount Inactive"}
                 </span>
               </label>
@@ -318,7 +318,7 @@ export function ProProfileForm() {
           </Card>
 
           {/* BASE STARTING PRICE & RESPONSE TIME */}
-          <Card className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-2xs">
+          <Card className="rounded-xl border border-line/80 bg-white p-5 sm:p-6 shadow-xs">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Profile Starting Rate ($)">
                 <div className="relative">
@@ -928,9 +928,9 @@ export function ProProfileForm() {
       )}
 
       {/* Floating Save Footer Bar */}
-      <div className="sticky bottom-4 z-20 flex items-center justify-between gap-4 rounded-2xl border border-line/80 bg-white/95 px-6 py-3.5 shadow-lg backdrop-blur-md">
+      <div className="sticky bottom-4 z-20 flex items-center justify-between gap-4 rounded-xl border border-line/80 bg-white/95 px-5 py-3 shadow-md backdrop-blur-md">
         <div className="flex items-center gap-2 text-xs text-muted">
-          <Info className="h-4 w-4 text-primary shrink-0" />
+          <Info className="h-4 w-4 text-muted shrink-0" />
           <span>All updates immediately reflect across homeowner searches and your public storefront.</span>
         </div>
 
@@ -938,14 +938,14 @@ export function ProProfileForm() {
           <Link
             href="/browse-pros/pro-1"
             target="_blank"
-            className="text-xs font-semibold text-muted hover:text-primary transition flex items-center gap-1"
+            className="text-xs font-medium text-muted hover:text-title transition flex items-center gap-1"
           >
             <span>Preview Storefront ↗</span>
           </Link>
           <Button
             type="button"
             onClick={handleSaveAll}
-            className="shadow-xs text-xs sm:text-sm font-semibold px-6"
+            className="shadow-xs text-xs sm:text-sm font-medium px-5 rounded-lg"
           >
             Save Changes
           </Button>

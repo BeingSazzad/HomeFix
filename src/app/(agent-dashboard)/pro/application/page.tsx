@@ -220,20 +220,20 @@ export default function ProApplicationPage() {
       </Suspense>
 
       {/* 3-Stage Progress Stepper */}
-      <Card className="p-5 sm:p-6 border border-line/80 shadow-xs">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative">
+      <Card className="p-4 sm:p-5 border border-line/80 shadow-xs">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 relative">
           {/* Step 1 */}
-          <div className="flex items-start gap-3.5 p-3 rounded-2xl bg-surface/40 border border-line/50">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500 text-white font-bold text-xs shadow-xs">
-              <CheckCircle2 className="h-5 w-5" />
+          <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50/60 border border-line/60">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+              <CheckCircle2 className="h-4 w-4" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">Step 1</span>
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Completed</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">Step 1</span>
+                <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200/60">Completed</span>
               </div>
-              <h4 className="text-sm font-semibold text-title mt-0.5">Business & Trade Profile</h4>
-              <p className="text-xs text-muted mt-0.5">
+              <h4 className="text-xs sm:text-sm font-semibold text-title mt-0.5">Business &amp; Trade Profile</h4>
+              <p className="text-[11px] text-muted mt-0.5">
                 {proProfile?.contactName || "Luis Ortega"} · {proProfile?.trade || "Plumbing"}
               </p>
             </div>
@@ -241,49 +241,49 @@ export default function ProApplicationPage() {
 
           {/* Step 2 */}
           <div
-            className={`flex items-start gap-3.5 p-3 rounded-2xl border transition-all ${
+            className={`flex items-start gap-3 p-3 rounded-xl border transition-all ${
               status === "cleared"
-                ? "bg-emerald-50/50 border-emerald-200"
+                ? "bg-slate-50/60 border-line/60"
                 : status === "needs_info"
-                ? "bg-amber-50/50 border-amber-300 ring-2 ring-amber-100"
+                ? "bg-amber-50/40 border-amber-200"
                 : status === "submitted"
-                ? "bg-blue-50/50 border-blue-200 ring-2 ring-blue-100"
-                : "bg-surface/40 border-line/50"
+                ? "bg-blue-50/40 border-blue-200"
+                : "bg-white border-line/80"
             }`}
           >
             <div
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-bold text-xs shadow-xs ${
+              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-semibold ${
                 status === "cleared"
-                  ? "bg-emerald-500 text-white"
+                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
                   : status === "needs_info"
-                  ? "bg-amber-500 text-white"
+                  ? "bg-amber-50 text-amber-700 border border-amber-200/60"
                   : status === "submitted"
-                  ? "bg-primary text-white"
-                  : "bg-surface text-copy border border-line"
+                  ? "bg-primary/10 text-primary border border-primary/20"
+                  : "bg-slate-100 text-slate-700 border border-slate-200"
               }`}
             >
               {status === "cleared" ? (
-                <CheckCircle2 className="h-5 w-5" />
+                <CheckCircle2 className="h-4 w-4" />
               ) : status === "needs_info" ? (
-                <AlertTriangle className="h-5 w-5" />
+                <AlertTriangle className="h-4 w-4" />
               ) : status === "submitted" ? (
-                <Clock className="h-5 w-5 animate-pulse" />
+                <Clock className="h-4 w-4" />
               ) : (
                 "2"
               )}
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">Step 2</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">Step 2</span>
                 <span
-                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  className={`text-[10px] font-medium px-1.5 py-0.2 rounded border ${
                     status === "cleared"
-                      ? "text-emerald-700 bg-emerald-100/70"
+                      ? "text-emerald-700 bg-emerald-50 border-emerald-200/60"
                       : status === "needs_info"
-                      ? "text-amber-800 bg-amber-100"
+                      ? "text-amber-800 bg-amber-50 border-amber-200/60"
                       : status === "submitted"
-                      ? "text-primary bg-blue-100"
-                      : "text-muted bg-surface"
+                      ? "text-primary bg-blue-50 border-blue-200/60"
+                      : "text-muted bg-slate-100 border-slate-200/60"
                   }`}
                 >
                   {status === "cleared"
@@ -295,66 +295,68 @@ export default function ProApplicationPage() {
                     : "Ready to Submit"}
                 </span>
               </div>
-              <h4 className="text-sm font-semibold text-title mt-0.5">License & Insurance Audit</h4>
-              <p className="text-xs text-muted mt-0.5">Trade credentials & $1M liability policy</p>
+              <h4 className="text-xs sm:text-sm font-semibold text-title mt-0.5">License &amp; Insurance Audit</h4>
+              <p className="text-[11px] text-muted mt-0.5">Trade credentials &amp; $1M liability policy</p>
             </div>
           </div>
 
           {/* Step 3 */}
           <div
-            className={`flex items-start gap-3.5 p-3 rounded-2xl border transition-all ${
+            className={`flex items-start gap-3 p-3 rounded-xl border transition-all ${
               status === "cleared"
-                ? "bg-emerald-50/50 border-emerald-200"
-                : "bg-surface/30 border-line/40 opacity-80"
+                ? "bg-slate-50/60 border-line/60"
+                : "bg-white border-line/60 opacity-70"
             }`}
           >
             <div
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-bold text-xs shadow-xs ${
-                status === "cleared" ? "bg-emerald-600 text-white" : "bg-surface text-muted border border-line"
+              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-semibold ${
+                status === "cleared"
+                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
+                  : "bg-slate-100 text-slate-500 border border-slate-200"
               }`}
             >
-              {status === "cleared" ? <BadgeCheck className="h-5 w-5" /> : "3"}
+              {status === "cleared" ? <BadgeCheck className="h-4 w-4" /> : "3"}
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">Step 3</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">Step 3</span>
                 <span
-                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                    status === "cleared" ? "text-emerald-700 bg-emerald-100/70" : "text-muted bg-surface"
+                  className={`text-[10px] font-medium px-1.5 py-0.2 rounded border ${
+                    status === "cleared"
+                      ? "text-emerald-700 bg-emerald-50 border-emerald-200/60"
+                      : "text-muted bg-slate-100 border-slate-200/60"
                   }`}
                 >
                   {status === "cleared" ? "Unlocked" : "Locked"}
                 </span>
               </div>
-              <h4 className="text-sm font-semibold text-title mt-0.5">Job Board & Direct Quoting</h4>
-              <p className="text-xs text-muted mt-0.5">Instant lead access with $0 platform fee</p>
+              <h4 className="text-xs sm:text-sm font-semibold text-title mt-0.5">Job Board &amp; Direct Quoting</h4>
+              <p className="text-[11px] text-muted mt-0.5">Instant lead access with $0 platform fee</p>
             </div>
           </div>
         </div>
       </Card>
 
       {/* Dynamic Status Banner Card */}
-      <div
-        className={`rounded-2xl border p-6 sm:p-7 shadow-xs transition-all ${currentConfig.borderColor} ${currentConfig.headerBg}`}
-      >
+      <div className="rounded-xl border border-line/80 bg-white p-5 sm:p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-5">
-          <div className="flex items-start gap-4">
-            <div className={`mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white shadow-xs border ${currentConfig.borderColor}`}>
-              <currentConfig.icon className={`h-6 w-6 ${currentConfig.iconColor}`} />
+          <div className="flex items-start gap-3.5">
+            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
+              <currentConfig.icon className={`h-5 w-5 ${currentConfig.iconColor}`} />
             </div>
             <div className="space-y-1">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <h3 className="font-display text-lg font-semibold text-title">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-display text-base sm:text-lg font-semibold text-title">
                   {currentConfig.title}
                 </h3>
                 <Badge tone={currentConfig.tone}>{currentConfig.label}</Badge>
               </div>
-              <p className="text-sm text-copy leading-relaxed max-w-2xl">
+              <p className="text-xs sm:text-sm text-muted leading-relaxed max-w-2xl">
                 {currentConfig.description}
               </p>
 
               {reason ? (
-                <div className="mt-3.5 flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50/90 p-3.5 text-sm text-amber-900">
+                <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-amber-200 bg-amber-50/70 p-3 text-xs text-amber-900">
                   <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" />
                   <div>
                     <span className="font-semibold text-amber-950">Reviewer Note: </span>
@@ -374,17 +376,17 @@ export default function ProApplicationPage() {
           {/* Quick Action in Header Card */}
           <div className="flex flex-wrap sm:flex-col gap-2 shrink-0 self-start sm:self-center">
             {status === "cleared" ? (
-              <Button href="/pro/jobs" size="sm" className="rounded-full shadow-xs">
+              <Button href="/pro/jobs" size="sm" className="rounded-lg shadow-xs">
                 Browse Open Leads
                 <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
               </Button>
             ) : status === "submitted" ? (
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-primary shadow-xs">
+              <div className="inline-flex items-center gap-2 rounded-lg border border-line bg-slate-50 px-3 py-1.5 text-xs font-semibold text-primary shadow-2xs">
                 <Clock className="h-3.5 w-3.5" />
                 Under active review
               </div>
             ) : (
-              <Button type="button" size="sm" onClick={handleSubmit} className="rounded-full shadow-xs">
+              <Button type="button" size="sm" onClick={handleSubmit} className="rounded-lg shadow-xs">
                 {status === "needs_info" ? "Re-submit for Clearance" : "Submit Application"}
                 <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
               </Button>
@@ -397,10 +399,10 @@ export default function ProApplicationPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-7">
         {/* Left Column: Required Documents Upload */}
         <div className="lg:col-span-7 space-y-6">
-          <Card className="space-y-5">
+          <Card className="p-5 sm:p-6 border border-line/80 shadow-xs space-y-5">
             <div className="flex items-center justify-between border-b border-line/60 pb-4">
               <div>
-                <h2 className="font-display text-lg font-semibold text-title flex items-center gap-2">
+                <h2 className="font-display text-base sm:text-lg font-semibold text-title flex items-center gap-2">
                   <FileCheck className="h-5 w-5 text-primary" />
                   Required Compliance Documents
                 </h2>
@@ -408,40 +410,38 @@ export default function ProApplicationPage() {
                   Clear high-resolution copies of your active state trade credentials.
                 </p>
               </div>
-              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+              <span className="text-xs font-medium text-slate-700 bg-slate-100 border border-slate-200/70 px-2.5 py-0.5 rounded-full">
                 2 of 2 attached
               </span>
             </div>
 
             {/* Document 1: Trade License */}
-            <div className="rounded-2xl border border-line bg-surface/30 p-4 transition-all hover:border-primary/50">
+            <div className="rounded-xl border border-line/80 bg-white p-4 transition-all hover:border-slate-300">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white border border-line text-primary shadow-xs">
-                    <BadgeCheck className="h-5 w-5" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
+                    <BadgeCheck className="h-4 w-4 text-primary" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
                       <h4 className="text-sm font-semibold text-title">State Trade License</h4>
-                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
                         Active Verified
                       </span>
                     </div>
                     <p className="text-xs text-muted mt-0.5">
                       Master Plumber · License #{proProfile?.licenseNumber || "TX-M-42981"} (Texas)
                     </p>
-                    <div className="mt-2.5 flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-2.5 py-1 text-xs font-medium text-copy">
-                        <FileText className="h-3.5 w-3.5 text-primary" />
-                        {licenseFile}
-                      </span>
-                      <span className="text-[11px] text-muted">PDF · 1.8 MB</span>
+                    <div className="mt-2 flex items-center gap-2 text-xs text-copy">
+                      <FileText className="h-3.5 w-3.5 text-muted shrink-0" />
+                      <span className="font-medium text-title text-xs">{licenseFile}</span>
+                      <span className="text-[11px] text-muted">· PDF 1.8 MB</span>
                     </div>
                   </div>
                 </div>
 
-                <label className="cursor-pointer inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-title shadow-xs hover:border-primary hover:text-primary transition-all">
-                  <FileUp className="h-3.5 w-3.5" />
+                <label className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg border border-line/80 bg-white px-3 py-1.5 text-xs font-medium text-title shadow-2xs hover:bg-slate-50 transition-all">
+                  <FileUp className="h-3.5 w-3.5 text-muted" />
                   <span>Update</span>
                   <input
                     type="file"
@@ -454,34 +454,32 @@ export default function ProApplicationPage() {
             </div>
 
             {/* Document 2: General Liability Insurance */}
-            <div className="rounded-2xl border border-line bg-surface/30 p-4 transition-all hover:border-primary/50">
+            <div className="rounded-xl border border-line/80 bg-white p-4 transition-all hover:border-slate-300">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white border border-line text-emerald-600 shadow-xs">
-                    <ShieldCheck className="h-5 w-5" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
+                    <ShieldCheck className="h-4 w-4 text-primary" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
                       <h4 className="text-sm font-semibold text-title">General Liability Insurance (COI)</h4>
-                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
                         Coverage Valid
                       </span>
                     </div>
                     <p className="text-xs text-muted mt-0.5">
                       {proProfile?.insuranceCarrier || "Next Insurance"} · {proProfile?.insuranceCoverage || "$1,000,000 Coverage"}
                     </p>
-                    <div className="mt-2.5 flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-2.5 py-1 text-xs font-medium text-copy">
-                        <FileText className="h-3.5 w-3.5 text-emerald-600" />
-                        {insuranceFile}
-                      </span>
-                      <span className="text-[11px] text-muted">PDF · 2.4 MB</span>
+                    <div className="mt-2 flex items-center gap-2 text-xs text-copy">
+                      <FileText className="h-3.5 w-3.5 text-muted shrink-0" />
+                      <span className="font-medium text-title text-xs">{insuranceFile}</span>
+                      <span className="text-[11px] text-muted">· PDF 2.4 MB</span>
                     </div>
                   </div>
                 </div>
 
-                <label className="cursor-pointer inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-title shadow-xs hover:border-primary hover:text-primary transition-all">
-                  <FileUp className="h-3.5 w-3.5" />
+                <label className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg border border-line/80 bg-white px-3 py-1.5 text-xs font-medium text-title shadow-2xs hover:bg-slate-50 transition-all">
+                  <FileUp className="h-3.5 w-3.5 text-muted" />
                   <span>Update</span>
                   <input
                     type="file"
@@ -494,16 +492,16 @@ export default function ProApplicationPage() {
             </div>
 
             {/* Document 3: Identity & Background Screening */}
-            <div className="rounded-2xl border border-line bg-surface/30 p-4 transition-all hover:border-primary/50">
+            <div className="rounded-xl border border-line/80 bg-white p-4 transition-all hover:border-slate-300">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white border border-line text-blue-600 shadow-xs">
-                    <Building2 className="h-5 w-5" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
+                    <Building2 className="h-4 w-4 text-primary" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-semibold text-title">Government Identity & Screening</h4>
-                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                      <h4 className="text-sm font-semibold text-title">Government Identity &amp; Screening</h4>
+                      <span className="text-[10px] font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/60">
                         Stripe Verified
                       </span>
                     </div>
@@ -511,7 +509,7 @@ export default function ProApplicationPage() {
                       Hosted identity check completed for {proProfile?.contactName || "Luis Ortega"}.
                     </p>
                     <p className="text-[11px] text-muted mt-1.5 flex items-center gap-1">
-                      <Info className="h-3 w-3 text-primary" />
+                      <Info className="h-3 w-3 text-muted" />
                       LocalHomeFix stores verification confirmation, not raw identity credentials.
                     </p>
                   </div>
@@ -519,7 +517,7 @@ export default function ProApplicationPage() {
 
                 <Link
                   href="/pro/verification"
-                  className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-title shadow-xs hover:border-primary hover:text-primary transition-all"
+                  className="inline-flex items-center gap-1 rounded-lg border border-line/80 bg-white px-3 py-1.5 text-xs font-medium text-title shadow-2xs hover:bg-slate-50 transition-all"
                 >
                   <span>Details</span>
                   <ChevronRight className="h-3.5 w-3.5 text-muted" />
@@ -535,7 +533,7 @@ export default function ProApplicationPage() {
                   size="sm"
                   variant="ghost"
                   onClick={handleSaveDraft}
-                  className="rounded-full text-xs"
+                  className="rounded-lg text-xs"
                 >
                   <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
                   Save Draft
@@ -554,12 +552,12 @@ export default function ProApplicationPage() {
 
               <div className="flex items-center gap-2">
                 {status !== "cleared" ? (
-                  <Button type="button" size="sm" onClick={handleSubmit} className="rounded-full shadow-xs">
+                  <Button type="button" size="sm" onClick={handleSubmit} className="rounded-lg shadow-xs">
                     {status === "needs_info" ? "Resubmit Application" : "Submit for Approval"}
                     <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                   </Button>
                 ) : (
-                  <Button href="/pro/jobs" size="sm" className="rounded-full shadow-xs">
+                  <Button href="/pro/jobs" size="sm" className="rounded-lg shadow-xs">
                     Access Job Board
                     <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                   </Button>
@@ -571,7 +569,7 @@ export default function ProApplicationPage() {
 
         {/* Right Column: Verified Contractor Credentials Snapshot */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="space-y-4">
+          <Card className="p-5 sm:p-6 border border-line/80 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-line/60 pb-3.5">
               <h3 className="font-display text-base font-semibold text-title flex items-center gap-2">
                 <Building2 className="h-4 w-4 text-primary" />
@@ -583,55 +581,55 @@ export default function ProApplicationPage() {
             </div>
 
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between items-center py-1 border-b border-line/40">
+              <div className="flex justify-between items-center py-1.5 border-b border-line/40">
                 <span className="text-muted text-xs">Business Entity</span>
-                <span className="font-medium text-title text-right">
+                <span className="font-medium text-title text-right text-xs sm:text-sm">
                   {proProfile?.businessName || "Ortega Plumbing & Gas"}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 border-b border-line/40">
+              <div className="flex justify-between items-center py-1.5 border-b border-line/40">
                 <span className="text-muted text-xs">Licensed Principal</span>
-                <span className="font-medium text-title text-right">
+                <span className="font-medium text-title text-right text-xs sm:text-sm">
                   {proProfile?.contactName || "Luis Ortega"}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 border-b border-line/40">
+              <div className="flex justify-between items-center py-1.5 border-b border-line/40">
                 <span className="text-muted text-xs">Primary Trade</span>
-                <span className="font-medium text-title text-right">
+                <span className="font-medium text-title text-right text-xs sm:text-sm">
                   {proProfile?.trade || "Plumbing"}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 border-b border-line/40">
+              <div className="flex justify-between items-center py-1.5 border-b border-line/40">
                 <span className="text-muted text-xs">Trade License #</span>
-                <span className="font-mono text-xs font-semibold text-title text-right bg-surface px-2 py-0.5 rounded">
+                <span className="font-medium text-title text-right text-xs sm:text-sm">
                   {proProfile?.licenseNumber || "TX-M-42981 (Master Plumber)"}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 border-b border-line/40">
+              <div className="flex justify-between items-center py-1.5 border-b border-line/40">
                 <span className="text-muted text-xs">Liability Insurance</span>
-                <span className="font-medium text-title text-right">
+                <span className="font-medium text-title text-right text-xs sm:text-sm">
                   {proProfile?.insuranceCarrier || "Next Insurance"}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 border-b border-line/40">
+              <div className="flex justify-between items-center py-1.5 border-b border-line/40">
                 <span className="text-muted text-xs">Service Radius</span>
-                <span className="font-medium text-title text-right">
+                <span className="font-medium text-title text-right text-xs sm:text-sm">
                   {proProfile?.radiusMiles || 25} miles around {proProfile?.city || "Austin"}, {proProfile?.state || "TX"}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1">
+              <div className="flex justify-between items-center py-1.5">
                 <span className="text-muted text-xs">Platform Commission</span>
-                <span className="font-semibold text-emerald-600 text-right">
-                  0% (Direct homeowner payout)
+                <span className="font-medium text-title text-right text-xs sm:text-sm">
+                  0% · Direct homeowner payout
                 </span>
               </div>
             </div>
 
-            <div className="rounded-xl bg-blue-50/70 border border-blue-200/80 p-3.5 text-xs text-blue-900 flex items-start gap-2.5">
-              <BadgeCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+            <div className="rounded-xl bg-slate-50 border border-line/70 p-3.5 text-xs text-copy flex items-start gap-2.5">
+              <ShieldCheck className="h-4 w-4 text-primary shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold">LocalHomeFix Guarantee</p>
-                <p className="text-blue-800/90 mt-0.5">
+                <p className="font-semibold text-title">LocalHomeFix Guarantee</p>
+                <p className="text-muted mt-0.5 leading-relaxed">
                   Verified contractors receive priority lead alerts, instant phone connect, and direct quote messaging without third-party lead fees.
                 </p>
               </div>
@@ -639,16 +637,16 @@ export default function ProApplicationPage() {
           </Card>
 
           {/* Compliance & Trust FAQs */}
-          <Card className="p-5 space-y-3 bg-surface/30 border border-line/60">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-muted">
+          <Card className="p-5 space-y-3 bg-white border border-line/70 shadow-2xs">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted">
               Verification Standards
             </h4>
             <div className="space-y-2 text-xs text-copy leading-relaxed">
               <p>
-                <strong>Turnaround Time:</strong> Standard applications are audited in 24 business hours. Automated license registry checks run hourly.
+                <strong className="text-title">Turnaround Time:</strong> Standard applications are audited in 24 business hours. Automated license registry checks run hourly.
               </p>
               <p>
-                <strong>Privacy & Storage:</strong> Insurance and license files are stored in an encrypted compliance vault and never exposed publicly.
+                <strong className="text-title">Privacy &amp; Storage:</strong> Insurance and license files are stored in an encrypted compliance vault and never exposed publicly.
               </p>
             </div>
           </Card>

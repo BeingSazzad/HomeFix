@@ -232,12 +232,12 @@ export function ProAnalytics() {
       {/* ========================================================================= */}
       <div className="grid gap-3.5 sm:grid-cols-2 xl:grid-cols-4">
         {/* Card 1: Total Revenue */}
-        <Card className="p-5 transition-all hover:border-primary/40 hover:shadow-xs">
+        <Card className="rounded-xl border border-line/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
               Total Earnings ({selectedYear})
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-blue-50 text-blue-600">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
               <DollarSign className="h-4 w-4" />
             </span>
           </div>
@@ -252,19 +252,19 @@ export function ProAnalytics() {
           </div>
           <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 text-xs text-muted">
             <span>Direct homeowner payments</span>
-            <span className="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md text-[11px]">
+            <span className="font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded text-[11px] border border-slate-200/60">
               $0 Fee Paid
             </span>
           </div>
         </Card>
 
         {/* Card 2: Completed Jobs */}
-        <Card className="p-5 transition-all hover:border-emerald-300 hover:shadow-xs">
+        <Card className="rounded-xl border border-line/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
               Completed Jobs ({selectedYear})
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
               <CheckCircle2 className="h-4 w-4" />
             </span>
           </div>
@@ -276,19 +276,19 @@ export function ProAnalytics() {
           </div>
           <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 text-xs text-muted">
             <span>Average ticket</span>
-            <span className="font-semibold text-title text-xs">
+            <span className="font-medium text-title text-xs">
               ${activeData.avgTicket} / job
             </span>
           </div>
         </Card>
 
         {/* Card 3: Total Clients */}
-        <Card className="p-5 transition-all hover:border-amber-300 hover:shadow-xs">
+        <Card className="rounded-xl border border-line/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
               Total Clients ({selectedYear})
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-amber-50 text-amber-600">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
               <Users className="h-4 w-4" />
             </span>
           </div>
@@ -296,37 +296,37 @@ export function ProAnalytics() {
             <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title">
               {activeData.totalClients} Clients
             </span>
-            <span className="inline-flex items-center rounded-md bg-amber-50 px-1.5 py-0.5 text-[11px] font-semibold text-amber-700">
+            <span className="inline-flex items-center rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-700 border border-slate-200/60">
               {activeData.repeatClients} Repeat
             </span>
           </div>
           <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 text-xs text-muted">
             <span>Repeat rate</span>
-            <span className="font-semibold text-title text-xs">
+            <span className="font-medium text-title text-xs">
               {Math.round((activeData.repeatClients / activeData.totalClients) * 100)}% Returning
             </span>
           </div>
         </Card>
 
         {/* Card 4: Pro Rating & Clearance */}
-        <Card className="p-5 transition-all hover:border-purple-300 hover:shadow-xs">
+        <Card className="rounded-xl border border-line/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
               Reputation &amp; Trust
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-purple-50 text-purple-600">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
               <ShieldCheck className="h-4 w-4" />
             </span>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title flex items-center gap-1">
-              4.8 <Star className="h-4 w-4 fill-amber-400 text-amber-500" />
+              4.8 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
             </span>
             <span className="text-xs text-muted">36 Verified reviews</span>
           </div>
           <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 text-xs text-muted">
             <span>Austin Clearance</span>
-            <span className="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md text-[11px]">
+            <span className="font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200/60">
               Licensed &amp; Insured
             </span>
           </div>

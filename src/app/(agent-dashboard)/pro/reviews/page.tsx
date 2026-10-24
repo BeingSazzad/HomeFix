@@ -191,11 +191,11 @@ export default function ProReviewsPage() {
       </div>
 
       {/* 2. Rating Breakdown Scorecard Widget */}
-      <Card className="rounded-[20px] border border-line/80 bg-white p-5 sm:p-6 shadow-xs">
+      <Card className="rounded-xl border border-line/80 bg-white p-5 sm:p-6 shadow-xs">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
           {/* Left Column: Overall Rating Score */}
           <div className="md:col-span-4 flex flex-col items-center md:items-start text-center md:text-left md:border-r border-line/70 md:pr-6">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-muted">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
               Overall Rating
             </span>
             <div className="mt-2 flex items-baseline gap-2">
@@ -223,10 +223,10 @@ export default function ProReviewsPage() {
             </div>
 
             <p className="mt-2 font-sans text-xs text-muted">
-              Based on <strong>{stats.total} verified reviews</strong>
+              Based on <strong className="text-title">{stats.total} verified reviews</strong>
             </p>
 
-            <div className="mt-3.5 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200/70">
+            <div className="mt-3.5 inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 border border-emerald-200/60">
               <CheckCircle2 className="h-3 w-3" />
               <span>{stats.repliedCount} of {stats.total} reviews replied</span>
             </div>
@@ -236,7 +236,7 @@ export default function ProReviewsPage() {
           <div className="md:col-span-8 space-y-2">
             <div className="flex items-center justify-between text-xs text-muted pb-1 font-medium">
               <span className="font-semibold text-title">Rating Breakdown</span>
-              <span className="text-[11px]">Click a tier to filter</span>
+              <span className="text-[11px] text-muted">Click a tier to filter</span>
             </div>
 
             {breakdown.map(({ star, count, percentage, filterKey }) => {
@@ -251,24 +251,24 @@ export default function ProReviewsPage() {
                   className={cn(
                     "w-full group flex items-center gap-3 rounded-lg px-2.5 py-1.5 text-xs transition-colors cursor-pointer",
                     isSelected
-                      ? "bg-primary/10 text-primary font-semibold ring-1 ring-primary/25"
-                      : "hover:bg-smoke text-title"
+                      ? "bg-slate-100 text-title font-semibold ring-1 ring-slate-300"
+                      : "hover:bg-slate-50 text-title"
                   )}
                 >
                   {/* Star count label */}
-                  <span className="w-14 text-left flex items-center gap-1 font-semibold text-title shrink-0">
+                  <span className="w-14 text-left flex items-center gap-1 font-medium text-title shrink-0">
                     <span>{star}</span>
                     <Star className="h-3 w-3 fill-amber-400 text-amber-500 shrink-0" />
                     <span className="text-[11px] font-normal text-muted">star</span>
                   </span>
 
                   {/* Visual Progress Bar Track */}
-                  <div className="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden relative">
+                  <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden relative">
                     <div
                       className={cn(
-                        "h-full rounded-full transition-all duration-500",
+                        "h-full rounded-full transition-all duration-300",
                         count > 0 ? "bg-amber-400 group-hover:bg-amber-500" : "bg-transparent",
-                        isSelected && "bg-primary"
+                        isSelected && "bg-title"
                       )}
                       style={{ width: `${percentage}%` }}
                     />
@@ -276,7 +276,7 @@ export default function ProReviewsPage() {
 
                   {/* Percentage & Count Badge */}
                   <div className="w-14 text-right shrink-0 flex items-center justify-end gap-1 text-[11px]">
-                    <span className="font-semibold text-title">{count}</span>
+                    <span className="font-medium text-title">{count}</span>
                     <span className="text-muted">({percentage}%)</span>
                   </div>
                 </button>
@@ -293,10 +293,10 @@ export default function ProReviewsPage() {
             type="button"
             onClick={() => setSelectedFilter("all")}
             className={cn(
-              "rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer",
+              "rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer",
               selectedFilter === "all"
-                ? "bg-title text-white font-semibold shadow-2xs"
-                : "bg-white text-muted hover:text-title border border-line/70"
+                ? "bg-title text-white font-medium shadow-2xs"
+                : "bg-white text-muted hover:text-title border border-line/80 hover:bg-slate-50"
             )}
           >
             All Reviews ({stats.total})
@@ -306,15 +306,12 @@ export default function ProReviewsPage() {
             type="button"
             onClick={() => setSelectedFilter("needs-reply")}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer",
+              "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer",
               selectedFilter === "needs-reply"
-                ? "bg-amber-600 text-white font-semibold shadow-2xs"
-                : "bg-white text-muted hover:text-title border border-line/70"
+                ? "bg-title text-white font-medium shadow-2xs"
+                : "bg-white text-muted hover:text-title border border-line/80 hover:bg-slate-50"
             )}
           >
-            {stats.needsReplyCount > 0 && (
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
-            )}
             Needs Reply ({stats.needsReplyCount})
           </button>
 
@@ -322,10 +319,10 @@ export default function ProReviewsPage() {
             type="button"
             onClick={() => setSelectedFilter("replied")}
             className={cn(
-              "rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer",
+              "rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer",
               selectedFilter === "replied"
-                ? "bg-title text-white font-semibold shadow-2xs"
-                : "bg-white text-muted hover:text-title border border-line/70"
+                ? "bg-title text-white font-medium shadow-2xs"
+                : "bg-white text-muted hover:text-title border border-line/80 hover:bg-slate-50"
             )}
           >
             Replied ({stats.repliedCount})
@@ -336,10 +333,10 @@ export default function ProReviewsPage() {
               type="button"
               onClick={() => setSelectedFilter("5-star")}
               className={cn(
-                "rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer",
+                "rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer",
                 selectedFilter === "5-star"
-                  ? "bg-title text-white font-semibold shadow-2xs"
-                  : "bg-white text-muted hover:text-title border border-line/70"
+                  ? "bg-title text-white font-medium shadow-2xs"
+                  : "bg-white text-muted hover:text-title border border-line/80 hover:bg-slate-50"
               )}
             >
               5 Stars ({stats.fiveStarCount})
@@ -351,10 +348,10 @@ export default function ProReviewsPage() {
               type="button"
               onClick={() => setSelectedFilter("4-star")}
               className={cn(
-                "rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer",
+                "rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer",
                 selectedFilter === "4-star"
-                  ? "bg-title text-white font-semibold shadow-2xs"
-                  : "bg-white text-muted hover:text-title border border-line/70"
+                  ? "bg-title text-white font-medium shadow-2xs"
+                  : "bg-white text-muted hover:text-title border border-line/80 hover:bg-slate-50"
               )}
             >
               4 Stars ({stats.fourStarCount})
@@ -375,7 +372,7 @@ export default function ProReviewsPage() {
       {/* 4. Review Cards List */}
       <div className="space-y-4">
         {filteredReviews.length === 0 ? (
-          <Card className="rounded-[20px] border border-line/80 bg-white p-8 text-center">
+          <Card className="rounded-xl border border-line/80 bg-white p-8 text-center">
             <p className="text-sm font-semibold text-title">No reviews match this filter.</p>
             <button
               type="button"
@@ -393,22 +390,22 @@ export default function ProReviewsPage() {
             return (
               <Card
                 key={review.id}
-                className="rounded-[20px] border border-line/80 bg-white p-5 sm:p-6 shadow-xs hover:border-line transition-all duration-200"
+                className="rounded-xl border border-line/80 bg-white p-5 sm:p-6 shadow-xs hover:border-slate-300 transition-all duration-200"
               >
                 {/* Review Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     {/* User Avatar */}
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary/15 via-blue-50 to-indigo-100 font-display text-sm font-bold text-primary border border-primary/20">
+                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-slate-100 font-display text-xs font-semibold text-slate-700 border border-slate-200/80">
                       {initials(review.author)}
                     </div>
 
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-display text-sm sm:text-base font-bold text-title">
+                        <span className="font-display text-sm sm:text-base font-semibold text-title">
                           {review.author}
                         </span>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 border border-emerald-200">
+                        <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700 border border-emerald-200/60">
                           <Check className="h-3 w-3 stroke-[3]" /> Verified Hire
                         </span>
                       </div>
@@ -422,30 +419,30 @@ export default function ProReviewsPage() {
                   <div className="flex items-center gap-2 self-start sm:self-auto">
                     <div className="flex items-center gap-0.5 text-amber-500">
                       {[...Array(review.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                        <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                       ))}
                     </div>
-                    <span className="font-display text-sm font-bold text-title">
+                    <span className="font-display text-xs sm:text-sm font-bold text-title">
                       {review.rating.toFixed(1)}
                     </span>
                   </div>
                 </div>
 
                 {/* Review Body */}
-                <div className="mt-3.5 pl-0 sm:pl-[52px]">
-                  <p className="font-sans text-sm sm:text-[15px] leading-relaxed text-[#333]">
+                <div className="mt-3.5 pl-0 sm:pl-12">
+                  <p className="font-sans text-sm sm:text-[15px] leading-relaxed text-copy">
                     &ldquo;{review.body}&rdquo;
                   </p>
 
                   {/* Public Response Thread */}
                   {hasReply ? (
-                    <div className="mt-4 rounded-xl border border-line/60 bg-surface/50 p-4 space-y-1.5">
+                    <div className="mt-3.5 rounded-lg border-l-2 border-primary/40 bg-slate-50/70 p-3 sm:p-4 space-y-1">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-white text-[10px] font-bold">
-                            P
+                          <span className="grid h-5 w-5 place-items-center rounded-md bg-primary text-white text-[10px] font-bold">
+                            {proProfile?.contactName?.[0] || "L"}
                           </span>
-                          <span className="font-display text-xs font-bold text-title">
+                          <span className="font-display text-xs font-semibold text-title">
                             {proProfile?.contactName ?? "Luis Ortega"} (You)
                           </span>
                           <span className="text-[11px] text-muted">· Public response</span>
@@ -456,18 +453,18 @@ export default function ProReviewsPage() {
                             setEditingReplyId(review.id);
                             setReplyDraft((prev) => ({ ...prev, [review.id]: review.reply || "" }));
                           }}
-                          className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
+                          className="text-[11px] font-medium text-primary hover:underline cursor-pointer"
                         >
                           Edit
                         </button>
                       </div>
-                      <p className="font-sans text-xs sm:text-sm text-[#444] leading-relaxed pl-7">
+                      <p className="font-sans text-xs sm:text-sm text-copy leading-relaxed pl-7">
                         {review.reply}
                       </p>
                     </div>
                   ) : (
                     /* Response Form (When Needs Reply or Editing) */
-                    <div className="mt-4 rounded-xl border border-line/80 bg-surface/30 p-4 space-y-3">
+                    <div className="mt-3.5 rounded-xl border border-line/80 bg-slate-50/50 p-4 space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="font-display text-xs font-semibold text-title flex items-center gap-1.5">
                           <MessageSquare className="h-3.5 w-3.5 text-primary" />
@@ -497,7 +494,7 @@ export default function ProReviewsPage() {
                                 [review.id]: template,
                               }))
                             }
-                            className="rounded-lg border border-line bg-white px-2 py-0.5 text-xs text-copy hover:border-primary hover:text-primary transition-colors cursor-pointer text-left truncate max-w-xs"
+                            className="rounded-md border border-line/80 bg-white px-2 py-0.5 text-xs text-copy hover:border-primary hover:text-primary transition-colors cursor-pointer text-left truncate max-w-xs"
                           >
                             &ldquo;{template.slice(0, 32)}...&rdquo;
                           </button>
@@ -510,7 +507,7 @@ export default function ProReviewsPage() {
                           setReplyDraft((prev) => ({ ...prev, [review.id]: event.target.value }))
                         }
                         placeholder={`Write a professional public response to ${review.author}...`}
-                        className="min-h-[85px] bg-white text-xs sm:text-sm rounded-xl"
+                        className="min-h-[85px] bg-white text-xs sm:text-sm rounded-lg"
                       />
 
                       <div className="flex items-center justify-between pt-1">
@@ -522,7 +519,7 @@ export default function ProReviewsPage() {
                           size="sm"
                           disabled={!(replyDraft[review.id] ?? "").trim()}
                           onClick={() => handlePostReply(review.id)}
-                          className="font-semibold text-xs rounded-xl"
+                          className="font-medium text-xs rounded-lg"
                         >
                           <Send className="h-3 w-3 mr-1.5" />
                           {isEditingThis ? "Update Response" : "Post Public Response"}

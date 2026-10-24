@@ -200,31 +200,30 @@ export default function PricingPage() {
       {/* ============================================================ */}
       {/* 2. CURRENT ACTIVE PLAN CARD                                  */}
       {/* ============================================================ */}
-      <Card className="rounded-[22px] border border-line/80 bg-white p-6 sm:p-7 shadow-xs">
+      <Card className="rounded-xl border border-line/80 bg-white p-5 sm:p-6 shadow-xs">
         {/* Card Header Status & Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line/60 pb-5">
-          <div className="flex items-center gap-2.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line/60 pb-4">
+          <div className="flex items-center gap-2">
             <span className="font-display text-xs font-semibold uppercase tracking-wider text-muted">
               Current Plan
             </span>
             <span className="text-muted/40">·</span>
             {isCancelled ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-700 border border-red-200">
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700 border border-red-200/60">
                 Cancelled
               </span>
             ) : isPaused ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 border border-amber-200">
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-800 border border-amber-200/60">
                 <Pause className="h-3 w-3" />
                 Paused
               </span>
             ) : isPaidActive ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary border border-primary/20">
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary border border-primary/20">
                 <Check className="h-3 w-3" />
                 Pro {currentPlan === "annual" ? "Annual" : "Monthly"} Active
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 border border-emerald-200">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-title border border-slate-200">
                 90-Day Free Trial
               </span>
             )}
@@ -233,7 +232,7 @@ export default function PricingPage() {
           {/* Quick Management Buttons */}
           <div className="flex items-center gap-2">
             {!active || cancelled ? (
-              <Button type="button" size="sm" onClick={handleStartTrial} className="h-8 font-semibold text-xs">
+              <Button type="button" size="sm" onClick={handleStartTrial} className="h-8 font-medium text-xs rounded-lg">
                 <Play className="h-3.5 w-3.5 mr-1.5" />
                 Start Free Trial
               </Button>
@@ -244,11 +243,11 @@ export default function PricingPage() {
                   variant="ghost"
                   size="sm"
                   onClick={handleTogglePause}
-                  className="h-8 border border-line text-xs font-medium text-copy hover:text-title hover:bg-smoke"
+                  className="h-8 border border-line/80 text-xs font-medium text-copy hover:text-title hover:bg-slate-50 rounded-lg"
                 >
                   {paused ? (
                     <>
-                      <Play className="h-3.5 w-3.5 mr-1.5 text-emerald-600" />
+                      <Play className="h-3.5 w-3.5 mr-1.5 text-title" />
                       Resume Plan
                     </>
                   ) : (
@@ -264,7 +263,7 @@ export default function PricingPage() {
                   variant="ghost"
                   size="sm"
                   onClick={handleCancelAutoRenew}
-                  className="h-8 text-xs font-medium text-muted hover:text-error hover:bg-red-50"
+                  className="h-8 text-xs font-medium text-muted hover:text-error hover:bg-red-50 rounded-lg"
                 >
                   Cancel Renewal
                 </Button>
@@ -274,9 +273,9 @@ export default function PricingPage() {
         </div>
 
         {/* Plan Details & Pricing */}
-        <div className="mt-5 flex flex-col md:flex-row md:items-baseline justify-between gap-4">
-          <div className="space-y-1.5">
-            <h2 className="font-display text-2xl sm:text-[26px] font-bold text-title tracking-tight leading-tight">
+        <div className="mt-4 flex flex-col md:flex-row md:items-baseline justify-between gap-4">
+          <div className="space-y-1">
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-title tracking-tight">
               {isCancelled
                 ? "Subscription Inactive"
                 : isPaused
@@ -287,7 +286,7 @@ export default function PricingPage() {
                   : "Pro Monthly"
                 : "Pro 3-Month Free Trial"}
             </h2>
-            <p className="text-xs sm:text-sm text-copy leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-sm text-muted leading-relaxed max-w-xl">
               {isCancelled
                 ? "Your subscription is cancelled. Reactivate anytime to submit quotes and contact homeowners."
                 : isPaused
@@ -309,7 +308,7 @@ export default function PricingPage() {
                     : "$19.99"
                   : "$0.00"}
               </span>
-              <span className="text-xs sm:text-sm font-medium text-muted">
+              <span className="text-xs font-medium text-muted">
                 {isCancelled
                   ? "/ month"
                   : isPaidActive
@@ -331,17 +330,17 @@ export default function PricingPage() {
 
         {/* Trial Days Progress Bar */}
         {isTrialActive && (
-          <div className="mt-6 pt-5 border-t border-line/60">
-            <div className="flex items-center justify-between text-xs font-semibold text-title mb-2">
-              <span className="flex items-center gap-1.5">
+          <div className="mt-5 pt-4 border-t border-line/60">
+            <div className="flex items-center justify-between text-xs font-medium text-title mb-2">
+              <span className="flex items-center gap-1.5 text-muted">
                 <Clock className="h-3.5 w-3.5 text-primary" />
                 Trial Progress · Day {90 - trialDaysLeft} of 90
               </span>
-              <span className="text-primary font-bold">{trialDaysLeft} days remaining</span>
+              <span className="text-primary font-semibold">{trialDaysLeft} days remaining</span>
             </div>
-            <div className="h-2 w-full rounded-full bg-smoke overflow-hidden">
+            <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-primary to-blue-500 rounded-full transition-all duration-500"
+                className="h-full bg-primary rounded-full transition-all duration-300"
                 style={{ width: `${Math.round(((90 - trialDaysLeft) / 90) * 100)}%` }}
               />
             </div>
@@ -357,7 +356,7 @@ export default function PricingPage() {
       {/* ============================================================ */}
       <div className="space-y-3">
         <div>
-          <h2 className="font-display text-[18px] sm:text-[20px] font-semibold text-title tracking-tight">
+          <h2 className="font-display text-base sm:text-lg font-semibold text-title tracking-tight">
             {isTrialActive ? "Renewal Plan Selection" : "Available Subscription Plans"}
           </h2>
           <p className="text-xs text-muted">
@@ -371,15 +370,15 @@ export default function PricingPage() {
           {/* OPTION 1: Pro Annual (Recommended) */}
           <div
             className={cn(
-              "relative flex flex-col justify-between rounded-[20px] border p-5 sm:p-6 transition-all duration-200",
+              "relative flex flex-col justify-between rounded-xl border p-5 sm:p-6 transition-all duration-200",
               billingPreference === "annual" || currentPlan === "annual"
-                ? "border-primary bg-primary/[0.02] shadow-xs ring-1 ring-primary/40"
-                : "border-line/80 bg-white hover:border-primary/40 hover:shadow-xs"
+                ? "border-primary bg-primary/[0.02] shadow-xs ring-1 ring-primary/30"
+                : "border-line/80 bg-white hover:border-slate-300 hover:shadow-xs"
             )}
           >
             {/* Value Badge */}
             <div className="absolute right-4 top-4">
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-xs">
+              <span className="inline-flex items-center gap-1 rounded-md bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 text-[11px] font-semibold">
                 <Percent className="h-3 w-3" /> Save 25% ($60/yr)
               </span>
             </div>
@@ -388,11 +387,11 @@ export default function PricingPage() {
               <span className="font-display text-xs font-semibold uppercase tracking-wider text-primary">
                 Annual Billing · Best Value
               </span>
-              <h3 className="mt-1 font-display text-[20px] font-bold text-title">
+              <h3 className="mt-1 font-display text-lg sm:text-xl font-bold text-title">
                 Pro Annual
               </h3>
-              <div className="mt-2.5 flex items-baseline gap-1.5">
-                <span className="font-display text-3xl font-bold text-title">$14.99</span>
+              <div className="mt-2 flex items-baseline gap-1.5">
+                <span className="font-display text-2xl sm:text-3xl font-bold text-title">$14.99</span>
                 <span className="text-xs text-muted">/ month ($179.88 billed annually)</span>
               </div>
               <p className="mt-2 text-xs text-muted leading-relaxed">
@@ -427,7 +426,7 @@ export default function PricingPage() {
                   setBillingPreference("annual");
                   handleSelectPlan("annual", false);
                 }}
-                className="font-semibold text-xs"
+                className="font-medium text-xs rounded-lg"
               >
                 {currentPlan === "annual" ? "Renewal Plan Selected ✓" : "Select Annual Plan ↗"}
               </Button>
@@ -437,21 +436,21 @@ export default function PricingPage() {
           {/* OPTION 2: Pro Monthly (Flexible) */}
           <div
             className={cn(
-              "relative flex flex-col justify-between rounded-[20px] border p-5 sm:p-6 transition-all duration-200",
+              "relative flex flex-col justify-between rounded-xl border p-5 sm:p-6 transition-all duration-200",
               billingPreference === "monthly" && currentPlan !== "annual"
-                ? "border-primary bg-primary/[0.02] shadow-xs ring-1 ring-primary/40"
-                : "border-line/80 bg-white hover:border-primary/40 hover:shadow-xs"
+                ? "border-primary bg-primary/[0.02] shadow-xs ring-1 ring-primary/30"
+                : "border-line/80 bg-white hover:border-slate-300 hover:shadow-xs"
             )}
           >
             <div>
               <span className="font-display text-xs font-semibold uppercase tracking-wider text-muted">
                 Month-to-Month Flexibility
               </span>
-              <h3 className="mt-1 font-display text-[20px] font-bold text-title">
+              <h3 className="mt-1 font-display text-lg sm:text-xl font-bold text-title">
                 Pro Monthly
               </h3>
-              <div className="mt-2.5 flex items-baseline gap-1.5">
-                <span className="font-display text-3xl font-bold text-title">$19.99</span>
+              <div className="mt-2 flex items-baseline gap-1.5">
+                <span className="font-display text-2xl sm:text-3xl font-bold text-title">$19.99</span>
                 <span className="text-xs text-muted">/ month (Billed monthly)</span>
               </div>
               <p className="mt-2 text-xs text-muted leading-relaxed">
@@ -486,7 +485,7 @@ export default function PricingPage() {
                   setBillingPreference("monthly");
                   handleSelectPlan("monthly", false);
                 }}
-                className="font-semibold text-xs border border-line/80"
+                className="font-medium text-xs border border-line/80 rounded-lg hover:bg-slate-50"
               >
                 {currentPlan === "monthly" ? "Renewal Plan Selected ✓" : "Select Monthly Plan ↗"}
               </Button>
@@ -498,16 +497,16 @@ export default function PricingPage() {
       {/* ============================================================ */}
       {/* 4. PAYMENT METHOD & BILLING INFO                             */}
       {/* ============================================================ */}
-      <Card className="rounded-[20px] border border-line/80 bg-white p-5 sm:p-6 shadow-xs">
+      <Card className="rounded-xl border border-line/80 bg-white p-5 sm:p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-smoke text-primary shrink-0 border border-line/60">
+            <div className="grid h-10 w-10 place-items-center rounded-lg bg-slate-100 text-slate-700 shrink-0 border border-slate-200/60">
               <CreditCard className="h-5 w-5" />
             </div>
             <div>
-              <p className="font-display text-[15px] font-bold text-title flex items-center gap-2">
+              <p className="font-display text-sm sm:text-base font-semibold text-title flex items-center gap-2">
                 <span>{paymentMethod?.brand ?? "Visa"} •••• {paymentMethod?.last4 ?? "4242"}</span>
-                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200">
+                <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700 border border-slate-200/60">
                   Primary Card
                 </span>
               </p>
@@ -522,7 +521,7 @@ export default function PricingPage() {
             variant="ghost"
             size="sm"
             onClick={() => setShowCardModal(true)}
-            className="border border-line/80 text-xs font-semibold self-start sm:self-auto"
+            className="border border-line/80 text-xs font-medium rounded-lg self-start sm:self-auto hover:bg-slate-50"
           >
             Update Payment Card ↗
           </Button>
