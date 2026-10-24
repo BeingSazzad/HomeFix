@@ -29,7 +29,6 @@ import {
   tradeDefaultServices,
   tradeDefaultReviews,
   getProGallery,
-  type PortfolioItem,
 } from "@/lib/pro-extras";
 import { loginHref } from "@/lib/role-access";
 import { toggleFavorite } from "@/redux/slices/featuresSlice";

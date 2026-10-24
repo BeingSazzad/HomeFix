@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ArrowUpRight, Bell } from "lucide-react";
+import { Menu, X, Bell } from "lucide-react";
 import { useState } from "react";
 import { AccountMenu } from "@/components/layout/account-menu";
 import { Button } from "@/components/ui/button";

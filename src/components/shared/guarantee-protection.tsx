@@ -4,10 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import {
   CheckCircle2,
-  Clock,
-  ExternalLink,
   FileCheck,
-  HelpCircle,
   PhoneCall,
   Shield,
   ShieldCheck,

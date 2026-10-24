@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  ArrowUpRight,
   Building2,
   Check,
   CheckCircle2,

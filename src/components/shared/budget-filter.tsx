@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, DollarSign } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setBudget } from "@/redux/slices/filterSlice";
 import { cn } from "@/lib/cn";

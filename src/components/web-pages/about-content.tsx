@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   Check,
   DollarSign,
-  Star,
   Wrench,
   Zap,
 } from "lucide-react";

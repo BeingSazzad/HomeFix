@@ -5,7 +5,6 @@ import { cn } from "@/lib/cn";
 export interface LogoProps {
   variant?: "light" | "dark";
   size?: "sm" | "md" | "lg";
-  showText?: boolean;
   className?: string;
   href?: string;
 }
@@ -50,7 +49,6 @@ export function LogoIcon({
 export function Logo({
   variant = "light",
   size = "md",
-  showText = true,
   className,
   href = "/",
 }: LogoProps) {

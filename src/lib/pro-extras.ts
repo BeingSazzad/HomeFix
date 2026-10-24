@@ -749,7 +749,7 @@ export interface TradeReviewItem {
 }
 
 export const tradeDefaultReviews: Record<string, (proName: string, city: string) => TradeReviewItem[]> = {
-  electrical: (proName, city) => [
+  electrical: (proName) => [
     {
       id: "rev-el-1",
       author: "David H.",
@@ -789,7 +789,7 @@ export const tradeDefaultReviews: Record<string, (proName: string, city: string)
       text: `Two kitchen outlets suddenly died before a dinner party. ${proName} responded promptly, tracked down a tripped upstream GFCI behind a cabinet, and tested all kitchen circuits thoroughly. Highly recommended!`,
     },
   ],
-  plumbing: (proName, city) => [
+  plumbing: (proName) => [
     {
       id: "rev-pl-1",
       author: "Marcus G.",
@@ -829,7 +829,7 @@ export const tradeDefaultReviews: Record<string, (proName: string, city: string)
       text: `Installed our new touchless Moen faucet and garbage disposal smoothly. Solid mounting, zero leaks, and hauled away the old unit at no extra charge.`,
     },
   ],
-  hvac: (proName, city) => [
+  hvac: (proName) => [
     {
       id: "rev-hv-1",
       author: "Brad T.",
@@ -868,7 +868,7 @@ export const tradeDefaultReviews: Record<string, (proName: string, city: string)
       text: `Our upstairs master bedroom was always 6 degrees warmer than downstairs. ${proName} adjusted the manual dampers and sealed leaky duct joints. Room temperature is now perfectly balanced.`,
     },
   ],
-  painting: (proName, city) => [
+  painting: (proName) => [
     {
       id: "rev-pt-1",
       author: "Linda C.",
@@ -907,7 +907,7 @@ export const tradeDefaultReviews: Record<string, (proName: string, city: string)
       text: `Crisp enameling on all interior doors and baseboards. Arrived daily on time, kept brushes and materials neatly packed, and left our home clean each evening.`,
     },
   ],
-  handyman: (proName, city) => [
+  handyman: (proName) => [
     {
       id: "rev-hm-1",
       author: "James W.",
@@ -946,7 +946,7 @@ export const tradeDefaultReviews: Record<string, (proName: string, city: string)
       text: `Scraped away all moldy silicone in the master bathroom shower, sanitized the joint, and laid down a pristine, watertight bead. Very neat and detail-oriented.`,
     },
   ],
-  "appliance-repair": (proName, city) => [
+  "appliance-repair": (proName) => [
     {
       id: "rev-ap-1",
       author: "Robert T.",
@@ -985,7 +985,7 @@ export const tradeDefaultReviews: Record<string, (proName: string, city: string)
       text: `Dryer ran but blew cold air. Tested thermal cutoff fuses and replaced the burned-out heating coil quickly. Cleaned internal lint buildup as a courtesy.`,
     },
   ],
-  roofing: (proName, city) => [
+  roofing: (proName) => [
     {
       id: "rev-rf-1",
       author: "Eric S.",
@@ -1024,7 +1024,7 @@ export const tradeDefaultReviews: Record<string, (proName: string, city: string)
       text: `Water was trickling down the brick fireplace wall. ${proName} ground out the mortar joint, tucked in new step flashing, and sealed with polyurethane sealant. Outstanding work.`,
     },
   ],
-  landscaping: (proName, city) => [
+  landscaping: (proName) => [
     {
       id: "rev-ls-1",
       author: "Samuel P.",
@@ -1063,7 +1063,7 @@ export const tradeDefaultReviews: Record<string, (proName: string, city: string)
       text: `Trimmed low branches away from the roofline and shaped our ornamental trees. Hauled away all branches and raked the lawn completely clean.`,
     },
   ],
-  "pest-control": (proName, city) => [
+  "pest-control": (proName) => [
     {
       id: "rev-pc-1",
       author: "Gary L.",

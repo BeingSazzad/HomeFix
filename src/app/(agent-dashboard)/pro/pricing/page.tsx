@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  ArrowRight,
   Check,
   CheckCircle2,
   Clock,

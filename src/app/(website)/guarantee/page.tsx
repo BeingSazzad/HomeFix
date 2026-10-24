@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   ShieldCheck,
   CheckCircle2,
-  Clock,
   HelpCircle,
-  FileText,
   AlertCircle,
   Check,
-  ArrowRight,
-  PhoneCall,
   Wrench,
   Sparkles,
 } from "lucide-react";

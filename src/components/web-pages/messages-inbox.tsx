@@ -7,7 +7,6 @@ import {
   ArrowLeft,
   Calendar,
   ChevronRight,
-  ExternalLink,
   FileText,
   MapPin,
   Paperclip,

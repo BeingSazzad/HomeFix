@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Briefcase, ChevronLeft, ChevronRight, Repeat } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,6 @@ import { categories, professionals } from "@/Mockdata";
 import { loginAs } from "@/redux/slices/authSlice";
 import {
   setCategory,
-  setMaxPrice,
   setMinRating,
   setQuery,
   setSort,
@@ -34,6 +33,7 @@ export function BrowseProsClient() {
   const location = filters.zip || params.get("zip") || params.get("location") || "";
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [prevFilterKey, setPrevFilterKey] = useState("");
   const gridTopRef = useRef<HTMLDivElement>(null);
 
   const results = useMemo(() => {
@@ -103,10 +103,14 @@ export function BrowseProsClient() {
     });
   }, [category, filters, location, user]);
 
-  // Reset to page 1 whenever search filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [category, location, filters.query, filters.minPrice, filters.maxPrice, filters.minRating, filters.sort]);
+  // Reset to page 1 whenever search filters change without cascading effect
+  const filterKey = `${category}|${location}|${filters.query}|${filters.minPrice}|${filters.maxPrice}|${filters.minRating}|${filters.sort}`;
+  if (prevFilterKey !== filterKey) {
+    setPrevFilterKey(filterKey);
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    }
+  }
 
   const totalPages = Math.ceil(results.length / PAGE_SIZE) || 1;
   const paginatedResults = useMemo(() => {
