@@ -18,19 +18,14 @@ const homeownerLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-const proLinks = [
-  { href: "/pro", label: "Dashboard" },
-  { href: "/pro/jobs", label: "Available Jobs" },
-  { href: "/pro/messages", label: "Messages" },
-  { href: "/pro/pricing", label: "Subscription" },
-  { href: "/browse-pros/pro-1", label: "My Storefront" },
-];
+
 
 export function Navbar() {
   const pathname = usePathname();
   const user = useAppSelector((state) => state.auth.user);
   const isPro = user?.role === "pro";
-  const navLinks = isPro ? proLinks : homeownerLinks;
+  const isDashboard = pathname.startsWith("/pro") || pathname.startsWith("/account") || pathname.startsWith("/admin");
+  const navLinks = isPro || isDashboard ? [] : homeownerLinks;
 
   const [open, setOpen] = useState(false);
   const notifHref = isPro ? "/pro/notifications" : "/account/notifications";
@@ -43,20 +38,22 @@ export function Navbar() {
       <div className="container-site flex h-[74px] items-center justify-between gap-6">
         <Logo />
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "font-sans text-[15px] font-medium tracking-normal text-[#555] transition-colors hover:text-title",
-                pathname === link.href && "text-primary font-semibold",
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        {navLinks.length > 0 && (
+          <nav className="hidden items-center gap-7 lg:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "font-sans text-[15px] font-medium tracking-normal text-[#555] transition-colors hover:text-title",
+                  pathname === link.href && "text-primary font-semibold",
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        )}
 
         <div className="hidden items-center gap-3.5 lg:flex">
           {user ? (

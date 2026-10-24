@@ -16,8 +16,11 @@ import {
   Home,
   ImagePlus,
   MapPin,
+  Pencil,
   Send,
   ShieldCheck,
+  Sparkles,
+  Star,
   Store,
   Sun,
   Sunrise,
@@ -109,6 +112,10 @@ function BookingFlow() {
 
   const selectedCategory = categories.find((c) => c.slug === categorySlug) ?? categories[0];
   const activeAddress = addresses.find((a) => a.id === selectedAddressId);
+  const displayLocation = activeAddress?.street
+    ? `${activeAddress.street}, ${activeAddress.city || "Austin"}, ${activeAddress.state || "TX"} ${zipInput}`
+    : `Austin, TX ${zipInput}`;
+  const areaDescription = `${activeAddress?.city || "Austin"}, TX ${zipInput}`;
 
   // Simple Step Validations
   function validateStep(currentStep: number): boolean {
@@ -456,7 +463,7 @@ function BookingFlow() {
                     <TextField
                       value={titleInput}
                       onChange={(e) => setTitleInput(e.target.value)}
-                      placeholder="e.g. Leaking kitchen faucet or outlet repair"
+                      placeholder="e.g. Leaking kitchen faucet"
                       required
                       className="rounded-xl"
                     />
@@ -727,7 +734,7 @@ function BookingFlow() {
 
             {/* STEP 3: REVIEW & CONFIRM */}
             {step === 3 && (
-              <div className="space-y-6 animate-in fade-in duration-150">
+              <div className="space-y-5 animate-in fade-in duration-150">
                 <div className="border-b border-line/60 pb-3">
                   <h2 className="font-display text-xl font-bold text-title">
                     Review &amp; Submit
@@ -737,79 +744,164 @@ function BookingFlow() {
                   </p>
                 </div>
 
-                {/* Structured Review Card */}
-                <div className="rounded-2xl border border-line/80 bg-surface/50 p-4 sm:p-5 space-y-4">
-                  <div className="flex items-start justify-between border-b border-line/60 pb-3">
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
-                        {selectedCategory.name}
-                      </span>
-                      <p className="font-display text-base font-bold text-title mt-0.5">
-                        {titleInput}
-                      </p>
-                      <p className="text-xs text-muted mt-1 leading-relaxed">
-                        {descriptionInput}
-                      </p>
+                {/* Direct Pro Invitation Banner (if directed to specific pro) */}
+                {invitedPro && (
+                  <div className="flex items-center justify-between gap-3.5 rounded-2xl border border-primary/25 bg-gradient-to-r from-blue-50/80 via-primary/[0.04] to-surface p-4 shadow-xs">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-white font-display text-base font-bold shadow-xs">
+                        {initials(invitedPro.name)}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                            Direct Request To Pro
+                          </span>
+                          <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                            <ShieldCheck className="h-3 w-3 text-emerald-600" /> Verified Pro
+                          </span>
+                        </div>
+                        <h3 className="font-display text-base font-bold text-title truncate mt-0.5">
+                          {invitedPro.name}
+                        </h3>
+                        <p className="text-xs text-muted flex items-center gap-2">
+                          <span>{invitedPro.trade}</span>
+                          <span className="text-stone-300">•</span>
+                          <span className="inline-flex items-center gap-1 font-semibold text-title">
+                            <Star className="h-3 w-3 fill-amber-400 text-amber-500" />
+                            {invitedPro.rating.toFixed(1)}
+                            <span className="font-normal text-muted">({invitedPro.reviewCount})</span>
+                          </span>
+                        </p>
+                      </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setStep(1)}
-                      className="text-xs font-semibold text-primary hover:underline shrink-0 ml-3"
-                    >
-                      Edit
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs border-b border-line/60 pb-3">
-                    <div>
-                      <span className="text-muted block">Timeframe</span>
-                      <span className="font-semibold text-title capitalize">
-                        {urgency === "asap" ? "Emergency / ASAP" : urgency.replace("_", " ")}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-muted block">Arrival Window</span>
-                      <span className="font-semibold text-title capitalize">
-                        {timeWindow}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-muted block">Location</span>
-                      <span className="font-semibold text-title">{zipInput}</span>
+                    <div className="hidden sm:flex items-center gap-1.5 rounded-full bg-white/90 border border-line/70 px-3 py-1.5 text-xs text-stone-700 font-medium shrink-0 shadow-2xs">
+                      <Zap className="h-3.5 w-3.5 text-amber-500 fill-amber-400" />
+                      Replies {invitedPro.responseTime}
                     </div>
                   </div>
+                )}
 
-                  <div className="flex items-center justify-between text-xs">
-                    <div>
-                      <span className="text-muted">Property: </span>
-                      <span className="font-semibold text-title capitalize">
-                        {propertyType.replace("_", " ")}
-                      </span>
-                      {photoUrls.length > 0 && (
-                        <span className="ml-3 text-muted">
-                          • {photoUrls.length} photo{photoUrls.length > 1 ? "s" : ""} attached
-                        </span>
-                      )}
+                {/* Rich & Colorful Structured Review Card */}
+                <div className="rounded-2xl border border-line/80 bg-white shadow-xs overflow-hidden">
+                  {/* Card Header with category badge & edit */}
+                  <div className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-slate-50/60 p-4 sm:p-5 border-b border-line/60">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-xs font-semibold text-primary">
+                          <Sparkles className="h-3 w-3 text-primary" />
+                          {selectedCategory.name}
+                        </div>
+                        <h3 className="font-display text-lg sm:text-xl font-bold text-title mt-2 tracking-tight">
+                          {titleInput}
+                        </h3>
+                        {descriptionInput ? (
+                          <p className="mt-2 text-xs sm:text-sm text-stone-600 leading-relaxed bg-white/90 rounded-xl p-3 border border-line/50">
+                            {descriptionInput}
+                          </p>
+                        ) : null}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setStep(1)}
+                        className="inline-flex items-center gap-1 rounded-lg bg-white border border-line/80 px-2.5 py-1 text-xs font-semibold text-primary hover:bg-primary/5 hover:border-primary/40 transition-colors shrink-0 shadow-2xs"
+                      >
+                        <Pencil className="h-3 w-3" />
+                        Edit
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setStep(2)}
-                      className="text-xs font-semibold text-primary hover:underline"
-                    >
-                      Edit
-                    </button>
+                  </div>
+
+                  {/* 4 Colorful Metadata Feature Tiles */}
+                  <div className="p-4 sm:p-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      {/* Tile 1: Timeframe */}
+                      <div className="flex items-center gap-3 rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50/60 to-transparent p-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700 shadow-2xs">
+                          <Calendar className="h-4.5 w-4.5" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block text-[11px] font-medium text-stone-500">Timeframe</span>
+                          <span className="font-semibold text-title capitalize text-xs sm:text-sm">
+                            {urgency === "asap" ? (
+                              <span className="text-red-700 font-bold inline-flex items-center gap-1">
+                                <Zap className="h-3.5 w-3.5 fill-red-500 text-red-600" />
+                                Emergency / ASAP
+                              </span>
+                            ) : (
+                              urgency.replace("_", " ")
+                            )}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Tile 2: Preferred Arrival Window */}
+                      <div className="flex items-center gap-3 rounded-xl border border-amber-100 bg-gradient-to-br from-amber-50/60 to-transparent p-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700 shadow-2xs">
+                          <Clock className="h-4.5 w-4.5" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block text-[11px] font-medium text-stone-500">Arrival Window</span>
+                          <span className="font-semibold text-title capitalize text-xs sm:text-sm">
+                            {timeWindow}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Tile 3: Service Location */}
+                      <div className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50/60 to-transparent p-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shadow-2xs">
+                          <MapPin className="h-4.5 w-4.5" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block text-[11px] font-medium text-stone-500">Service Location</span>
+                          <span className="font-semibold text-title text-xs sm:text-sm">
+                            {displayLocation}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Tile 4: Property Type */}
+                      <div className="flex items-center gap-3 rounded-xl border border-purple-100 bg-gradient-to-br from-purple-50/60 to-transparent p-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-purple-100 text-purple-700 shadow-2xs">
+                          <Home className="h-4.5 w-4.5" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block text-[11px] font-medium text-stone-500">Property Type</span>
+                          <span className="font-semibold text-title capitalize text-xs sm:text-sm">
+                            {propertyType.replace("_", " ")}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom strip inside review card */}
+                    <div className="mt-3.5 pt-3 border-t border-line/60 flex items-center justify-between text-xs text-muted">
+                      <span>
+                        {photoUrls.length > 0
+                          ? `📷 ${photoUrls.length} job photo${photoUrls.length > 1 ? "s" : ""} attached`
+                          : "No photos attached (optional)"}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setStep(2)}
+                        className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
+                      >
+                        <Pencil className="h-3 w-3" />
+                        Edit schedule &amp; address
+                      </button>
+                    </div>
                   </div>
                 </div>
 
                 {/* Photos Preview in Review (if any) */}
                 {photoUrls.length > 0 && (
-                  <div className="space-y-1.5">
-                    <span className="text-xs font-semibold text-title">Attached Photos</span>
-                    <div className="flex gap-2">
+                  <div className="space-y-2 rounded-2xl border border-line/70 bg-white p-4">
+                    <span className="text-xs font-semibold text-title block">Attached Photos ({photoUrls.length})</span>
+                    <div className="flex flex-wrap gap-2.5">
                       {photoUrls.map((src) => (
                         <div
                           key={src.slice(0, 48)}
-                          className="h-16 w-16 overflow-hidden rounded-xl border border-line"
+                          className="h-16 w-16 overflow-hidden rounded-xl border border-line shadow-2xs"
                         >
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={src} alt="Attached" className="h-full w-full object-cover" />
@@ -819,12 +911,19 @@ function BookingFlow() {
                   </div>
                 )}
 
-                {/* Direct info banner */}
-                <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3.5 flex items-center gap-2.5 text-xs text-emerald-950">
-                  <ShieldCheck className="h-4.5 w-4.5 text-emerald-600 shrink-0" />
-                  <span>
-                    No charges now. Pros will send you free upfront quotes and you pay directly when the job is done.
-                  </span>
+                {/* Enhanced Protection Guarantee Banner with Rich Color & Trust */}
+                <div className="rounded-2xl border border-emerald-200/90 bg-gradient-to-r from-emerald-50/90 via-teal-50/40 to-emerald-50/30 p-4 flex items-start sm:items-center gap-3.5 shadow-2xs">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
+                    <ShieldCheck className="h-5 w-5" />
+                  </div>
+                  <div className="text-xs min-w-0">
+                    <p className="font-bold text-emerald-950">
+                      100% Free · No Payment Required Now
+                    </p>
+                    <p className="text-emerald-900/80 mt-0.5 leading-relaxed">
+                      Pros review your request and send free upfront quotes. You choose who to hire and pay the pro directly after the job is completed.
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
@@ -902,7 +1001,7 @@ function BookingFlow() {
               <div className="rounded-xl border border-line bg-smoke/60 p-3 text-xs space-y-0.5">
                 <p className="font-bold text-title">Open Request</p>
                 <p className="text-muted">
-                  Sending to top verified pros in {zipInput} (Austin area).
+                  Sending to top verified pros in {areaDescription}.
                 </p>
               </div>
             )}
@@ -918,9 +1017,9 @@ function BookingFlow() {
                   {urgency === "asap" ? "ASAP" : urgency.replace("_", " ")}
                 </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted">Location:</span>
-                <span className="font-semibold text-title font-mono">{zipInput}</span>
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-muted shrink-0">Location:</span>
+                <span className="font-semibold text-title text-right">{displayLocation}</span>
               </div>
               {photoUrls.length > 0 && (
                 <div className="flex items-center justify-between">
