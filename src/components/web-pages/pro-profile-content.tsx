@@ -531,11 +531,6 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 ) : (
                   <p className="text-xs text-muted">Business hours available upon inquiry.</p>
                 )}
-
-                <div className="flex items-center justify-between pt-1 text-xs text-muted">
-                  <span>Typical response time</span>
-                  <span className="font-semibold text-title">{pro.responseTime || "Usually under 1 hour"}</span>
-                </div>
               </div>
             </div>
           </section>
