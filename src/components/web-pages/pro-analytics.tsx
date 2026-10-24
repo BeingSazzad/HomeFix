@@ -105,6 +105,7 @@ const recentCompletedJobs = [
     client: "Maya Chen",
     location: "Austin, 78701",
     service: "Kitchen Sink Leak & P-Trap Repair",
+    description: "Replaced degraded PVC P-trap assembly with brass slip joints, resealed strainer basket, and pressure-tested under 60 PSI load.",
     date: "Oct 14, 2026",
     amount: "$280.00",
     rating: 5,
@@ -114,6 +115,7 @@ const recentCompletedJobs = [
     client: "Jordan Hale",
     location: "Austin, 78745",
     service: "Emergency Pipe Pressure Diagnostics",
+    description: "Diagnosed pinhole micro-fracture in 3/4\" copper trunk line behind garage firewall; isolated main shutoff and installed sweat coupling.",
     date: "Sep 28, 2026",
     amount: "$450.00",
     rating: 4.8,
@@ -123,6 +125,7 @@ const recentCompletedJobs = [
     client: "Elena Ruiz",
     location: "Austin, 78702",
     service: "Main Supply Line Resealing",
+    description: "Excavated meter transition coupling, rebuilt compression collar with vulcanized sleeve, and verified flow rate across all fixtures.",
     date: "Sep 15, 2026",
     amount: "$320.00",
     rating: 5,
@@ -132,6 +135,7 @@ const recentCompletedJobs = [
     client: "Sam Okonkwo",
     location: "Round Rock, 78664",
     service: "Water Heater Valve Replacement",
+    description: "Installed heavy-duty brass temperature & pressure (T&P) relief valve, flushed 15 gal mineral sediment, and verified burner ignition at 120°F.",
     date: "Aug 29, 2026",
     amount: "$520.00",
     rating: 5,
@@ -141,6 +145,7 @@ const recentCompletedJobs = [
     client: "David Miller",
     location: "Austin, 78704",
     service: "Garbage Disposal Installation",
+    description: "Uninstalled jammed 1/2 HP contractor unit, mounted sound-dampened 3/4 HP Insinkerator with new sink flange and dedicated GFCI cord.",
     date: "Aug 12, 2026",
     amount: "$240.00",
     rating: 5,
@@ -228,21 +233,21 @@ export function ProAnalytics() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. EXECUTIVE KPI CARDS (Always visible or shared)                         */}
+      {/* 2. EXECUTIVE KPI CARDS (Standardized, uncluttered, executive sizes)       */}
       {/* ========================================================================= */}
       <div className="grid gap-3.5 sm:grid-cols-2 xl:grid-cols-4">
         {/* Card 1: Total Revenue */}
-        <Card className="rounded-xl border border-line/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
+        <Card className="rounded-xl border border-line/80 bg-white p-4 sm:p-5 shadow-2xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted">
               Total Earnings ({selectedYear})
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
-              <DollarSign className="h-4 w-4" />
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-slate-100 text-slate-700">
+              <DollarSign className="h-3.5 w-3.5" />
             </span>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title">
+          <div className="mt-2.5 flex items-baseline justify-between">
+            <span className="font-display text-2xl font-bold tracking-tight text-title">
               ${activeData.totalRevenue.toLocaleString()}
             </span>
             <span className="inline-flex items-center text-xs font-semibold text-emerald-600">
@@ -250,81 +255,81 @@ export function ProAnalytics() {
               {activeData.growthRate}
             </span>
           </div>
-          <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 text-xs text-muted">
-            <span>Direct homeowner payments</span>
-            <span className="font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded text-[11px] border border-slate-200/60">
+          <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 text-xs text-muted">
+            <span>Direct homeowner payouts</span>
+            <span className="font-medium text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-[11px] border border-slate-200/60">
               $0 Fee Paid
             </span>
           </div>
         </Card>
 
         {/* Card 2: Completed Jobs */}
-        <Card className="rounded-xl border border-line/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
+        <Card className="rounded-xl border border-line/80 bg-white p-4 sm:p-5 shadow-2xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted">
               Completed Jobs ({selectedYear})
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
-              <CheckCircle2 className="h-4 w-4" />
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-slate-100 text-slate-700">
+              <CheckCircle2 className="h-3.5 w-3.5" />
             </span>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title">
-              {activeData.completedJobs} Jobs
+          <div className="mt-2.5 flex items-baseline justify-between">
+            <span className="font-display text-2xl font-bold tracking-tight text-title">
+              {activeData.completedJobs} <span className="text-sm font-normal text-muted">Jobs</span>
             </span>
-            <span className="text-xs text-muted">All-time: 128</span>
+            <span className="text-xs text-muted">128 All-time</span>
           </div>
-          <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 text-xs text-muted">
-            <span>Average ticket</span>
-            <span className="font-medium text-title text-xs">
+          <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 text-xs text-muted">
+            <span>Avg. ticket price</span>
+            <span className="font-semibold text-title text-xs">
               ${activeData.avgTicket} / job
             </span>
           </div>
         </Card>
 
         {/* Card 3: Total Clients */}
-        <Card className="rounded-xl border border-line/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
+        <Card className="rounded-xl border border-line/80 bg-white p-4 sm:p-5 shadow-2xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted">
               Total Clients ({selectedYear})
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
-              <Users className="h-4 w-4" />
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-slate-100 text-slate-700">
+              <Users className="h-3.5 w-3.5" />
             </span>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title">
-              {activeData.totalClients} Clients
+          <div className="mt-2.5 flex items-baseline justify-between">
+            <span className="font-display text-2xl font-bold tracking-tight text-title">
+              {activeData.totalClients} <span className="text-sm font-normal text-muted">Clients</span>
             </span>
             <span className="inline-flex items-center rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-700 border border-slate-200/60">
               {activeData.repeatClients} Repeat
             </span>
           </div>
-          <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 text-xs text-muted">
-            <span>Repeat rate</span>
-            <span className="font-medium text-title text-xs">
+          <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 text-xs text-muted">
+            <span>Retention rate</span>
+            <span className="font-semibold text-title text-xs">
               {Math.round((activeData.repeatClients / activeData.totalClients) * 100)}% Returning
             </span>
           </div>
         </Card>
 
         {/* Card 4: Pro Rating & Clearance */}
-        <Card className="rounded-xl border border-line/80 bg-white p-5 shadow-xs transition-all hover:border-slate-300">
+        <Card className="rounded-xl border border-line/80 bg-white p-4 sm:p-5 shadow-2xs transition-all hover:border-slate-300">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted">
               Reputation &amp; Trust
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60">
-              <ShieldCheck className="h-4 w-4" />
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-slate-100 text-slate-700">
+              <ShieldCheck className="h-3.5 w-3.5" />
             </span>
           </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-title flex items-center gap-1">
-              4.8 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
+          <div className="mt-2.5 flex items-baseline justify-between">
+            <span className="font-display text-2xl font-bold tracking-tight text-title flex items-center gap-1">
+              4.8 <Star className="h-4 w-4 fill-amber-400 text-amber-500" />
             </span>
-            <span className="text-xs text-muted">36 Verified reviews</span>
+            <span className="text-xs text-muted">36 Reviews</span>
           </div>
-          <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 text-xs text-muted">
+          <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 text-xs text-muted">
             <span>Austin Clearance</span>
             <span className="font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200/60">
               Licensed &amp; Insured
@@ -351,9 +356,21 @@ export function ProAnalytics() {
                     Annual revenue breakdown • 100% direct payouts
                   </p>
                 </div>
-                <div className="text-right">
-                  <span className="text-xs text-muted">Yearly: </span>
-                  <span className="font-display text-sm font-bold text-title">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 rounded-lg border border-line bg-slate-50/80 px-2.5 py-1 text-xs font-semibold text-title shadow-2xs">
+                    <span className="text-muted font-normal">Year:</span>
+                    <select
+                      value={selectedYear}
+                      onChange={(e) => setSelectedYear(Number(e.target.value))}
+                      className="bg-transparent font-bold text-title outline-none cursor-pointer focus:text-primary"
+                      aria-label="Filter monthly income by year"
+                    >
+                      <option value={2026}>2026</option>
+                      <option value={2025}>2025</option>
+                      <option value={2024}>2024</option>
+                    </select>
+                  </div>
+                  <span className="font-display text-xs font-bold text-primary rounded-lg bg-primary/10 px-2.5 py-1 hidden sm:inline">
                     ${activeData.totalRevenue.toLocaleString()}
                   </span>
                 </div>
@@ -441,9 +458,21 @@ export function ProAnalytics() {
                     Unique clients served &amp; job completion pace
                   </p>
                 </div>
-                <div className="text-right">
-                  <span className="text-xs text-muted">Total: </span>
-                  <span className="font-display text-sm font-bold text-title">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 rounded-lg border border-line bg-slate-50/80 px-2.5 py-1 text-xs font-semibold text-title shadow-2xs">
+                    <span className="text-muted font-normal">Year:</span>
+                    <select
+                      value={selectedYear}
+                      onChange={(e) => setSelectedYear(Number(e.target.value))}
+                      className="bg-transparent font-bold text-title outline-none cursor-pointer focus:text-primary"
+                      aria-label="Filter work volume by year"
+                    >
+                      <option value={2026}>2026</option>
+                      <option value={2025}>2025</option>
+                      <option value={2024}>2024</option>
+                    </select>
+                  </div>
+                  <span className="font-display text-xs font-bold text-emerald-800 rounded-lg bg-emerald-50 border border-emerald-200 px-2.5 py-1 hidden sm:inline">
                     {activeData.totalClients} Clients
                   </span>
                 </div>
@@ -561,7 +590,12 @@ export function ProAnalytics() {
                           {job.location}
                         </p>
                       </td>
-                      <td className="py-3 font-medium text-title">{job.service}</td>
+                      <td className="py-3 max-w-xs sm:max-w-sm pr-4">
+                        <p className="font-semibold text-title leading-snug">{job.service}</p>
+                        <p className="mt-0.5 text-[11px] leading-relaxed text-muted line-clamp-2">
+                          {job.description}
+                        </p>
+                      </td>
                       <td className="py-3 text-muted">{job.date}</td>
                       <td className="py-3 font-display font-bold text-title text-sm">{job.amount}</td>
                       <td className="py-3 text-right">
@@ -696,7 +730,12 @@ export function ProAnalytics() {
                     <tr key={job.id} className="hover:bg-smoke/50 transition-colors">
                       <td className="py-3 font-semibold text-title">{job.client}</td>
                       <td className="py-3 text-muted">{job.location}</td>
-                      <td className="py-3 font-medium text-stone-700">{job.service}</td>
+                      <td className="py-3 max-w-xs sm:max-w-sm pr-4">
+                        <p className="font-semibold text-title leading-snug">{job.service}</p>
+                        <p className="mt-0.5 text-[11px] leading-relaxed text-muted line-clamp-2">
+                          {job.description}
+                        </p>
+                      </td>
                       <td className="py-3 text-muted">{job.date}</td>
                       <td className="py-3">
                         <span className="inline-flex items-center gap-0.5 font-semibold text-title">
