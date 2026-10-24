@@ -212,7 +212,7 @@ export function AccountPasswordForm() {
               href="/forgot-password"
               className="text-xs font-semibold text-primary hover:underline"
             >
-              Forgot your current password?
+              Forgot password?
             </Link>
           </div>
         </form>
