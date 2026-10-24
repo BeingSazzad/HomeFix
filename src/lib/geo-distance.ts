@@ -124,6 +124,7 @@ export function getProDistance(
  */
 export function parseResponseTimeHours(responseTime: string): number {
   const lower = responseTime.toLowerCase();
+  if (lower.includes("min")) return 0.25;
   if (lower.includes("under 1 hour") || lower.includes("< 1 hour")) return 0.5;
   if (lower.includes("within 1 hour")) return 1;
   if (lower.includes("within 2 hours")) return 2;

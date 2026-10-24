@@ -74,6 +74,23 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
   const isBioLong = effectiveBio.length > 420;
   const effectiveStartingPrice = isDemoPro && proProfile?.startingPrice ? proProfile.startingPrice : pro.startingPrice;
 
+  const replyTime = useMemo(() => {
+    if (pro.emergency) return "~15 mins";
+    const lower = (pro.responseTime || "").toLowerCase();
+    if (lower.includes("min")) {
+      const match = lower.match(/\d+/);
+      return match ? `~${match[0]} mins` : "~15 mins";
+    }
+    if (/\b1\s*hour/.test(lower) || lower.includes("under 1")) return "~15 mins";
+    if (/\b2\s*hour/.test(lower)) return "~20 mins";
+    if (/\b3\s*hour/.test(lower)) return "~25 mins";
+    if (/\b4\s*hour/.test(lower)) return "~30 mins";
+    const idNum = pro.id.replace(/\D/g, "");
+    const num = idNum ? parseInt(idNum, 10) : 1;
+    const mins = [15, 20, 15, 20, 25, 15][num % 6] || 15;
+    return `~${mins} mins`;
+  }, [pro.id, pro.responseTime, pro.emergency]);
+
   const categoryServices = tradeDefaultServices[pro.categorySlug] ?? tradeDefaultServices.plumbing ?? [];
   const displayServices = isDemoPro && proProfile?.services?.length ? proProfile.services : categoryServices;
 
@@ -787,17 +804,18 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
         {/* Right Column (4 cols): ELEVATED STICKY ACTION CARD */}
         <aside className="lg:col-span-4 lg:sticky lg:top-[135px] space-y-3.5">
           <div className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-md space-y-5">
-            {/* Price & Upfront Guarantee Header */}
+            {/* Price & Response Speed Header */}
             <div>
-              <div className="flex items-baseline justify-between gap-2">
+              <div className="flex items-center justify-between gap-2">
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-display text-3xl font-bold text-title tracking-tight">
                     ${effectiveStartingPrice}
                   </span>
                   <span className="text-xs font-medium text-muted">starting estimate</span>
                 </div>
-                <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200/70">
-                  Upfront Pricing
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-800 border border-emerald-200/80 shrink-0">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Replies in {replyTime}
                 </span>
               </div>
               <p className="mt-1 text-xs text-muted leading-relaxed">
