@@ -197,8 +197,8 @@ export function QuoteCard({
         </div>
       </div>
 
-      {/* Prominent Price Banner */}
-      <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2 rounded-xl border border-primary/15 bg-smoke/80 px-4 py-3">
+      {/* Price Header */}
+      <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2 border-b border-line/60 pb-4">
         <div>
           <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
             Quote Amount
@@ -208,7 +208,7 @@ export function QuoteCard({
           </div>
         </div>
         {quote.paymentTerms ? (
-          <span className="text-xs font-medium text-stone-600 self-center">
+          <span className="text-xs text-muted self-center">
             {quote.paymentTerms}
           </span>
         ) : null}
@@ -216,52 +216,52 @@ export function QuoteCard({
 
       {/* Scope of Work */}
       <div className="mt-4">
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+        <h4 className="text-[11px] font-semibold uppercase tracking-wider text-muted">
           Scope of Work
         </h4>
-        <p className="mt-1.5 text-sm leading-relaxed text-stone-700">
+        <p className="mt-1 text-sm leading-relaxed text-stone-700">
           {quote.scope}
         </p>
       </div>
 
-      {/* Structured Terms Grid */}
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
+      {/* Structured Terms List - Clean, unboxed typography */}
+      <div className="mt-4 pt-4 border-t border-line/60 grid grid-cols-2 sm:grid-cols-3 gap-y-3.5 gap-x-6 text-xs">
         {quote.availability && (
-          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
-            <Clock className="h-3.5 w-3.5 shrink-0 text-stone-500" />
+          <div className="flex items-start gap-2.5">
+            <Clock className="h-4 w-4 shrink-0 text-stone-400 mt-0.5" />
             <div className="min-w-0">
-              <span className="block text-[10px] font-medium uppercase text-muted">Availability</span>
-              <span className="block truncate font-semibold text-stone-800">{quote.availability}</span>
+              <span className="block text-[11px] text-muted">Availability</span>
+              <span className="font-medium text-stone-800">{quote.availability}</span>
             </div>
           </div>
         )}
 
         {quote.proposedSchedule && (
-          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
-            <Calendar className="h-3.5 w-3.5 shrink-0 text-primary" />
+          <div className="flex items-start gap-2.5">
+            <Calendar className="h-4 w-4 shrink-0 text-primary mt-0.5" />
             <div className="min-w-0">
-              <span className="block text-[10px] font-medium uppercase text-muted">Proposed Schedule</span>
-              <span className="block truncate font-semibold text-stone-800">{quote.proposedSchedule}</span>
+              <span className="block text-[11px] text-muted">Proposed Schedule</span>
+              <span className="font-medium text-stone-800">{quote.proposedSchedule}</span>
             </div>
           </div>
         )}
 
         {quote.estimatedDuration && (
-          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
-            <Clock className="h-3.5 w-3.5 shrink-0 text-stone-500" />
+          <div className="flex items-start gap-2.5">
+            <Clock className="h-4 w-4 shrink-0 text-stone-400 mt-0.5" />
             <div className="min-w-0">
-              <span className="block text-[10px] font-medium uppercase text-muted">Est. Duration</span>
-              <span className="block truncate font-semibold text-stone-800">{quote.estimatedDuration}</span>
+              <span className="block text-[11px] text-muted">Est. Duration</span>
+              <span className="font-medium text-stone-800">{quote.estimatedDuration}</span>
             </div>
           </div>
         )}
 
         {quote.materialsIncluded != null && (
-          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
-            <Package className="h-3.5 w-3.5 shrink-0 text-stone-500" />
+          <div className="flex items-start gap-2.5">
+            <Package className="h-4 w-4 shrink-0 text-stone-400 mt-0.5" />
             <div className="min-w-0">
-              <span className="block text-[10px] font-medium uppercase text-muted">Materials</span>
-              <span className="block truncate font-semibold text-stone-800">
+              <span className="block text-[11px] text-muted">Materials</span>
+              <span className="font-medium text-stone-800">
                 {quote.materialsIncluded ? "Materials Included" : "Materials Not Included"}
               </span>
             </div>
@@ -269,21 +269,21 @@ export function QuoteCard({
         )}
 
         {quote.warranty && (
-          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
-            <Shield className="h-3.5 w-3.5 shrink-0 text-success" />
+          <div className="flex items-start gap-2.5">
+            <Shield className="h-4 w-4 shrink-0 text-emerald-600 mt-0.5" />
             <div className="min-w-0">
-              <span className="block text-[10px] font-medium uppercase text-muted">Warranty</span>
-              <span className="block truncate font-semibold text-stone-800">{quote.warranty}</span>
+              <span className="block text-[11px] text-muted">Warranty</span>
+              <span className="font-medium text-stone-800">{quote.warranty}</span>
             </div>
           </div>
         )}
 
         {quote.expiresAt && (
-          <div className="flex items-center gap-2 rounded-lg border border-stone-200/70 bg-stone-50 px-3 py-2">
-            <AlertCircle className="h-3.5 w-3.5 shrink-0 text-amber-600" />
+          <div className="flex items-start gap-2.5">
+            <AlertCircle className="h-4 w-4 shrink-0 text-amber-500 mt-0.5" />
             <div className="min-w-0">
-              <span className="block text-[10px] font-medium uppercase text-muted">Offer Expires</span>
-              <span className="block truncate font-semibold text-stone-800">{quote.expiresAt}</span>
+              <span className="block text-[11px] text-muted">Offer Expires</span>
+              <span className="font-medium text-stone-800">{quote.expiresAt}</span>
             </div>
           </div>
         )}
@@ -291,7 +291,7 @@ export function QuoteCard({
 
       {quote.exclusions && (
         <p className="mt-3 flex items-start gap-1.5 text-xs text-muted">
-          <span className="shrink-0 font-semibold text-stone-700">Not included:</span>
+          <span className="shrink-0 font-medium text-stone-600">Not included:</span>
           <span>{quote.exclusions}</span>
         </p>
       )}
