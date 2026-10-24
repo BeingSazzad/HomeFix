@@ -149,6 +149,7 @@ html {
   line-height: 67px;
   letter-spacing: -3.2px;
   color: #ffffff !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.32);
 }
 
 @media (max-width: 640px) {
@@ -295,18 +296,33 @@ button.border-white:not(.bg-white) {
 .hero-wash {
   background:
     linear-gradient(
-      100deg,
-      color-mix(in srgb, var(--title) 94%, black) 0%,
-      color-mix(in srgb, var(--title) 90%, black) 28%,
-      color-mix(in srgb, var(--title) 62%, transparent) 48%,
-      color-mix(in srgb, var(--title) 22%, transparent) 66%,
-      transparent 80%
+      95deg,
+      rgba(0, 0, 0, 0.78) 0%,
+      rgba(0, 0, 0, 0.62) 26%,
+      rgba(0, 0, 0, 0.38) 48%,
+      rgba(0, 0, 0, 0.14) 68%,
+      rgba(0, 0, 0, 0.02) 84%,
+      transparent 100%
     ),
     linear-gradient(
-      to top,
-      color-mix(in srgb, var(--title) 28%, transparent) 0%,
-      transparent 42%
+      to bottom,
+      rgba(0, 0, 0, 0.25) 0%,
+      transparent 20%,
+      transparent 80%,
+      rgba(0, 0, 0, 0.30) 100%
     );
+}
+
+@media (max-width: 768px) {
+  .hero-wash {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.80) 0%,
+        rgba(0, 0, 0, 0.55) 50%,
+        rgba(0, 0, 0, 0.78) 100%
+      );
+  }
 }
 
 .banner-wash {

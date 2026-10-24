@@ -27,6 +27,7 @@ import {
 import { addNotification, setJobStatus } from "@/redux/slices/featuresSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import type { Quote } from "@/types";
+import { GuaranteeCard } from "@/components/shared/guarantee-protection";
 import { cn } from "@/lib/cn";
 
 const priceLabels: Record<string, string> = {
@@ -338,19 +339,24 @@ export function QuoteCard({
 
       {/* Booking Form (Triggers immediately upon Accept) */}
       {(hired || showBooking) && !booking ? (
-        <div className="mt-5 space-y-3.5 rounded-xl border border-primary/30 bg-smoke/70 p-4 sm:p-5">
-          <div className="flex items-center justify-between gap-2">
+        <div className="mt-5 space-y-4 rounded-2xl border border-primary/30 bg-smoke/80 p-4 sm:p-5 shadow-xs">
+          <div className="flex items-center justify-between gap-2 border-b border-line/60 pb-3">
             <div className="flex items-center gap-2 text-sm font-semibold text-title">
-              <Calendar className="h-4 w-4 text-primary" />
+              <Calendar className="h-4.5 w-4.5 text-primary" />
               Confirm appointment schedule
             </div>
             <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200 flex items-center gap-1">
-              <ShieldCheck className="h-3 w-3" /> $1,000 Guarantee
+              <ShieldCheck className="h-3 w-3" /> $2,500 Guarantee
             </span>
           </div>
+
+          {/* LocalHomeFix Guarantee Trust Card */}
+          <GuaranteeCard variant="compact" className="bg-white border-line/80" />
+
           <p className="text-xs text-muted leading-relaxed">
-            Select an arrival window. Contractors confirm exact arrival within this 2-hour timeframe. Direct settlement on 100% completion with zero platform markup.
+            Select your preferred arrival window. Contractors confirm exact arrival within this 2-hour timeframe. Direct settlement on 100% completion with zero platform markup.
           </p>
+
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Appointment Date">
               <TextField type="date" value={bookDate} onChange={(e) => setBookDate(e.target.value)} />

@@ -9,6 +9,7 @@ import {
   rejectSiblingOffers,
 } from "@/redux/slices/marketplaceSlice";
 import { addNotification, setJobStatus } from "@/redux/slices/featuresSlice";
+import { GuaranteeCard } from "@/components/shared/guarantee-protection";
 import type { Quote } from "@/types";
 
 const priceLabel = { fixed: "Fixed", estimate: "Estimate", hourly: "Hourly", time_and_materials: "T&M" } as const;
@@ -79,10 +80,15 @@ export function QuoteComparePanel({
             type="button"
             onClick={onClose}
             aria-label="Close comparison"
-            className="grid h-8 w-8 place-items-center rounded-full hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+            className="grid h-8 w-8 place-items-center rounded-full hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
+        </div>
+
+        {/* LocalHomeFix Guarantee Trust Banner */}
+        <div className="px-5 pt-3.5 pb-1">
+          <GuaranteeCard variant="compact" />
         </div>
 
         {/* Scrollable comparison table */}

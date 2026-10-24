@@ -277,11 +277,13 @@ const initialState: FeaturesState = {
       sunday: "Emergency Only",
     },
     acceptedPayments: [
-      "Credit/Debit Card",
-      "Zelle",
-      "Bank Transfer (ACH)",
-      "Check",
+      "Apple Pay",
       "Cash",
+      "Google Pay",
+      "PayPal",
+      "Stripe",
+      "Venmo",
+      "Zelle",
     ],
     specialOffer: {
       active: true,

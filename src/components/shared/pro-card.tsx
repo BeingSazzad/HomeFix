@@ -20,9 +20,11 @@ import { cn } from "@/lib/cn";
 export function ProCard({
   pro,
   className,
+  distance,
 }: {
   pro: Professional;
   className?: string;
+  distance?: number;
 }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -116,6 +118,12 @@ export function ProCard({
         <p className="mt-1 flex items-center gap-1.5 font-sans text-xs text-muted truncate">
           <MapPin className="h-3 w-3 shrink-0 text-muted" />
           <span>{pro.city}, {pro.state}</span>
+          {distance != null && (
+            <>
+              <span className="text-muted/40">·</span>
+              <span className="font-medium text-title">{distance < 1 ? "<1" : distance} mi away</span>
+            </>
+          )}
         </p>
 
         {/* Rating & Reviews & Jobs Row */}

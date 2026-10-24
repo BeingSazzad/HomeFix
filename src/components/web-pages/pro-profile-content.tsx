@@ -6,7 +6,10 @@ import { useMemo, useState } from "react";
 import {
   Award,
   Calendar,
+  Check,
   CheckCircle2,
+  ChevronDown,
+  ChevronUp,
   Clock,
   Heart,
   MapPin,
@@ -18,12 +21,17 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { photos } from "@/lib/media";
-import { serviceLines } from "@/lib/pro-extras";
+import {
+  serviceLines,
+  tradeDefaultServices,
+  tradeDefaultReviews,
+} from "@/lib/pro-extras";
 import { loginHref } from "@/lib/role-access";
 import { toggleFavorite } from "@/redux/slices/featuresSlice";
 import { useRoleAccess } from "@/hooks/use-role-access";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import type { Professional } from "@/types";
+import { GuaranteeCard } from "@/components/shared/guarantee-protection";
 import { cn } from "@/lib/cn";
 
 function initials(name: string) {
@@ -45,19 +53,36 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
     state.features.reviews.filter((item) => item.proId === pro.id)
   );
 
-  const [activeTab, setActiveTab] = useState<"services" | "reviews" | "about" | "faqs">("services");
+  const [activeTab, setActiveTab] = useState<"about" | "services" | "reviews" | "faqs">("about");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("all");
   const [selectedReviewTag, setSelectedReviewTag] = useState("all");
   const [copied, setCopied] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [bioExpanded, setBioExpanded] = useState(false);
 
   const proProfile = useAppSelector((state) => state.features.proProfile);
   const isDemoPro = pro.id === "pro-1";
 
-  const effectiveBio = isDemoPro && proProfile?.bio ? proProfile.bio : pro.bio;
+  const defaultBio =
+    pro.categorySlug === "house-cleaning"
+      ? "We’re a full-time, professional cleaning team serving both residential and commercial clients. Our experience includes recurring home cleanings, Airbnb turnovers, apartment move-in/move-out services, and office or commercial property cleaning."
+      : pro.bio && pro.bio.length > 50
+      ? pro.bio
+      : "We’re a full-time, professional team serving both residential and commercial clients across the Austin metro area. Our experience includes recurring property care, urgent service calls, certified diagnostics, and complete installation services with guaranteed workmanship.";
+
+  const effectiveBio = isDemoPro && proProfile?.bio ? proProfile.bio : defaultBio;
   const effectiveStartingPrice = isDemoPro && proProfile?.startingPrice ? proProfile.startingPrice : pro.startingPrice;
 
-  const displayServices = isDemoPro && proProfile?.services?.length ? proProfile.services : null;
+  const categoryServices = tradeDefaultServices[pro.categorySlug] ?? tradeDefaultServices.plumbing ?? [];
+  const displayServices = isDemoPro && proProfile?.services?.length ? proProfile.services : categoryServices;
+
+  const businessHours = isDemoPro && proProfile?.businessHours ? proProfile.businessHours : {
+    weekdays: "7:30 AM – 6:00 PM",
+    saturday: pro.emergency ? "8:00 AM – 4:00 PM" : "9:00 AM – 1:00 PM",
+    sunday: pro.emergency ? "Emergency dispatch only" : "Closed",
+  };
+
+  const similarJobsCount = Math.max(7, Math.round(pro.jobsCompleted * 0.12));
 
   const cover = photos.services[pro.categorySlug] ?? photos.banner;
   const specialties = serviceLines[pro.categorySlug] ?? [pro.trade, "Diagnostics", "Repairs", "Maintenance"];
@@ -97,75 +122,46 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
     }
   }
 
-  // Realistic verified reviews
+  // Realistic trade-verified reviews
+  const tradeReviewGen = tradeDefaultReviews[pro.categorySlug] ?? tradeDefaultReviews.plumbing;
   const defaultReviews = useMemo(
-    () => [
-      {
-        id: "rev-1",
-        author: "David H.",
-        location: `${pro.city}, ${pro.state}`,
-        date: "2 weeks ago",
-        rating: 5,
-        tag: "punctual",
-        project: `${pro.trade} Diagnostics & Service`,
-        text: `${pro.name} arrived right on time, explained the issue clearly without trying to upsell unnecessary work, and resolved it in under 2 hours. Extremely professional and fair pricing!`,
-        reply: `Thanks David! Always glad to help keep things running smoothly. Appreciate your trust! — ${pro.name}`,
-      },
-      {
-        id: "rev-2",
-        author: "Sarah M.",
-        location: `${pro.city}, ${pro.state}`,
-        date: "1 month ago",
-        rating: 5,
-        tag: "fair-price",
-        project: `Urgent ${pro.trade} Repair`,
-        text: `We needed urgent help and ${pro.name} gave us an itemized estimate upfront. No hidden travel fees or mystery markups. Paid directly upon completion — seamless experience.`,
-        reply: undefined,
-      },
-      {
-        id: "rev-3",
-        author: "Robert C.",
-        location: "Local Homeowner",
-        date: "2 months ago",
-        rating: 5,
-        tag: "clean-work",
-        project: `Replacement & Maintenance`,
-        text: `Clean, courteous, and efficient. Wore boot covers indoors and left the work area spotless. Definitely our go-to contractor from now on.`,
-        reply: `Thank you Robert! We take pride in treating every home like our own.`,
-      },
-      {
-        id: "rev-4",
-        author: "Michael T.",
-        location: `${pro.city}, ${pro.state}`,
-        date: "3 months ago",
-        rating: 5,
-        tag: "punctual",
-        project: `Annual System Inspection`,
-        text: `Outstanding communication from booking to finish. Arrived right inside the promised arrival window and provided helpful preventive tips.`,
-        reply: undefined,
-      },
-    ],
-    [pro.city, pro.state, pro.trade, pro.name]
+    () => tradeReviewGen(pro.name, pro.city),
+    [tradeReviewGen, pro.name, pro.city]
   );
 
   const allReviews = useMemo(() => {
-    const userMapped = seedReviews.map((r, i) => ({
+    type ReviewEntry = {
+      id: string;
+      author: string;
+      location: string;
+      date: string;
+      rating: number;
+      tag: "punctual" | "fair-price" | "clean-work";
+      project: string;
+      text: string;
+      reply?: string;
+    };
+
+    const userMapped: ReviewEntry[] = seedReviews.map((r, i) => ({
       id: r.id,
       author: r.author,
       location: `${pro.city}, ${pro.state}`,
       date: `${i + 1} month ago`,
       rating: r.rating,
-      tag: i % 2 === 0 ? "clean-work" : "fair-price",
+      tag: (i % 2 === 0 ? "clean-work" : "fair-price") as "clean-work" | "fair-price" | "punctual",
       project: `${pro.trade} Service`,
       text: r.body,
       reply: r.reply ?? undefined,
     }));
 
     // Merge so seedReviews (e.g. Elena Ruiz) are first, followed by verified default reviews
-    const combined = [...userMapped];
+    const combined: ReviewEntry[] = [...userMapped];
     for (const def of defaultReviews) {
       if (!combined.some((item) => item.text.trim() === def.text.trim() || item.id === def.id)) {
-        combined.push(def);
+        combined.push({
+          ...def,
+          location: def.location || `${pro.city}, ${pro.state}`,
+        });
       }
     }
     return combined;
@@ -189,13 +185,19 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
     ];
   }, [allReviews]);
 
-  // Service list with category filter
+  // Service list with category & specialty filter
   const servicesList = useMemo(() => {
     if (!displayServices || displayServices.length === 0) return [];
     if (selectedCategoryFilter === "all") return displayServices;
-    return displayServices.filter((s) =>
-      s.name.toLowerCase().includes(selectedCategoryFilter.toLowerCase())
-    );
+    const q = selectedCategoryFilter.toLowerCase();
+    return displayServices.filter((s) => {
+      const cat = ("category" in s && typeof s.category === "string" ? s.category : "").toLowerCase();
+      return (
+        s.name.toLowerCase().includes(q) ||
+        s.description.toLowerCase().includes(q) ||
+        cat.includes(q)
+      );
+    });
   }, [displayServices, selectedCategoryFilter]);
 
   const faqs = [
@@ -208,12 +210,20 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
       a: `For standard repairs within our ${pro.radiusMiles}-mile service area, we provide transparent upfront estimates. If a comprehensive diagnostic teardown is needed, the diagnostic fee is credited directly toward your repair cost upon approval.`,
     },
     {
-      q: "Are you licensed and insured in Texas?",
-      a: "Yes. Active Texas State Trade License (TDLR verified) and $1,000,000 General Liability coverage. All credentials are fully verified by LocalHomeFix.",
+      q: `Are you licensed and insured in ${pro.state}?`,
+      a: pro.licensed
+        ? `Yes. Active state trade licensing and $1,000,000 General Liability coverage. All credentials are fully verified by LocalHomeFix.`
+        : `Yes. Active $1,000,000 General Liability insurance coverage. We strictly comply with all local municipal guidelines and safety standards.`,
     },
     {
-      q: "What warranty do you provide?",
-      a: "We back all workmanship with a 1-year labor warranty. All replacement hardware and parts carry their full manufacturer warranty.",
+      q: "What warranty do you provide on completed work?",
+      a: "We back all completed labor with a 1-year contractor workmanship warranty. All replacement hardware, parts, and equipment carry their full manufacturer warranty.",
+    },
+    {
+      q: "How quickly can you start or dispatch?",
+      a: pro.emergency
+        ? `We offer priority same-day emergency dispatch across ${pro.city} and standard appointments within 24–48 hours.`
+        : `Standard service calls are usually booked within 24–48 hours, with flexible morning and afternoon arrival windows.`,
     },
   ];
 
@@ -327,23 +337,6 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               ) : null}
             </div>
           </div>
-
-          {/* Unified Credentials Stat Strip (Clean, focused metrics) */}
-          <div className="mt-5 pt-4 border-t border-line/60 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-title">
-            <div className="flex items-center gap-1.5">
-              <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
-              <span>
-                <strong>{pro.yearsInBusiness}</strong> in business
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              <Award className="h-3.5 w-3.5 text-primary shrink-0" />
-              <span>
-                <strong>{pro.jobsCompleted}+</strong> completed jobs
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* 4. SUB-NAVIGATION TAB RIBBON */}
@@ -351,9 +344,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           <div className="container-site flex items-center justify-between gap-4">
             <div className="flex gap-2 sm:gap-6 overflow-x-auto py-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               {[
+                { id: "sec-about", tabId: "about", label: "About" },
                 { id: "sec-services", tabId: "services", label: "Services & Rates" },
                 { id: "sec-reviews", tabId: "reviews", label: `Reviews (${allReviews.length})` },
-                { id: "sec-about", tabId: "about", label: "About & Credentials" },
                 { id: "sec-faqs", tabId: "faqs", label: "FAQs" },
               ].map((tab) => (
                 <button
@@ -383,21 +376,178 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
         {/* Left Column (8 cols) */}
         <div className="lg:col-span-8 space-y-10 sm:space-y-12">
           {/* ============================================================ */}
-          {/* SECTION 1: SERVICES & UPFRONT RATES                         */}
+          {/* SECTION 1: ABOUT & OVERVIEW                                  */}
+          {/* ============================================================ */}
+          <section id="sec-about" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-6">
+            <div>
+              <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
+                About
+              </h2>
+              <div className="mt-2.5 max-w-3xl">
+                <p
+                  className={cn(
+                    "font-sans text-sm sm:text-[15px] leading-relaxed text-copy transition-all duration-200",
+                    !bioExpanded && "line-clamp-3 sm:line-clamp-4"
+                  )}
+                >
+                  {effectiveBio}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setBioExpanded(!bioExpanded)}
+                  className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors"
+                >
+                  <span>{bioExpanded ? "Show less" : "...Read More"}</span>
+                  {bioExpanded ? (
+                    <ChevronUp className="h-3.5 w-3.5" />
+                  ) : (
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Two-Column Overview & Operations Grid */}
+            <div className="grid gap-5 sm:grid-cols-2 pt-1">
+              {/* Column 1: Overview */}
+              <div className="rounded-2xl border border-line/70 bg-white p-5 sm:p-6 shadow-2xs flex flex-col justify-between space-y-4">
+                <div>
+                  <h3 className="font-display text-base font-bold text-title">
+                    Overview
+                  </h3>
+
+                  <ul className="mt-4 space-y-3.5">
+                    {/* Hired Times */}
+                    <li className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-100">
+                        <Award className="h-4 w-4" />
+                      </div>
+                      <span className="font-display text-sm font-semibold text-title">
+                        Hired {pro.jobsCompleted || 65} times
+                      </span>
+                    </li>
+
+                    {/* Similar Jobs Near You */}
+                    <li className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
+                        <MapPin className="h-4 w-4" />
+                      </div>
+                      <span className="font-display text-sm font-semibold text-title">
+                        {similarJobsCount} similar jobs done near you
+                      </span>
+                    </li>
+
+                    {/* Background Checked */}
+                    <li className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
+                        <ShieldCheck className="h-4 w-4" />
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-display text-sm font-semibold text-title">
+                          Background checked
+                        </span>
+                        <Check className="h-3.5 w-3.5 text-emerald-600 stroke-[3]" />
+                      </div>
+                    </li>
+
+                    {/* Years in Business */}
+                    <li className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200">
+                        <Calendar className="h-4 w-4" />
+                      </div>
+                      <span className="font-display text-sm font-semibold text-title">
+                        {pro.yearsInBusiness
+                          ? pro.yearsInBusiness.includes("year")
+                            ? pro.yearsInBusiness
+                            : `${pro.yearsInBusiness} in business`
+                          : "1 year in business"}
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="pt-3 border-t border-line/50 text-xs text-muted flex items-center justify-between">
+                  <span>Contractor screening</span>
+                  <span className="font-semibold text-emerald-700">Identity &amp; Background Verified</span>
+                </div>
+              </div>
+
+              {/* Column 2: Business Hours */}
+              <div className="rounded-2xl border border-line/70 bg-white p-5 sm:p-6 shadow-2xs flex flex-col justify-between space-y-4">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-display text-base font-bold text-title flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-primary" />
+                      Business hours
+                    </h3>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Open today
+                    </span>
+                  </div>
+
+                  {businessHours ? (
+                    <div className="mt-3.5 divide-y divide-line/40 text-xs">
+                      <div className="flex justify-between py-2 text-copy">
+                        <span className="text-muted">Monday – Friday</span>
+                        <span className="font-semibold text-title">{businessHours.weekdays}</span>
+                      </div>
+                      <div className="flex justify-between py-2 text-copy">
+                        <span className="text-muted">Saturday</span>
+                        <span className="font-semibold text-title">{businessHours.saturday}</span>
+                      </div>
+                      <div className="flex justify-between py-2 text-copy">
+                        <span className="text-muted">Sunday</span>
+                        <span
+                          className={cn(
+                            "font-semibold",
+                            pro.emergency ? "text-amber-600" : "text-muted"
+                          )}
+                        >
+                          {businessHours.sunday}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="mt-3.5 text-xs text-muted leading-relaxed">
+                      This pro hasn&apos;t listed their business hours.
+                    </p>
+                  )}
+                </div>
+
+                <div className="pt-3 border-t border-line/50 space-y-2 text-xs">
+                  <div className="flex items-center justify-between text-muted">
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5 text-primary" />
+                      Typical response time
+                    </span>
+                    <span className="font-semibold text-title">{pro.responseTime || "Usually within 1 hour"}</span>
+                  </div>
+                  {pro.emergency && (
+                    <div className="flex items-center justify-between text-muted">
+                      <span className="flex items-center gap-1.5">
+                        <span className="h-2 w-2 rounded-full bg-amber-500" />
+                        Emergency dispatch
+                      </span>
+                      <span className="font-semibold text-amber-700">Available 24/7</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ============================================================ */}
+          {/* SECTION 2: SERVICES & UPFRONT RATES                         */}
           {/* ============================================================ */}
           <section id="sec-services" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-6">
 
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <div>
-                <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
-                  Services &amp; Upfront Rates
-                </h2>
-                <p className="mt-0.5 text-xs sm:text-sm text-muted">
-                  Guaranteed upfront pricing agreed before work begins · No hidden travel fees
-                </p>
-              </div>
-              <p className="text-xs sm:text-sm font-semibold text-title">
-                Starting from <span className="font-display text-lg sm:text-xl font-bold text-title">${effectiveStartingPrice}</span>
+            <div>
+              <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
+                Services &amp; Upfront Rates
+              </h2>
+              <p className="mt-0.5 text-xs sm:text-sm text-muted">
+                Guaranteed upfront pricing agreed before work begins · No hidden travel fees
               </p>
             </div>
 
@@ -570,15 +720,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                         {initials(rev.author)}
                       </span>
                       <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-display text-sm font-semibold text-title">
-                            {rev.author}
-                          </span>
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
-                            <ShieldCheck className="h-3 w-3" />
-                            Verified Homeowner
-                          </span>
-                        </div>
+                        <h4 className="font-display text-sm font-semibold text-title">
+                          {rev.author}
+                        </h4>
                         <p className="text-xs text-muted mt-0.5">
                           {rev.location} · {rev.date}
                         </p>
@@ -591,12 +735,6 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                       ))}
                     </div>
                   </div>
-
-                  {rev.project && (
-                    <span className="inline-block rounded-md bg-smoke px-2.5 py-1 text-[11px] font-medium text-copy/90 border border-line/50">
-                      {rev.project}
-                    </span>
-                  )}
 
                   <p className="font-sans text-xs sm:text-sm leading-relaxed text-copy">
                     {rev.text}
@@ -621,80 +759,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           </section>
 
           {/* ============================================================ */}
-          {/* SECTION 4: ABOUT & CREDENTIALS                              */}
-          {/* ============================================================ */}
-          <section id="sec-about" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-6">
-            <div>
-              <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
-                About &amp; Credentials
-              </h2>
-              <p className="mt-2.5 font-sans text-sm leading-relaxed text-copy max-w-3xl">
-                {effectiveBio}
-              </p>
-            </div>
-
-            {/* Standard Verified Credentials Grid (Replaces arbitrary business hours & payment boxes) */}
-            <div className="grid gap-3 sm:grid-cols-2 pt-1">
-              <div className="flex items-start gap-3.5 rounded-2xl border border-line/70 bg-white p-4 shadow-2xs">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-primary border border-blue-100">
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-                <div className="space-y-0.5">
-                  <h3 className="font-display text-sm font-semibold text-title">
-                    State Trade License
-                  </h3>
-                  <p className="text-xs text-muted leading-relaxed">
-                    Active &amp; verified with Texas TDLR licensing board
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3.5 rounded-2xl border border-line/70 bg-white p-4 shadow-2xs">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
-                  <Award className="h-5 w-5" />
-                </div>
-                <div className="space-y-0.5">
-                  <h3 className="font-display text-sm font-semibold text-title">
-                    General Liability Insurance
-                  </h3>
-                  <p className="text-xs text-muted leading-relaxed">
-                    $1,000,000 policy coverage verified &amp; certificate on file
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3.5 rounded-2xl border border-line/70 bg-white p-4 shadow-2xs">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
-                  <CheckCircle2 className="h-5 w-5" />
-                </div>
-                <div className="space-y-0.5">
-                  <h3 className="font-display text-sm font-semibold text-title">
-                    Background Checked
-                  </h3>
-                  <p className="text-xs text-muted leading-relaxed">
-                    Identity, trade certification, and public records verified
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3.5 rounded-2xl border border-line/70 bg-white p-4 shadow-2xs">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-100">
-                  <Calendar className="h-5 w-5" />
-                </div>
-                <div className="space-y-0.5">
-                  <h3 className="font-display text-sm font-semibold text-title">
-                    1-Year Workmanship Warranty
-                  </h3>
-                  <p className="text-xs text-muted leading-relaxed">
-                    All completed labor backed by written contractor guarantee
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ============================================================ */}
-          {/* SECTION 5: FREQUENTLY ASKED QUESTIONS                       */}
+          {/* SECTION 4: FREQUENTLY ASKED QUESTIONS                       */}
           {/* ============================================================ */}
           <section id="sec-faqs" className="scroll-mt-[135px] space-y-4">
             <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
@@ -717,7 +782,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
         </div>
 
         {/* Right Column (4 cols): ELEVATED STICKY ACTION CARD */}
-        <aside className="lg:col-span-4 lg:sticky lg:top-[135px]">
+        <aside className="lg:col-span-4 lg:sticky lg:top-[135px] space-y-3.5">
           <div className="rounded-2xl border border-line/80 bg-white p-5 sm:p-6 shadow-md space-y-5">
             {/* Price & Upfront Guarantee Header */}
             <div>
@@ -790,6 +855,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               Direct contractor hiring · Zero booking markup
             </p>
           </div>
+
+          {/* LocalHomeFix Guarantee Trust Card (Placed below the box, without price) */}
+          <GuaranteeCard variant="compact" />
         </aside>
       </div>
 

@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ArrowUpRight, Briefcase, Repeat } from "lucide-react";
+import { Briefcase, ChevronLeft, ChevronRight, Repeat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Field, NativeSelect, TextField } from "@/components/ui/field";
 import { ProCard } from "@/components/shared/pro-card";
+import { BudgetDropdownFilter } from "@/components/shared/budget-filter";
 import { categories, professionals } from "@/Mockdata";
 import { loginAs } from "@/redux/slices/authSlice";
 import {
@@ -19,6 +20,10 @@ import {
 } from "@/redux/slices/filterSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { postJobHref } from "@/lib/role-access";
+import { getProDistance, parseResponseTimeHours } from "@/lib/geo-distance";
+import { cn } from "@/lib/cn";
+
+const PAGE_SIZE = 8;
 
 export function BrowseProsClient() {
   const params = useSearchParams();
@@ -28,8 +33,12 @@ export function BrowseProsClient() {
   const category = filters.category || params.get("category") || "";
   const location = filters.zip || params.get("zip") || params.get("location") || "";
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const gridTopRef = useRef<HTMLDivElement>(null);
+
   const results = useMemo(() => {
     const locationQ = location.trim().toLowerCase();
+    const minPrice = filters.minPrice ? Number(filters.minPrice) : null;
     const maxPrice = filters.maxPrice ? Number(filters.maxPrice) : null;
     const minRating = filters.minRating ? Number(filters.minRating) : null;
 
@@ -42,7 +51,9 @@ export function BrowseProsClient() {
         (/^\d+$/.test(locationQ) && pro.zip.startsWith(locationQ.slice(0, 3)));
       const haystack = `${pro.name} ${pro.businessName} ${pro.trade} ${pro.bio}`.toLowerCase();
       const matchesQuery = !filters.query || haystack.includes(filters.query.toLowerCase());
-      const matchesPrice = maxPrice == null || !Number.isFinite(maxPrice) || pro.startingPrice <= maxPrice;
+      const matchesMinPrice = minPrice == null || !Number.isFinite(minPrice) || pro.startingPrice >= minPrice;
+      const matchesMaxPrice = maxPrice == null || !Number.isFinite(maxPrice) || pro.startingPrice <= maxPrice;
+      const matchesPrice = matchesMinPrice && matchesMaxPrice;
       const matchesRating = minRating == null || !Number.isFinite(minRating) || pro.rating >= minRating;
       return (
         matchesCategory &&
@@ -54,17 +65,63 @@ export function BrowseProsClient() {
       );
     });
 
-    return [...list].sort((a, b) => {
-      if (filters.sort === "reviews") return b.reviewCount - a.reviewCount;
-      if (filters.sort === "jobs") return b.jobsCompleted - a.jobsCompleted;
-      if (filters.sort === "price_low") return a.startingPrice - b.startingPrice;
-      if (filters.sort === "price_high") return b.startingPrice - a.startingPrice;
-      return b.rating - a.rating;
+    const withDistance = list.map((pro) => ({
+      pro,
+      distance: getProDistance(
+        pro,
+        location,
+        user ? { zip: user.zip, city: user.city } : undefined,
+      ),
+    }));
+
+    return withDistance.sort((a, b) => {
+      if (filters.sort === "nearest") {
+        return a.distance - b.distance;
+      }
+      if (filters.sort === "recommended") {
+        // Industry-standard blended score: high rating + verified + jobs volume - distance penalty
+        const scoreA =
+          a.pro.rating * 25 +
+          Math.min(a.pro.reviewCount, 100) * 0.2 +
+          Math.min(a.pro.jobsCompleted, 200) * 0.15 -
+          Math.min(a.distance, 100) * 0.2;
+        const scoreB =
+          b.pro.rating * 25 +
+          Math.min(b.pro.reviewCount, 100) * 0.2 +
+          Math.min(b.pro.jobsCompleted, 200) * 0.15 -
+          Math.min(b.distance, 100) * 0.2;
+        return scoreB - scoreA;
+      }
+      if (filters.sort === "reviews") return b.pro.reviewCount - a.pro.reviewCount;
+      if (filters.sort === "jobs") return b.pro.jobsCompleted - a.pro.jobsCompleted;
+      if (filters.sort === "price_low") return a.pro.startingPrice - b.pro.startingPrice;
+      if (filters.sort === "price_high") return b.pro.startingPrice - a.pro.startingPrice;
+      if (filters.sort === "response") {
+        return parseResponseTimeHours(a.pro.responseTime) - parseResponseTimeHours(b.pro.responseTime);
+      }
+      return b.pro.rating - a.pro.rating;
     });
-  }, [category, filters, location]);
+  }, [category, filters, location, user]);
+
+  // Reset to page 1 whenever search filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [category, location, filters.query, filters.minPrice, filters.maxPrice, filters.minRating, filters.sort]);
+
+  const totalPages = Math.ceil(results.length / PAGE_SIZE) || 1;
+  const paginatedResults = useMemo(() => {
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    return results.slice(startIndex, startIndex + PAGE_SIZE);
+  }, [results, currentPage]);
+
+  function handlePageChange(newPage: number) {
+    if (newPage < 1 || newPage > totalPages || newPage === currentPage) return;
+    setCurrentPage(newPage);
+    gridTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   return (
-    <section className="bg-surface py-10 md:py-12">
+    <section className="bg-surface py-6 sm:py-8">
       <div className="container-site">
         {user?.role === "pro" && (
           <div className="mb-6 rounded-[16px] border border-primary/25 bg-white p-4 sm:p-5 shadow-xs">
@@ -136,14 +193,8 @@ export function BrowseProsClient() {
               placeholder="ZIP or city"
             />
           </Field>
-          <Field label="Max starting $">
-            <TextField
-              type="number"
-              min={0}
-              value={filters.maxPrice}
-              onChange={(event) => dispatch(setMaxPrice(event.target.value))}
-              placeholder="e.g. 150"
-            />
+          <Field label="Budget">
+            <BudgetDropdownFilter />
           </Field>
           <Field label="Min rating">
             <NativeSelect
@@ -161,14 +212,21 @@ export function BrowseProsClient() {
               value={filters.sort}
               onChange={(event) => dispatch(setSort(event.target.value as typeof filters.sort))}
             >
+              <option value="recommended">Recommended</option>
+              <option value="nearest">Nearest (Distance)</option>
               <option value="rated">Highest rated</option>
               <option value="reviews">Most reviews</option>
               <option value="jobs">Most jobs completed</option>
-              <option value="price_low">Starting price ↑</option>
-              <option value="price_high">Starting price ↓</option>
+              <option value="price_low">Starting price: Low to High</option>
+              <option value="price_high">Starting price: High to Low</option>
+              <option value="response">Fastest response</option>
             </NativeSelect>
           </Field>
         </div>
+
+        {/* Scroll anchor for pagination navigation */}
+        <div ref={gridTopRef} className="scroll-mt-28" />
+
         {results.length === 0 ? (
           <div className="mt-6">
             <EmptyState
@@ -179,25 +237,88 @@ export function BrowseProsClient() {
             />
           </div>
         ) : (
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4 md:gap-4">
-            {results.map((pro) => (
-              <div key={pro.id} className="min-w-0 flex h-full">
-                <ProCard pro={pro} />
+          <>
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4 md:gap-4">
+              {paginatedResults.map(({ pro, distance }) => (
+                <div key={pro.id} className="min-w-0 flex h-full">
+                  <ProCard pro={pro} distance={distance} />
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-line/70 pt-6">
+                <p className="text-xs font-medium text-muted order-2 sm:order-1">
+                  Showing{" "}
+                  <span className="font-semibold text-title">
+                    {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, results.length)}
+                  </span>{" "}
+                  of <span className="font-semibold text-title">{results.length}</span> professionals
+                </p>
+
+                <nav
+                  aria-label="Pagination Navigation"
+                  className="inline-flex items-center gap-1.5 rounded-2xl border border-line/80 bg-white p-1.5 shadow-xs order-1 sm:order-2"
+                >
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    aria-label="Previous Page"
+                    className={cn(
+                      "inline-flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-semibold transition-colors",
+                      currentPage === 1
+                        ? "text-muted/40 cursor-not-allowed"
+                        : "text-title hover:bg-smoke cursor-pointer",
+                    )}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    <span className="hidden sm:inline">Previous</span>
+                  </button>
+
+                  <div className="flex items-center gap-1 px-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
+                      const isActive = p === currentPage;
+                      return (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => handlePageChange(p)}
+                          aria-current={isActive ? "page" : undefined}
+                          className={cn(
+                            "grid h-8 w-8 place-items-center rounded-xl text-xs font-semibold transition-all cursor-pointer",
+                            isActive
+                              ? "bg-primary text-white shadow-xs font-bold"
+                              : "text-title hover:bg-smoke hover:text-primary",
+                          )}
+                        >
+                          {p}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    aria-label="Next Page"
+                    className={cn(
+                      "inline-flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-semibold transition-colors",
+                      currentPage === totalPages
+                        ? "text-muted/40 cursor-not-allowed"
+                        : "text-title hover:bg-smoke cursor-pointer",
+                    )}
+                  >
+                    <span className="hidden sm:inline">Next</span>
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </nav>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
-        <div className="mt-8 flex items-center justify-between">
-          {user?.role === "pro" ? (
-            <Button href="/pro" variant="ghost" size="sm">
-              ← Return to Pro Dashboard
-            </Button>
-          ) : (
-            <Button href="/pro-register" variant="ghost" size="sm">
-              Are you a contractor? Join the Pro Network ↗
-            </Button>
-          )}
-        </div>
       </div>
     </section>
   );

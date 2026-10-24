@@ -21,9 +21,9 @@ export function LogoIcon({
   className?: string;
 }) {
   const dimensions = {
-    sm: "h-8 w-8",
-    md: "h-10 w-10",
-    lg: "h-12 w-12",
+    sm: "h-6 w-6",
+    md: "h-8 w-8",
+    lg: "h-10 w-10",
   }[size];
 
   return (
@@ -55,9 +55,9 @@ export function Logo({
   href = "/",
 }: LogoProps) {
   const heightClasses = {
-    sm: "h-9 sm:h-10",
-    md: "h-[46px] sm:h-[52px]",
-    lg: "h-[56px] sm:h-[62px]",
+    sm: "h-7 sm:h-8",
+    md: "h-[32px] sm:h-[36px]",
+    lg: "h-[42px] sm:h-[46px]",
   }[size];
 
   const logoSrc = variant === "dark" ? "/logo-dark.png" : "/logo.png";
