@@ -71,6 +71,7 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
       : "We’re a full-time, professional team serving both residential and commercial clients across the Austin metro area. Our experience includes recurring property care, urgent service calls, certified diagnostics, and complete installation services with guaranteed workmanship.";
 
   const effectiveBio = isDemoPro && proProfile?.bio ? proProfile.bio : defaultBio;
+  const isBioLong = effectiveBio.length > 420;
   const effectiveStartingPrice = isDemoPro && proProfile?.startingPrice ? proProfile.startingPrice : pro.startingPrice;
 
   const categoryServices = tradeDefaultServices[pro.categorySlug] ?? tradeDefaultServices.plumbing ?? [];
@@ -386,24 +387,26 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               <div className="mt-2.5 max-w-3xl">
                 <p
                   className={cn(
-                    "font-sans text-sm sm:text-[15px] leading-relaxed text-copy transition-all duration-200",
-                    !bioExpanded && "line-clamp-3 sm:line-clamp-4"
+                    "font-sans text-sm sm:text-[15px] leading-relaxed text-copy transition-all duration-200 whitespace-pre-line",
+                    isBioLong && !bioExpanded && "line-clamp-3 sm:line-clamp-4"
                   )}
                 >
                   {effectiveBio}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => setBioExpanded(!bioExpanded)}
-                  className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors"
-                >
-                  <span>{bioExpanded ? "Show less" : "...Read More"}</span>
-                  {bioExpanded ? (
-                    <ChevronUp className="h-3.5 w-3.5" />
-                  ) : (
-                    <ChevronDown className="h-3.5 w-3.5" />
-                  )}
-                </button>
+                {isBioLong && (
+                  <button
+                    type="button"
+                    onClick={() => setBioExpanded(!bioExpanded)}
+                    className="mt-2.5 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer"
+                  >
+                    <span>{bioExpanded ? "Show less" : "Read more"}</span>
+                    {bioExpanded ? (
+                      <ChevronUp className="h-3.5 w-3.5" />
+                    ) : (
+                      <ChevronDown className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                )}
               </div>
             </div>
 
