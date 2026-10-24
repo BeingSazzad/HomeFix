@@ -491,11 +491,6 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                     </div>
                   </div>
                 </div>
-
-                <div className="pt-2 flex items-center gap-2 text-xs text-muted">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  <span>Licensed, background-screened &amp; backed by HomeFix Guarantee</span>
-                </div>
               </div>
 
               {/* Right Column (5 cols): Business Hours & Response */}
