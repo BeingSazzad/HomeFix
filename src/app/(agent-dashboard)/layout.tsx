@@ -31,6 +31,7 @@ export default function AgentDashboardLayout({
     if (!hydrated) return;
     if (!user) router.replace("/login");
     if (user?.role === "homeowner") router.replace("/account");
+    if (user?.role === "admin") router.replace("/admin");
   }, [hydrated, router, user]);
 
   if (!hydrated || !user || user.role !== "pro") return null;

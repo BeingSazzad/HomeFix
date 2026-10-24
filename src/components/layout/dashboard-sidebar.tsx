@@ -30,6 +30,8 @@ function getSidebarIcon(label: string) {
   if (norm.includes("notification")) return Bell;
   if (norm.includes("review")) return Star;
   if (norm.includes("application")) return FileCheck;
+  if (norm.includes("dispute")) return ShieldCheck;
+  if (norm.includes("professional") || norm.includes("member")) return UserRound;
   if (norm.includes("profile")) return UserRound;
   if (norm.includes("security")) return ShieldCheck;
   if (norm.includes("password")) return KeyRound;
@@ -57,6 +59,7 @@ export function DashboardSidebar({
             pathname === item.href ||
             (item.href === "/account" && pathname.startsWith("/account/jobs")) ||
             (item.href === "/pro/jobs" && pathname.startsWith("/pro/jobs/")) ||
+            (item.href === "/admin/applications" && pathname.startsWith("/admin/applications")) ||
             (item.href === "/account/messages" && pathname.startsWith("/account/messages")) ||
             (item.href === "/pro/messages" && pathname.startsWith("/pro/messages"));
           const Icon = getSidebarIcon(item.label);

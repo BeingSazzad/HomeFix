@@ -213,13 +213,9 @@ export function BrowseProsClient() {
               onChange={(event) => dispatch(setSort(event.target.value as typeof filters.sort))}
             >
               <option value="recommended">Recommended</option>
-              <option value="nearest">Nearest (Distance)</option>
               <option value="rated">Highest rated</option>
               <option value="reviews">Most reviews</option>
-              <option value="jobs">Most jobs completed</option>
-              <option value="price_low">Starting price: Low to High</option>
-              <option value="price_high">Starting price: High to Low</option>
-              <option value="response">Fastest response</option>
+              <option value="nearest">Nearest (Distance)</option>
             </NativeSelect>
           </Field>
         </div>

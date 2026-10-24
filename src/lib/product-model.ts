@@ -3,7 +3,7 @@
  * Keep UI copy and gates aligned with this file.
  */
 
-export type ProductRole = "guest" | "homeowner" | "pro";
+export type ProductRole = "guest" | "homeowner" | "pro" | "admin";
 
 export type SignupField = {
   key: string;
@@ -66,6 +66,20 @@ export const roleFeatures: Record<
       "Quote other homeowners' jobs",
     ],
   },
+  admin: {
+    landsOn: "/admin — Queue, then disputes, then directory",
+    can: [
+      "Review applications: approve, request info, or reject with a note",
+      "Suspend or restore public listings",
+      "Resolve job disputes",
+      "Oversee requests and membership state",
+    ],
+    cannot: [
+      "Quote, hire, or message as a marketplace user",
+      "Collect repair payments (none on-platform)",
+      "Appear in Find a Pro",
+    ],
+  },
   pro: {
     landsOn: "/pro — Overview, then Application → Membership → Jobs",
     can: [
@@ -85,7 +99,7 @@ export const roleFeatures: Record<
 };
 
 /**
- * Marketplace loop (no admin UI in this build):
+ * Marketplace loop:
  * Browse / Job post → Profile / Leads → Messages → Offer → Negotiate → Booking → Work → Dual confirm → Pay pro directly → Review
  *
  * Job status ≠ Offer status. One job, many offers; accepting one books and declines siblings.

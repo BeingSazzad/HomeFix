@@ -108,6 +108,18 @@ export const demoProUser: User = {
   avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&q=80",
 };
 
+export const demoAdminUser: User = {
+  id: "user-admin-1",
+  name: "Avery Cole",
+  email: "ops@localhomefix.com",
+  role: "admin",
+  phone: "(512) 555-0100",
+  city: "Austin",
+  state: "TX",
+  zip: "78701",
+  avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=240&q=80",
+};
+
 export const professionals: Professional[] = [
   {
     id: "pro-1",

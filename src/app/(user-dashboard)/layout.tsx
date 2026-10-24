@@ -34,6 +34,7 @@ export default function UserDashboardLayout({
       return;
     }
     if (user.role === "pro") router.replace("/pro");
+    if (user.role === "admin") router.replace("/admin");
   }, [hydrated, pathname, router, user]);
 
   if (!hydrated || !user || user.role !== "homeowner") return null;

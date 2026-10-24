@@ -2,17 +2,20 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Award,
   Calendar,
   Check,
   CheckCircle2,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   ChevronUp,
   Clock,
   Heart,
   MapPin,
+  Maximize2,
   MessageSquare,
   Share2,
   ShieldCheck,
@@ -25,6 +28,8 @@ import {
   serviceLines,
   tradeDefaultServices,
   tradeDefaultReviews,
+  getProGallery,
+  type PortfolioItem,
 } from "@/lib/pro-extras";
 import { loginHref } from "@/lib/role-access";
 import { toggleFavorite } from "@/redux/slices/featuresSlice";
@@ -53,11 +58,12 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
     state.features.reviews.filter((item) => item.proId === pro.id)
   );
 
-  const [activeTab, setActiveTab] = useState<"about" | "services" | "reviews" | "faqs">("about");
+  const [activeTab, setActiveTab] = useState<"about" | "services" | "photos" | "reviews" | "faqs">("about");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("all");
+  const [selectedPhotoCategory, setSelectedPhotoCategory] = useState("all");
   const [selectedReviewTag, setSelectedReviewTag] = useState("all");
   const [copied, setCopied] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
   const [bioExpanded, setBioExpanded] = useState(false);
 
   const proProfile = useAppSelector((state) => state.features.proProfile);
@@ -105,6 +111,42 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
   const cover = photos.services[pro.categorySlug] ?? photos.banner;
   const specialties = serviceLines[pro.categorySlug] ?? [pro.trade, "Diagnostics", "Repairs", "Maintenance"];
   const profilePath = `/browse-pros/${pro.id}`;
+
+  const galleryPhotos = useMemo(() => {
+    return getProGallery(pro.id, pro.categorySlug);
+  }, [pro.id, pro.categorySlug]);
+
+  const photoCategories = useMemo(() => {
+    const set = new Set<string>();
+    galleryPhotos.forEach((p) => {
+      if (p.category) set.add(p.category);
+    });
+    return Array.from(set);
+  }, [galleryPhotos]);
+
+  const filteredGalleryPhotos = useMemo(() => {
+    if (selectedPhotoCategory === "all") return galleryPhotos;
+    return galleryPhotos.filter((p) => p.category === selectedPhotoCategory);
+  }, [galleryPhotos, selectedPhotoCategory]);
+
+  useEffect(() => {
+    if (activePhotoIndex === null) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setActivePhotoIndex(null);
+      } else if (e.key === "ArrowLeft") {
+        setActivePhotoIndex((prev) =>
+          prev !== null ? (prev - 1 + galleryPhotos.length) % galleryPhotos.length : null
+        );
+      } else if (e.key === "ArrowRight") {
+        setActivePhotoIndex((prev) =>
+          prev !== null ? (prev + 1) % galleryPhotos.length : null
+        );
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activePhotoIndex, galleryPhotos.length]);
 
   const quoteHref = access.audience === "homeowner"
     ? `/account/post-job?invite=${pro.id}`
@@ -363,7 +405,8 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
             <div className="flex gap-2 sm:gap-6 overflow-x-auto py-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               {[
                 { id: "sec-about", tabId: "about", label: "About" },
-                { id: "sec-services", tabId: "services", label: "Services & Rates" },
+                { id: "sec-services", tabId: "services", label: "Services" },
+                { id: "sec-photos", tabId: "photos", label: `Photos (${galleryPhotos.length})` },
                 { id: "sec-reviews", tabId: "reviews", label: `Reviews (${allReviews.length})` },
                 { id: "sec-faqs", tabId: "faqs", label: "FAQs" },
               ].map((tab) => (
@@ -536,16 +579,15 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
           </section>
 
           {/* ============================================================ */}
-          {/* SECTION 2: SERVICES & UPFRONT RATES                         */}
+          {/* SECTION 2: SERVICES OFFERED                                */}
           {/* ============================================================ */}
           <section id="sec-services" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-6">
-
             <div>
               <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
-                Services &amp; Upfront Rates
+                Services offered
               </h2>
               <p className="mt-0.5 text-xs sm:text-sm text-muted">
-                Guaranteed upfront pricing agreed before work begins · No hidden travel fees
+                All services backed by guaranteed upfront estimates · Zero hidden travel fees
               </p>
             </div>
 
@@ -555,9 +597,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 type="button"
                 onClick={() => setSelectedCategoryFilter("all")}
                 className={cn(
-                  "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                  "rounded-full px-3.5 py-1 text-xs font-medium transition-colors cursor-pointer",
                   selectedCategoryFilter === "all"
-                    ? "bg-title text-white font-semibold"
+                    ? "bg-title text-white font-semibold shadow-2xs"
                     : "bg-surface border border-line/70 text-copy hover:bg-smoke"
                 )}
               >
@@ -569,9 +611,9 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                   type="button"
                   onClick={() => setSelectedCategoryFilter(item)}
                   className={cn(
-                    "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                    "rounded-full px-3.5 py-1 text-xs font-medium transition-colors cursor-pointer",
                     selectedCategoryFilter === item
-                      ? "bg-title text-white font-semibold"
+                      ? "bg-title text-white font-semibold shadow-2xs"
                       : "bg-surface border border-line/70 text-copy hover:bg-smoke"
                   )}
                 >
@@ -580,37 +622,20 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               ))}
             </div>
 
-            {/* Itemized Services Grid */}
+            {/* Clean 2-column checklist matching Thumbtack reference image */}
             {servicesList.length > 0 ? (
-              <div className="grid gap-3.5 sm:grid-cols-2 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-8 pt-1">
                 {servicesList.map((srv) => (
-                  <div
-                    key={srv.id}
-                    className="group rounded-2xl border border-line/80 bg-white p-4 sm:p-5 shadow-2xs hover:border-primary/40 hover:shadow-xs transition flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-baseline justify-between gap-2">
-                        <h3 className="font-display text-sm sm:text-[15px] font-bold text-title group-hover:text-primary transition-colors">
-                          {srv.name}
-                        </h3>
-                        <span className="font-display text-sm sm:text-base font-bold text-primary shrink-0">
-                          ${srv.price}
-                        </span>
-                      </div>
-                      <p className="mt-1.5 text-xs text-muted leading-relaxed line-clamp-2">
-                        {srv.description || "Standard inspection, repairs, and verified parts installation."}
-                      </p>
-                    </div>
-
-                    <div className="mt-3.5 pt-2.5 border-t border-line/50 flex items-center justify-between text-[11px] text-muted">
-                      <span>Rate: {srv.unit}</span>
-                      {quoteHref && (
-                        <Link
-                          href={`${quoteHref}&service=${encodeURIComponent(srv.name)}`}
-                          className="font-semibold text-primary hover:underline inline-flex items-center gap-0.5"
-                        >
-                          Request quote ↗
-                        </Link>
+                  <div key={srv.id} className="flex items-start gap-2.5">
+                    <Check className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0 stroke-[2.5]" />
+                    <div className="min-w-0">
+                      <span className="font-display text-sm font-semibold text-title leading-tight">
+                        {srv.name}
+                      </span>
+                      {srv.description && (
+                        <p className="mt-0.5 text-xs text-muted leading-relaxed line-clamp-1">
+                          {srv.description}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -621,6 +646,107 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
                 No specific services match this filter. Select &ldquo;All Services&rdquo; to view full offerings.
               </div>
             )}
+
+            <div className="rounded-xl bg-surface/60 border border-line/60 px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-muted">
+              <span>Looking for a specific repair or custom installation?</span>
+              {quoteHref && (
+                <Link href={quoteHref} className="font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  Request a custom estimate ↗
+                </Link>
+              )}
+            </div>
+          </section>
+
+          {/* ============================================================ */}
+          {/* SECTION 3: MEDIA & PROJECT PHOTOS GALLERY                  */}
+          {/* ============================================================ */}
+          <section id="sec-photos" className="scroll-mt-[135px] border-b border-line/60 pb-10 sm:pb-12 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+              <div>
+                <h2 className="font-display text-xl sm:text-[22px] font-semibold text-title tracking-tight">
+                  Project Photos &amp; Past Work
+                </h2>
+                <p className="mt-0.5 text-xs sm:text-sm text-muted">
+                  Real project completions and verified craftsmanship by {pro.name}
+                </p>
+              </div>
+              <span className="self-start sm:self-auto rounded-full bg-surface border border-line px-3 py-1 text-xs font-semibold text-title">
+                {galleryPhotos.length} Photos
+              </span>
+            </div>
+
+            {/* Photo Category Filter Chips */}
+            {photoCategories.length > 1 && (
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedPhotoCategory("all")}
+                  className={cn(
+                    "rounded-full px-3.5 py-1 text-xs font-medium transition-colors cursor-pointer",
+                    selectedPhotoCategory === "all"
+                      ? "bg-title text-white font-semibold shadow-2xs"
+                      : "bg-surface border border-line/70 text-copy hover:bg-smoke"
+                  )}
+                >
+                  All Photos ({galleryPhotos.length})
+                </button>
+                {photoCategories.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedPhotoCategory(cat)}
+                    className={cn(
+                      "rounded-full px-3.5 py-1 text-xs font-medium transition-colors cursor-pointer",
+                      selectedPhotoCategory === cat
+                        ? "bg-title text-white font-semibold shadow-2xs"
+                        : "bg-surface border border-line/70 text-copy hover:bg-smoke"
+                    )}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Gallery Photos Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4 pt-1">
+              {filteredGalleryPhotos.map((photo, idx) => {
+                const globalIdx = galleryPhotos.findIndex((p) => p.id === photo.id);
+                return (
+                  <button
+                    key={photo.id}
+                    type="button"
+                    onClick={() => setActivePhotoIndex(globalIdx >= 0 ? globalIdx : idx)}
+                    className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-100 border border-line/80 shadow-2xs hover:shadow-md hover:border-primary/50 transition-all text-left focus:outline-hidden focus:ring-2 focus:ring-primary/40 cursor-pointer"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={photo.image}
+                      alt={photo.title}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    {/* Bottom Dark Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent transition-opacity opacity-85 group-hover:opacity-95" />
+
+                    {/* Top Zoom Icon on Hover */}
+                    <span className="absolute top-2.5 right-2.5 grid h-7 w-7 place-items-center rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 backdrop-blur-xs transition shadow-sm">
+                      <Maximize2 className="h-3.5 w-3.5" />
+                    </span>
+
+                    {/* Bottom Caption */}
+                    <div className="absolute inset-x-0 bottom-0 p-3 space-y-1">
+                      <span className="inline-block rounded-md bg-white/20 backdrop-blur-xs px-2 py-0.5 text-[10px] font-semibold text-white">
+                        {photo.category}
+                      </span>
+                      <p className="font-display text-xs sm:text-[13px] font-semibold text-white leading-tight line-clamp-1 drop-shadow-xs">
+                        {photo.title}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </section>
 
 
@@ -860,23 +986,96 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
         </aside>
       </div>
 
-      {/* Lightbox Modal */}
-      {selectedImage && (
+      {/* Interactive Photo Lightbox Modal */}
+      {activePhotoIndex !== null && galleryPhotos[activePhotoIndex] && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md animate-in fade-in"
+          onClick={() => setActivePhotoIndex(null)}
         >
-          <div className="relative max-w-3xl overflow-hidden rounded-2xl bg-black">
-            <button
-              type="button"
-              onClick={() => setSelectedImage(null)}
-              className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md hover:bg-white/40"
-              aria-label="Close image"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={selectedImage} alt="Enlarged project" className="max-h-[80vh] w-auto object-contain" />
+          <div
+            className="relative flex flex-col max-w-4xl w-full max-h-[92vh] overflow-hidden rounded-2xl bg-zinc-950 text-white shadow-2xl border border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Lightbox Header Bar */}
+            <div className="flex items-center justify-between px-5 py-3 border-b border-white/10 bg-black/40">
+              <div className="flex items-center gap-2.5 text-xs text-white/70">
+                <span className="rounded-md bg-white/15 px-2 py-0.5 text-[11px] font-semibold text-white">
+                  {galleryPhotos[activePhotoIndex].category}
+                </span>
+                <span>·</span>
+                <span>
+                  Photo {activePhotoIndex + 1} of {galleryPhotos.length}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setActivePhotoIndex(null)}
+                className="grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white hover:bg-white/25 transition cursor-pointer"
+                aria-label="Close photo"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Main Image Container with Next/Prev Arrows */}
+            <div className="relative flex-1 flex items-center justify-center bg-black/80 min-h-[320px] max-h-[62vh] p-2 sm:p-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={galleryPhotos[activePhotoIndex].image}
+                alt={galleryPhotos[activePhotoIndex].title}
+                className="max-h-[60vh] w-auto max-w-full object-contain rounded-lg shadow-xl"
+              />
+
+              {galleryPhotos.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setActivePhotoIndex(
+                        (activePhotoIndex - 1 + galleryPhotos.length) % galleryPhotos.length
+                      )
+                    }
+                    className="absolute left-3 top-1/2 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-full bg-black/60 text-white hover:bg-black/90 backdrop-blur-xs transition border border-white/15 cursor-pointer shadow-md"
+                    aria-label="Previous photo"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setActivePhotoIndex((activePhotoIndex + 1) % galleryPhotos.length)
+                    }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-full bg-black/60 text-white hover:bg-black/90 backdrop-blur-xs transition border border-white/15 cursor-pointer shadow-md"
+                    aria-label="Next photo"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Lightbox Footer Bar with Details & CTA */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 bg-zinc-900 border-t border-white/10">
+              <div className="space-y-0.5">
+                <h4 className="font-display text-sm sm:text-base font-bold text-white">
+                  {galleryPhotos[activePhotoIndex].title}
+                </h4>
+                <p className="text-xs text-white/70 leading-relaxed">
+                  {galleryPhotos[activePhotoIndex].description}
+                </p>
+              </div>
+
+              {quoteHref && (
+                <Link
+                  href={`${quoteHref}&service=${encodeURIComponent(galleryPhotos[activePhotoIndex].title)}`}
+                  className="inline-flex items-center justify-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-primary/90 transition shrink-0 shadow-sm"
+                >
+                  <span>Request quote for this work</span>
+                  <span aria-hidden="true">↗</span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       )}

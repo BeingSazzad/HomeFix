@@ -10,7 +10,7 @@ export interface AppNotification {
   href: string;
   createdAt: string;
   read: boolean;
-  role: "homeowner" | "pro" | "all";
+  role: "homeowner" | "pro" | "admin" | "all";
 }
 
 export interface SavedAddress {

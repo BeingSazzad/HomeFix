@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import {
   CheckCircle2,
@@ -77,14 +78,24 @@ export function GuaranteeCard({
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={handleOpen}
-              className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full bg-white border border-line px-3.5 py-1.5 font-display text-xs font-semibold text-primary hover:border-primary/50 hover:bg-smoke/60 shadow-2xs transition-colors shrink-0 cursor-pointer"
-            >
-              <span>Learn how you&apos;re covered</span>
-              <span aria-hidden="true">→</span>
-            </button>
+            {onLearnMore ? (
+              <button
+                type="button"
+                onClick={handleOpen}
+                className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full bg-white border border-line px-3.5 py-1.5 font-display text-xs font-semibold text-primary hover:border-primary/50 hover:bg-smoke/60 shadow-2xs transition-colors shrink-0 cursor-pointer"
+              >
+                <span>Learn how you&apos;re covered</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            ) : (
+              <Link
+                href="/guarantee"
+                className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full bg-white border border-line px-3.5 py-1.5 font-display text-xs font-semibold text-primary hover:border-primary/50 hover:bg-smoke/60 shadow-2xs transition-colors shrink-0"
+              >
+                <span>Learn how you&apos;re covered</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            )}
           </div>
         </div>
 
@@ -122,13 +133,22 @@ export function GuaranteeCard({
 
           <div className="flex items-center justify-between border-t border-line/60 pt-2.5 text-[11px]">
             <span className="text-muted">Zero upfront risk · Pay pro on satisfaction</span>
-            <button
-              type="button"
-              onClick={handleOpen}
-              className="font-semibold text-primary hover:underline cursor-pointer"
-            >
-              Learn more →
-            </button>
+            {onLearnMore ? (
+              <button
+                type="button"
+                onClick={handleOpen}
+                className="font-semibold text-primary hover:underline cursor-pointer"
+              >
+                Learn more →
+              </button>
+            ) : (
+              <Link
+                href="/guarantee"
+                className="font-semibold text-primary hover:underline"
+              >
+                Learn more →
+              </Link>
+            )}
           </div>
         </div>
 
@@ -163,13 +183,22 @@ export function GuaranteeCard({
             </div>
             <p className="mt-1 text-xs text-muted leading-relaxed">
               If you hire this pro, you&apos;re covered by our workmanship &amp; property protection guarantee.{" "}
-              <button
-                type="button"
-                onClick={handleOpen}
-                className="font-semibold text-primary hover:underline inline-block cursor-pointer"
-              >
-                Learn more
-              </button>
+              {onLearnMore ? (
+                <button
+                  type="button"
+                  onClick={handleOpen}
+                  className="font-semibold text-primary hover:underline inline-block cursor-pointer"
+                >
+                  Learn more
+                </button>
+              ) : (
+                <Link
+                  href="/guarantee"
+                  className="font-semibold text-primary hover:underline inline-block"
+                >
+                  Learn more
+                </Link>
+              )}
             </p>
           </div>
         </div>

@@ -1,57 +1,280 @@
 import { photos } from "@/lib/media";
 
-type PortfolioItem = { title: string; image: string };
+export interface PortfolioItem {
+  id: string;
+  title: string;
+  image: string;
+  category: string;
+  description: string;
+}
 
-function shots(slug: string, titles: string[]): PortfolioItem[] {
-  const pool = photos.portfolio[slug] ?? [photos.services[slug]].filter(Boolean);
-  return titles.map((title, i) => ({
-    title,
-    image: pool[i % pool.length] ?? photos.services[slug],
+const tradeGalleries: Record<string, Omit<PortfolioItem, "id">[]> = {
+  plumbing: [
+    {
+      title: "Whole-Home PEX Water Line Repiping",
+      category: "Replacements",
+      image: photos.portfolio.plumbing[0],
+      description: "Replaced degraded galvanized piping with commercial-grade PEX, copper manifolds, and shutoff valves.",
+    },
+    {
+      title: "Tankless Water Heater Installation",
+      category: "Installations",
+      image: photos.portfolio.plumbing[1],
+      description: "High-efficiency condensing unit installation with dual vent kit and gas regulator.",
+    },
+    {
+      title: "Under-Sink Drain Rebuild & Disposal Line",
+      category: "Repairs",
+      image: photos.portfolio.plumbing[2],
+      description: "Rebuilt slip-joint drain lines with air gap and sound-dampened garbage disposal connection.",
+    },
+    {
+      title: "Modern Master Bath Vanity Fixtures",
+      category: "Installations",
+      image: photos.portfolio.plumbing[3],
+      description: "Mounted brushed brass widespread faucets with pop-up drains and braided steel lines.",
+    },
+    {
+      title: "Main Emergency Shutoff & Pressure Valve",
+      category: "Repairs",
+      image: photos.portfolio.plumbing[4],
+      description: "Quarter-turn ball valve with calibrated pressure reducing valve at 65 PSI.",
+    },
+    {
+      title: "Sewer Line Cleanout & Camera Inspection",
+      category: "Diagnostics",
+      image: photos.portfolio.plumbing[5],
+      description: "Video camera diagnosis with cleanout riser install and root cutting service.",
+    },
+  ],
+  electrical: [
+    {
+      title: "200-Amp Main Service Panel Upgrade",
+      category: "Upgrades",
+      image: photos.portfolio.electrical[0],
+      description: "Replaced obsolete split-bus panel with modern 200A breaker box and whole-home surge protector.",
+    },
+    {
+      title: "Flush Dimmable Ceiling LED Pot Lights",
+      category: "Lighting",
+      image: photos.portfolio.electrical[1],
+      description: "Installed 12 wafer-thin recessed LED cans with Lutron smart dimmer switch.",
+    },
+    {
+      title: "Level-2 EV Charging Station Wallbox",
+      category: "Installations",
+      image: photos.portfolio.electrical[2],
+      description: "50-amp dedicated 240V circuit install with weatherproof conduit run and hardwired wall unit.",
+    },
+    {
+      title: "Kitchen Island Pendant & GFCI Circuits",
+      category: "Lighting",
+      image: photos.portfolio.electrical[3],
+      description: "Designer glass pendant wiring with tamper-resistant GFCI safety outlets.",
+    },
+    {
+      title: "Smart Thermostat & C-Wire Rewiring",
+      category: "Installations",
+      image: photos.portfolio.electrical[4],
+      description: "Low-voltage relay tracing and smart digital thermostat installation with remote room sensors.",
+    },
+    {
+      title: "Garage Workshop Subpanel Installation",
+      category: "Upgrades",
+      image: photos.portfolio.electrical[5],
+      description: "60-amp feeder circuit providing dedicated power for heavy tools and dedicated dust collection.",
+    },
+  ],
+  hvac: [
+    {
+      title: "High-Efficiency Heat Pump Installation",
+      category: "Installations",
+      image: photos.portfolio.hvac[0],
+      description: "Variable-speed inverter heat pump with quiet outdoor compressor pad and line-set cover.",
+    },
+    {
+      title: "AC Condenser Coil Clean & Recharge",
+      category: "Maintenance",
+      image: photos.portfolio.hvac[1],
+      description: "Acid coil wash, subcooling refrigerant charge verification, and contactor capacitor check.",
+    },
+    {
+      title: "Smart Multi-Zone Digital Thermostat",
+      category: "Upgrades",
+      image: photos.portfolio.hvac[2],
+      description: "Motorized damper control with dual digital wall controllers and scheduling.",
+    },
+    {
+      title: "Air Handler & UV Filtration Setup",
+      category: "Installations",
+      image: photos.portfolio.hvac[3],
+      description: "Installed germicidal UV-C lamp with MERV 13 media air filter housing.",
+    },
+    {
+      title: "Ductwork Sealing & Insulation Wrap",
+      category: "Repairs",
+      image: photos.portfolio.hvac[4],
+      description: "Mastic-sealed plenum joints and R-8 foil-backed fiberglass duct insulation.",
+    },
+  ],
+  painting: [
+    {
+      title: "Open-Concept Living Room & Accent Wall",
+      category: "Interior",
+      image: photos.portfolio.painting[0],
+      description: "Two coats of Benjamin Moore eggshell with razor-sharp ceiling cut lines and zero overspray.",
+    },
+    {
+      title: "Kitchen Cabinet Spray Refinish",
+      category: "Cabinets",
+      image: photos.portfolio.painting[1],
+      description: "Factory-smooth lacquer finish with primer sanding and new brushed brass hardware.",
+    },
+    {
+      title: "Crown Molding & Baseboard Trim Enamel",
+      category: "Trim & Doors",
+      image: photos.portfolio.painting[2],
+      description: "Satin urethane enamel on woodwork with caulk-sealed seam joints.",
+    },
+    {
+      title: "Master Bedroom Calm Neutral Refresh",
+      category: "Interior",
+      image: photos.portfolio.painting[3],
+      description: "Zero-VOC matte paint applied over patched drywall with complete dust containment.",
+    },
+    {
+      title: "Exterior Front Porch & Siding Refresh",
+      category: "Exterior",
+      image: photos.portfolio.painting[4],
+      description: "Pressure washed, scraped loose paint, and coated with weather-shield acrylic.",
+    },
+  ],
+  handyman: [
+    {
+      title: "Seamless Drywall Patch & Texture Match",
+      category: "Repairs",
+      image: photos.portfolio.handyman[0],
+      description: "Square drywall insert, mesh tape, two mud coats, and matching orange peel texture.",
+    },
+    {
+      title: "Heavy-Duty Floating Shelves & TV Mount",
+      category: "Mounting",
+      image: photos.portfolio.handyman[1],
+      description: "Stud-anchored concealed brackets supporting up to 80 lbs per shelf with in-wall cord concealment.",
+    },
+    {
+      title: "Interior Pre-Hung Door Realignment",
+      category: "Carpentry",
+      image: photos.portfolio.handyman[2],
+      description: "Shimmed door jamb, routed new strike plate, and adjusted hinge reveal.",
+    },
+    {
+      title: "Kitchen Cabinet Pulls & Soft-Close Hinges",
+      category: "Hardware",
+      image: photos.portfolio.handyman[3],
+      description: "Laser-aligned template drilling and hydraulic soft-close cabinet hinge retrofit.",
+    },
+  ],
+  landscaping: [
+    {
+      title: "Tiered Garden Bed & Stone Retaining Wall",
+      category: "Hardscaping",
+      image: photos.portfolio.landscaping[0],
+      description: "Dry-stacked limestone blocks with drainage aggregate and perennial planting.",
+    },
+    {
+      title: "Sod Installation & Soil Preparation",
+      category: "Lawn",
+      image: photos.portfolio.landscaping[1],
+      description: "Graded topsoil, starter organic fertilizer, and lush Bermuda grass sod.",
+    },
+    {
+      title: "Low-Voltage LED Landscape Lighting",
+      category: "Lighting",
+      image: photos.portfolio.landscaping[2],
+      description: "Solid brass path lights and tree uplights on astronomical smart timer.",
+    },
+    {
+      title: "Seasonal Mulch & Deep Edge Trenching",
+      category: "Maintenance",
+      image: photos.portfolio.landscaping[3],
+      description: "Dark brown cedar mulch application with clean 3-inch spade bed edging.",
+    },
+  ],
+  roofing: [
+    {
+      title: "Architectural Shingle Roof Replacement",
+      category: "Replacements",
+      image: photos.portfolio.roofing[0],
+      description: "Class 4 impact-resistant architectural shingles with ice and water shield.",
+    },
+    {
+      title: "Chimney Flashing & Valley Reseal",
+      category: "Repairs",
+      image: photos.portfolio.roofing[1],
+      description: "Step flashing replacement with counter-flashing mortared into brick seams.",
+    },
+    {
+      title: "Seamless Aluminum Rain Gutter Install",
+      category: "Gutters",
+      image: photos.portfolio.roofing[2],
+      description: "Continuous 6-inch gutter fabrication with hidden screw hangers and oversized downspouts.",
+    },
+  ],
+  "appliance-repair": [
+    {
+      title: "French-Door Refrigerator Compressor Service",
+      category: "Refrigeration",
+      image: photos.portfolio["appliance-repair"][0],
+      description: "Replaced variable-capacity inverter compressor and vacuum-tested sealed system.",
+    },
+    {
+      title: "Front-Load Washer Drain Pump Swap",
+      category: "Laundry",
+      image: photos.portfolio["appliance-repair"][1],
+      description: "Cleared impeller obstruction and installed OEM direct-drive drain pump.",
+    },
+    {
+      title: "Dishwasher Circulation Motor & Float",
+      category: "Kitchen",
+      image: photos.portfolio["appliance-repair"][2],
+      description: "Diagnostic motor error code resolution and spray arm balance check.",
+    },
+  ],
+  "pest-control": [
+    {
+      title: "Full Perimeter Crawlspace Exclusion",
+      category: "Exclusion",
+      image: photos.portfolio["pest-control"][0],
+      description: "Steel mesh wire entry point sealing and foundation perimeter barrier treatment.",
+    },
+    {
+      title: "Targeted Attic & Soffit Pest Inspection",
+      category: "Inspection",
+      image: photos.portfolio["pest-control"][1],
+      description: "Thermal camera attic audit with non-toxic botanical repellent treatment.",
+    },
+  ],
+};
+
+export function getProGallery(proId: string, categorySlug: string): PortfolioItem[] {
+  const items = tradeGalleries[categorySlug] ?? tradeGalleries.plumbing;
+  return items.map((item, idx) => ({
+    ...item,
+    id: `${proId}-gallery-${idx + 1}`,
   }));
 }
 
-/** Portfolio must match each pro’s trade — never mix plumber shots into HVAC, etc. */
+/** Legacy portfolio export for compatibility */
 export const portfolios: Record<string, PortfolioItem[]> = {
-  "pro-1": shots("plumbing", [
-    "Kitchen supply line repair",
-    "Under-sink drain reseal",
-    "Vanity fixture install",
-  ]),
-  "pro-2": shots("electrical", [
-    "Hallway outlet circuit",
-    "Panel tidy & labeling",
-    "Interior lighting install",
-  ]),
-  "pro-3": shots("hvac", [
-    "Outdoor heat pump service",
-    "Condenser line maintenance",
-    "Rooftop AC unit tune-up",
-  ]),
-  "pro-4": shots("painting", [
-    "Interior room paint",
-    "Trim and door refresh",
-    "Clean edge wall finish",
-  ]),
-  "pro-5": shots("handyman", [
-    "Drywall patch & texture",
-    "Cabinet hardware mounting",
-    "Interior door realignment",
-  ]),
-  "pro-6": shots("appliance-repair", [
-    "Refrigerator compressor fix",
-    "Washer pump replacement",
-    "Dishwasher seal service",
-  ]),
-  "pro-7": shots("roofing", [
-    "Shingle leak repair",
-    "Flashing reseal",
-    "Seamless gutter install",
-  ]),
-  "pro-8": shots("landscaping", [
-    "Garden bed grading",
-    "Seasonal yard cleanup",
-    "Residential turf refresh",
-  ]),
+  "pro-1": getProGallery("pro-1", "plumbing"),
+  "pro-2": getProGallery("pro-2", "electrical"),
+  "pro-3": getProGallery("pro-3", "hvac"),
+  "pro-4": getProGallery("pro-4", "painting"),
+  "pro-5": getProGallery("pro-5", "handyman"),
+  "pro-6": getProGallery("pro-6", "appliance-repair"),
+  "pro-7": getProGallery("pro-7", "roofing"),
+  "pro-8": getProGallery("pro-8", "landscaping"),
 };
 
 export const serviceLines: Record<string, string[]> = {
