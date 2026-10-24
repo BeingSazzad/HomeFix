@@ -36,27 +36,35 @@ export const homeownerFaqs = [
 export const proFaqs = [
   {
     q: "How much does it cost for contractors to join?",
-    a: "We offer a 3-month completely free trial. Afterward, membership is a flat $19.99/month. We charge zero percent commission on your completed jobs and never charge per-lead fees.",
-  },
-  {
-    q: "How do I receive leads and job notifications?",
-    a: "Once cleared, you will receive real-time notifications whenever a homeowner in your service area posts a request in your trade. You can inspect project photos, descriptions, and urgency before submitting an itemized bid.",
+    a: "We offer a 3-month completely free trial with full directory listing and unlimited quoting. Afterward, membership is a flat $19.99/month (or $14.99/month billed annually). We charge 0% commission on your jobs and never charge per-lead fees.",
   },
   {
     q: "Do you take a cut of my earnings or charge for leads?",
-    a: "No. Unlike other platforms that sell expensive leads to multiple contractors or take a 15–25% cut of every project, LocalHomeFix operates on a transparent, flat monthly membership. You keep 100% of every dollar you charge.",
+    a: "Never. Unlike Angi, Thumbtack, or Yelp that sell expensive, shared leads to 4+ pros or take a 15–25% cut of every project, LocalHomeFix operates on a transparent, flat monthly subscription. You keep 100% of every dollar you charge.",
   },
   {
-    q: "What documents do I need to clear verification?",
-    a: "Pros must submit proof of relevant state or municipal trade licensing (for plumbing, electrical, and HVAC), current general liability insurance certificate, and complete standard identity screening.",
+    q: "Do you sell the same lead to multiple contractors?",
+    a: "No. Homeowners either book you directly from your verified public profile or post an open repair request where verified pros submit transparent quotes. We never engage in pay-per-lead bidding wars or charge you to contact a client.",
+  },
+  {
+    q: "How do I receive leads and job notifications?",
+    a: "Once cleared, you receive instant SMS and email notifications whenever a homeowner in your designated Austin service radius posts a request in your trade. You can inspect project photos, descriptions, and urgency before submitting an itemized bid.",
+  },
+  {
+    q: "What documents are required to clear compliance verification?",
+    a: "Trade pros must submit proof of relevant state or municipal trade licensing (TDLR license for plumbing, electrical, and HVAC) and a Certificate of Insurance (COI) showing at least $1,000,000 in general liability coverage. Identity is verified via hosted Stripe screening.",
+  },
+  {
+    q: "How quickly is my contractor application audited and approved?",
+    a: "Our compliance team audits submitted licenses against Texas state licensing registries within 24 business hours. Automated license status checks run regularly to maintain your Verified Pro badge.",
   },
   {
     q: "How and when do homeowners pay me?",
-    a: "Homeowners pay you directly upon job completion using your preferred payment methods (cash, check, card, or direct transfer). LocalHomeFix never withholds your funds or charges checkout fees.",
+    a: "Homeowners pay you directly upon job completion using your preferred payment methods (cash, check, card, or direct transfer). LocalHomeFix never withholds your funds or charges checkout processing surcharges.",
   },
   {
     q: "Can I pause or cancel my membership anytime?",
-    a: "Yes, there are no long-term contracts. You can pause or cancel your subscription at any time directly from your Pro Dashboard settings with one click.",
+    a: "Yes. There are no lock-in contracts or cancellation penalties. You can pause or cancel your subscription at any time with one click from your Pro Dashboard settings.",
   },
 ];
 
