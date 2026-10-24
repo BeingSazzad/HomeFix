@@ -427,131 +427,119 @@ export function ProProfileContent({ pro }: { pro: Professional }) {
               </div>
             </div>
 
-            {/* Two-Column Overview & Operations Grid */}
-            <div className="grid gap-5 sm:grid-cols-2 pt-1">
-              {/* Column 1: Overview */}
-              <div className="rounded-2xl border border-line/70 bg-white p-5 sm:p-6 shadow-2xs flex flex-col justify-between space-y-4">
-                <div>
-                  <h3 className="font-display text-base font-bold text-title">
-                    Overview
+            {/* Professional Highlights & Operations (Unboxed, Clean Senior Architecture) */}
+            <div className="pt-6 border-t border-line/60 grid gap-8 md:grid-cols-12 md:items-start">
+              {/* Left Column (7 cols): Verified Highlights */}
+              <div className="md:col-span-7 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-display text-xs font-bold uppercase tracking-wider text-muted">
+                    Contractor Highlights
                   </h3>
+                  <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                    <span>Verified Professional</span>
+                  </div>
+                </div>
 
-                  <ul className="mt-4 space-y-3.5">
-                    {/* Hired Times */}
-                    <li className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-100">
-                        <Award className="h-4 w-4" />
-                      </div>
-                      <span className="font-display text-sm font-semibold text-title">
+                <div className="grid grid-cols-2 gap-y-4 gap-x-6 pt-1">
+                  {/* Hired Times */}
+                  <div className="flex items-start gap-2.5">
+                    <Award className="h-4 w-4 text-zinc-500 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-display text-sm font-semibold text-title">
                         Hired {pro.jobsCompleted || 65} times
-                      </span>
-                    </li>
+                      </p>
+                      <p className="text-xs text-muted">Verified local bookings</p>
+                    </div>
+                  </div>
 
-                    {/* Similar Jobs Near You */}
-                    <li className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
-                        <MapPin className="h-4 w-4" />
-                      </div>
-                      <span className="font-display text-sm font-semibold text-title">
-                        {similarJobsCount} similar jobs done near you
-                      </span>
-                    </li>
+                  {/* Local Jobs */}
+                  <div className="flex items-start gap-2.5">
+                    <MapPin className="h-4 w-4 text-zinc-500 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-display text-sm font-semibold text-title">
+                        {similarJobsCount} local jobs
+                      </p>
+                      <p className="text-xs text-muted">Completed near {pro.city}</p>
+                    </div>
+                  </div>
 
-                    {/* Background Checked */}
-                    <li className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
-                        <ShieldCheck className="h-4 w-4" />
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-display text-sm font-semibold text-title">
-                          Background checked
-                        </span>
-                        <Check className="h-3.5 w-3.5 text-emerald-600 stroke-[3]" />
-                      </div>
-                    </li>
+                  {/* Background Checked */}
+                  <div className="flex items-start gap-2.5">
+                    <ShieldCheck className="h-4 w-4 text-zinc-500 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-display text-sm font-semibold text-title flex items-center gap-1.5">
+                        Background checked
+                        <Check className="h-3.5 w-3.5 text-emerald-600 stroke-[2.5]" />
+                      </p>
+                      <p className="text-xs text-muted">Identity &amp; record verified</p>
+                    </div>
+                  </div>
 
-                    {/* Years in Business */}
-                    <li className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200">
-                        <Calendar className="h-4 w-4" />
-                      </div>
-                      <span className="font-display text-sm font-semibold text-title">
+                  {/* Years in Business */}
+                  <div className="flex items-start gap-2.5">
+                    <Calendar className="h-4 w-4 text-zinc-500 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-display text-sm font-semibold text-title">
                         {pro.yearsInBusiness
                           ? pro.yearsInBusiness.includes("year")
                             ? pro.yearsInBusiness
                             : `${pro.yearsInBusiness} in business`
-                          : "1 year in business"}
-                      </span>
-                    </li>
-                  </ul>
+                          : "1+ years in business"}
+                      </p>
+                      <p className="text-xs text-muted">Trade experience</p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="pt-3 border-t border-line/50 text-xs text-muted flex items-center justify-between">
-                  <span>Contractor screening</span>
-                  <span className="font-semibold text-emerald-700">Identity &amp; Background Verified</span>
+                <div className="pt-2 flex items-center gap-2 text-xs text-muted">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                  <span>Licensed, background-screened &amp; backed by HomeFix Guarantee</span>
                 </div>
               </div>
 
-              {/* Column 2: Business Hours */}
-              <div className="rounded-2xl border border-line/70 bg-white p-5 sm:p-6 shadow-2xs flex flex-col justify-between space-y-4">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-display text-base font-bold text-title flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-primary" />
-                      Business hours
-                    </h3>
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      Open today
-                    </span>
-                  </div>
-
-                  {businessHours ? (
-                    <div className="mt-3.5 divide-y divide-line/40 text-xs">
-                      <div className="flex justify-between py-2 text-copy">
-                        <span className="text-muted">Monday – Friday</span>
-                        <span className="font-semibold text-title">{businessHours.weekdays}</span>
-                      </div>
-                      <div className="flex justify-between py-2 text-copy">
-                        <span className="text-muted">Saturday</span>
-                        <span className="font-semibold text-title">{businessHours.saturday}</span>
-                      </div>
-                      <div className="flex justify-between py-2 text-copy">
-                        <span className="text-muted">Sunday</span>
-                        <span
-                          className={cn(
-                            "font-semibold",
-                            pro.emergency ? "text-amber-600" : "text-muted"
-                          )}
-                        >
-                          {businessHours.sunday}
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="mt-3.5 text-xs text-muted leading-relaxed">
-                      This pro hasn&apos;t listed their business hours.
-                    </p>
-                  )}
+              {/* Right Column (5 cols): Business Hours & Response */}
+              <div className="md:col-span-5 md:pl-6 md:border-l md:border-line/60 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-display text-xs font-bold uppercase tracking-wider text-muted flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5 text-zinc-400" />
+                    Business Hours
+                  </h3>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Open today
+                  </span>
                 </div>
 
-                <div className="pt-3 border-t border-line/50 space-y-2 text-xs">
-                  <div className="flex items-center justify-between text-muted">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5 text-primary" />
-                      Typical response time
-                    </span>
-                    <span className="font-semibold text-title">{pro.responseTime || "Usually within 1 hour"}</span>
-                  </div>
-                  {pro.emergency && (
-                    <div className="flex items-center justify-between text-muted">
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-amber-500" />
-                        Emergency dispatch
-                      </span>
-                      <span className="font-semibold text-amber-700">Available 24/7</span>
+                {businessHours ? (
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex justify-between py-1 text-copy border-b border-line/30">
+                      <span className="text-muted">Monday – Friday</span>
+                      <span className="font-medium text-title">{businessHours.weekdays}</span>
                     </div>
-                  )}
+                    <div className="flex justify-between py-1 text-copy border-b border-line/30">
+                      <span className="text-muted">Saturday</span>
+                      <span className="font-medium text-title">{businessHours.saturday}</span>
+                    </div>
+                    <div className="flex justify-between py-1 text-copy border-b border-line/30">
+                      <span className="text-muted">Sunday</span>
+                      <span
+                        className={cn(
+                          "font-medium",
+                          pro.emergency ? "text-amber-700 font-semibold" : "text-muted"
+                        )}
+                      >
+                        {businessHours.sunday}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted">Business hours available upon inquiry.</p>
+                )}
+
+                <div className="flex items-center justify-between pt-1 text-xs text-muted">
+                  <span>Typical response time</span>
+                  <span className="font-semibold text-title">{pro.responseTime || "Usually under 1 hour"}</span>
                 </div>
               </div>
             </div>
